@@ -1,0 +1,51 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] build: use the shipped policy and desktop files
+
+Fedora does not ship deepin-policy-ts-convert or
+deepin-desktop-ts-convert.  The translated files are already present
+in the source tree.
+
+--- a/deepin-system-monitor-main/CMakeLists.txt
++++ b/deepin-system-monitor-main/CMakeLists.txt
+@@ -616,19 +616,9 @@
+ endif()
+ add_custom_target(QMFILES ALL DEPENDS ${APP_QM_FILES})
+ 
+-find_program(POLICY_TS_CONV deepin-policy-ts-convert REQUIRED)
+-add_custom_target(APP_POLICY_FILE
+-    ALL
+-    COMMAND ${POLICY_TS_CONV} ts2policy ${CMAKE_CURRENT_SOURCE_DIR}/translations/policy/${POLICY_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/translations/policy/ ${POLICY_FILE}.tmp
+-    COMMAND mv ${POLICY_FILE}.tmp ${POLICY_FILE}
+-)
+-
+-find_program(DESKTOP_TS_CONV deepin-desktop-ts-convert REQUIRED)
+-add_custom_target(APP_DESKTOP_FILE
+-    ALL
+-    COMMAND ${DESKTOP_TS_CONV} ts2desktop ${CMAKE_CURRENT_SOURCE_DIR}/translations/desktop/${DESKTOP_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/translations/desktop/ ${DESKTOP_FILE}.tmp
+-    COMMAND mv ${DESKTOP_FILE}.tmp ${DESKTOP_FILE}
+-)
++# Fedora does not ship deepin-policy-ts-convert or deepin-desktop-ts-convert.
++# The translated policy and desktop files are already present in the source
++# tree and are installed below without regeneration.
+ 
+ add_executable(${PROJECT_NAME}
+     ${APP_HPP}
+--- a/deepin-system-monitor-system-server/CMakeLists.txt
++++ b/deepin-system-monitor-system-server/CMakeLists.txt
+@@ -69,12 +69,7 @@
+ install(FILES ./misc/org.deepin.SystemMonitorSystemServer.conf DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/system.d)
+ # Systemd
+ install(FILES ./misc/deepin-system-monitor-system-server.service DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/system/)
+-# Polkit; Update translation
++# Polkit; Fedora does not ship deepin-policy-ts-convert.  The translated
++# policy file is already present in misc/ and is installed as-is.
+ set(POLICY_FILE org.deepin.deepin-system-monitor-system-server.policy)
+-find_program(POLICY_TS_CONV deepin-policy-ts-convert REQUIRED)
+-add_custom_target(APP_POLICY_FILE_TEST
+-    ALL
+-    COMMAND ${POLICY_TS_CONV} ts2policy ${CMAKE_CURRENT_SOURCE_DIR}/misc/${POLICY_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/translations/policy/ ${POLICY_FILE}.tmp
+-    COMMAND mv ${POLICY_FILE}.tmp ${CMAKE_CURRENT_SOURCE_DIR}/misc/${POLICY_FILE}
+-)
+ install(FILES ./misc/${POLICY_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR}/polkit-1/actions)

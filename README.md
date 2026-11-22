@@ -7,7 +7,7 @@ file name follows the Fedora binary/source package name.
 ## Conventions
 
 - Target: Fedora 45, x86_64 and aarch64, COPR (`mozixun/Fedora-DDE-Remix`).
-- 64 source packages in total, including the SeetaFace stack used by
+- 65 source packages in total, including the SeetaFace stack used by
   `deepin-face`, the OCR engine and the Deepin applications.
 - Qt 6 only. DTK 5 (Qt 5) builds are explicitly disabled with `-DDTK5=OFF`.
 - Package names follow Fedora where Fedora already has a package
@@ -71,6 +71,7 @@ dde-qtintegration (deepin-qt6integration)
 deepin-terminal
 deepin-editor
 dde-calendar
+deepin-system-monitor
 deepin-image-viewer
 deepin-draw
 deepin-reader
@@ -133,6 +134,8 @@ local source trees without an upstream tag:
   DOCX conversion uses Fedora's `pandoc-cli`.
 - `deepin-scanner` rewrites the hard-coded `/lib/qt6/bin` `lupdate`/`lrelease`
   fallback to `%{_qt6_bindir}`.
+- `deepin-system-monitor` uses the shipped translated polkit policy and
+  desktop file; Fedora does not ship the Deepin `*-ts-convert` helpers.
 
 See `UPSTREAM-ISSUES.md` for the corresponding upstream fixes.
 

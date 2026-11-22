@@ -211,3 +211,13 @@ sent as patches upstream.  None of them is a behavioural DDE change.
 - Suggested upstream fix: use `find_program()` with `QT6_INSTALL_PREFIX` /
   `QT6_INSTALL_BINS`, or the Qt6 imported targets.
 - Local workaround: the spec rewrites the fallback to `%{_qt6_bindir}`.
+
+## deepin-system-monitor
+
+- The build always runs `deepin-policy-ts-convert` and
+  `deepin-desktop-ts-convert` to regenerate the polkit policy and desktop
+  file.  Fedora does not ship these Deepin gettext helpers.
+- Suggested upstream fix: install the translated files as shipped, or make
+  the converters optional build-time tools.
+- Local workaround: `01-skip-ts-convert.patch` drops the two custom targets;
+  the already translated files are installed directly.
