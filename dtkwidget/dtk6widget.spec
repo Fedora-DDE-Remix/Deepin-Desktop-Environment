@@ -2,7 +2,7 @@
 
 Name:           dtk6widget
 Version:        6.7.54
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Deepin base graphical widgets library
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dtkwidget
@@ -20,6 +20,7 @@ BuildRequires:  cmake(Qt6Svg)
 BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6ToolsTools)
 BuildRequires:  cmake(Qt6GuiPrivate)
+BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Qt6WidgetsPrivate)
 BuildRequires:  cmake(Qt6PrintSupportPrivate)
 BuildRequires:  cmake(Dtk6Core) >= %{version}
@@ -72,5 +73,8 @@ sed -i 's|/dtk@DTK_VERSION_MAJOR@/DWidget||' misc/DtkWidget.pc.in
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.7.54-2
+- Add cmake(Qt6CorePrivate), required by Qt6 private components.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.7.54-1
 - Initial Fedora package (DTK 6.7.54, Qt 6 only).

@@ -1,6 +1,6 @@
 Name:           dde-appearance
 Version:        6.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Appearance service for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-appearance
@@ -16,7 +16,7 @@ BuildRequires:  cmake(Qt6Concurrent)
 BuildRequires:  cmake(Qt6LinguistTools)
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(Dtk6Gui)
-BuildRequires:  cmake(DDEAPI)
+BuildRequires:  dde-api-devel
 BuildRequires:  cmake(KF6Config)
 BuildRequires:  cmake(KF6GlobalAccel)
 BuildRequires:  cmake(KF6WindowSystem)
@@ -66,5 +66,8 @@ fonts, wallpapers and the fake window manager used by Treeland sessions.
 %{_userunitdir}/dde-fakewm.service
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
+- Require dde-api-devel directly instead of cmake(DDEAPI).
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-1
 - Initial Fedora package.

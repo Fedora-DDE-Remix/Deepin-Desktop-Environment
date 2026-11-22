@@ -2,7 +2,7 @@
 
 Name:           dde-api
 Version:        6.2.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Go language bindings and helper services for dde-daemon
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-api
@@ -37,6 +37,8 @@ locale helpers and polkit services).
 
 %package        devel
 Summary:        Development files for %{name}
+Provides:       cmake(DDEAPI) = %{version}
+Provides:       cmake(ddeapi) = %{version}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description    devel
@@ -92,6 +94,9 @@ sed -i 's|set(DDE_API_INCLUDE_DIRS "/usr/include")|set(DDE_API_INCLUDE_DIRS "")|
 %systemd_postun_with_restart deepin-login-sound.service deepin-shutdown-sound.service deepin-api-device.service deepin-sound-theme-player.service
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-4
+- Provide cmake(DDEAPI) explicitly; the fileattr provide is missing in COPR.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-3
 - Add gcc-c++ and gudev for the remaining cgo targets.
 

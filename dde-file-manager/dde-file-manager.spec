@@ -1,6 +1,6 @@
 Name:           dde-file-manager
 Version:        6.6.7
-Release:        2%{?dist}
+Release:        8%{?dist}
 Summary:        File manager for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-file-manager
@@ -17,11 +17,18 @@ BuildRequires:  cmake(Qt6Gui)
 BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6DBus)
 BuildRequires:  cmake(Qt6Concurrent)
+BuildRequires:  cmake(Qt6Svg)
+BuildRequires:  boost-devel
+BuildRequires:  pkgconfig(libcryptsetup)
+BuildRequires:  deepin-service-manager-devel
+BuildRequires:  pkgconfig(xcb)
+BuildRequires:  pkgconfig(xcb-ewmh)
 BuildRequires:  cmake(Qt6Network)
 BuildRequires:  cmake(Qt6Sql)
 BuildRequires:  cmake(Qt6Multimedia)
 BuildRequires:  cmake(Qt6LinguistTools)
 BuildRequires:  cmake(Qt6GuiPrivate)
+BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Qt6WidgetsPrivate)
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(Dtk6Gui)
@@ -210,6 +217,24 @@ fi
 %{_datadir}/dsg/configs/overrides/org.deepin.dde.treeland/org.deepin.dde.treeland.app/dde-trash/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-8
+- Add xcb and xcb-ewmh for the desktop plugins.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-7
+- Add deepin-service-manager-devel for the disk encryption service.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-6
+- Add libcryptsetup for the vault plugin.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-5
+- Add boost-devel for the file manager libraries.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-4
+- Add Qt6Svg for the canvas desktop plugin.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-3
+- Add cmake(Qt6CorePrivate), required by Qt6 private components.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-2
 - Use Fedora's pkgconfig(mount) name.
 - Drop libappimage from dfm6-base.pc now that the AppImage code is disabled.

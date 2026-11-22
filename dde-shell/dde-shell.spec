@@ -2,7 +2,7 @@
 
 Name:           dde-shell
 Version:        6.2.1
-Release:        1%{?dist}
+Release:        4%{?dist}
 Summary:        DDE shell, dock and desktop plugin framework
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-shell
@@ -26,13 +26,14 @@ BuildRequires:  cmake(Qt6WaylandCompositor)
 BuildRequires:  cmake(Qt6Sql)
 BuildRequires:  cmake(Qt6LinguistTools)
 BuildRequires:  cmake(Qt6WaylandClientPrivate)
+BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Qt6WaylandCompositorPrivate)
 BuildRequires:  cmake(Qt6QuickTemplates2Private)
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(Dtk6Gui)
 BuildRequires:  cmake(Dtk6Widget)
 BuildRequires:  cmake(Dtk6Tools)
-BuildRequires:  cmake(DDEAPI)
+BuildRequires:  dde-api-devel
 BuildRequires:  cmake(DDEApplicationManager)
 BuildRequires:  cmake(DdeTrayLoader)
 BuildRequires:  cmake(TreelandProtocols) >= 0.9.0
@@ -41,6 +42,7 @@ BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires:  pkgconfig(icu-io)
 BuildRequires:  pkgconfig(systemd)
 BuildRequires:  pkgconfig(wayland-client)
+BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xcb)
 BuildRequires:  pkgconfig(xcb-aux)
@@ -110,5 +112,14 @@ This package contains the dde-shell headers and CMake configuration.
 %{_libdir}/cmake/DDEShellDock/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-4
+- Add wayland-protocols for ECM's FindWaylandProtocols.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-3
+- Add cmake(Qt6CorePrivate), required by Qt6 private components.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
+- Require dde-api-devel directly instead of cmake(DDEAPI).
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-1
 - Initial Fedora package.

@@ -1,6 +1,6 @@
 Name:           dde-application-manager
 Version:        6.2.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Application manager for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-application-manager
@@ -18,7 +18,7 @@ BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Qt6WaylandClientPrivate)
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(TreelandProtocols)
-BuildRequires:  cmake(DDEAPI)
+BuildRequires:  dde-api-devel
 
 Requires:       dde-daemon
 Requires:       glib2
@@ -83,6 +83,9 @@ rm -f  %{buildroot}%{_datadir}/deepin/dde-application-manager/hooks.d/2-debFix.j
 %{_libdir}/cmake/DDEApplicationManager/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-3
+- Require dde-api-devel directly instead of cmake(DDEAPI).
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
 - Require Qt6CorePrivate, pulled in by Qt6WaylandClientPrivate.
 

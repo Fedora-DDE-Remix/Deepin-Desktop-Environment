@@ -1,6 +1,6 @@
 Name:           deepin-terminal
 Version:        6.5.42
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Terminal emulator for the Deepin desktop environment
 License:        GPL-3.0-or-later AND BSD-3-Clause
 URL:            https://github.com/linuxdeepin/deepin-terminal
@@ -16,6 +16,7 @@ BuildRequires:  cmake(Qt6Network)
 BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6Core5Compat)
 BuildRequires:  cmake(Qt6GuiPrivate)
+BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Qt6WidgetsPrivate)
 BuildRequires:  cmake(Qt6LinguistTools)
 BuildRequires:  cmake(Dtk6Widget)
@@ -71,6 +72,9 @@ rm -r %{buildroot}%{_includedir}/terminalwidget6/ \
 %{_datadir}/icons/hicolor/scalable/apps/deepin-terminal.svg
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.5.42-3
+- Add cmake(Qt6CorePrivate), required by Qt6 private components.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.5.42-2
 - Use Fedora's pkgconfig(libutf8proc) name.
 

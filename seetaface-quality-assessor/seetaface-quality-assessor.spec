@@ -6,7 +6,7 @@
 
 Name:           seetaface-quality-assessor
 Version:        3.0.0
-Release:        0.1.20251122git%{shortcommit}%{?dist}
+Release:        0.2.20251122git%{shortcommit}%{?dist}
 Summary:        SeetaFace image quality assessment module
 License:        BSD-3-Clause
 URL:            https://github.com/linuxdeepin/%{repo}
@@ -38,7 +38,7 @@ This package contains development files for %{name}.
 %cmake -GNinja -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
   -DCMAKE_BUILD_TYPE=Release -DPLATFORM=x64 -DCONFIGURATION=Release \
   -DSEETA_INSTALL_PATH=%{_prefix} -DSEETA_AUTHORIZE=ON -DSEETA_MODEL_ENCRYPT=ON \
-  -DORZ_ROOT_DIR=%{_prefix} -DCMAKE_MODULE_PATH=%{_prefix}/cmake \
+  -DORZ_ROOT_DIR=%{_prefix} -DCMAKE_MODULE_PATH=%{_datadir}/cmake \
   -DCMAKE_CXX_FLAGS="-include cstdlib -include functional -include memory"
 %cmake_build
 
@@ -71,5 +71,9 @@ fi
 
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 3.0.0-0.2.20251122git4ea33f03
+- Point CMAKE_MODULE_PATH at /usr/share/cmake where the SeetaFace
+  development packages install their Find modules.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 3.0.0-0.1.20251122git4ea33f03
 - Initial Fedora package (upstream commit 4ea33f03e9dac73a21502f1f69fcb0c0f0dd7ce0).

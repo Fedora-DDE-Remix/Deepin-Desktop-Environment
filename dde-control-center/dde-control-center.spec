@@ -1,6 +1,6 @@
 Name:           dde-control-center
 Version:        6.1.113
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        Control center for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-control-center
@@ -25,6 +25,8 @@ BuildRequires:  cmake(Qt6GuiPrivate)
 BuildRequires:  cmake(Qt6QmlModelsPrivate)
 BuildRequires:  cmake(Qt6QuickPrivate)
 BuildRequires:  cmake(Qt6WaylandClientPrivate)
+BuildRequires:  pkgconfig(wlr-protocols)
+BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(Dtk6Gui)
 BuildRequires:  cmake(Dtk6Tools)
@@ -104,5 +106,11 @@ export PATH=%{_qt6_bindir}:$PATH
 %{_libdir}/cmake/DdeControlCenter/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.1.113-3
+- Add wlr-protocols for the Treeland integration.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.1.113-2
+- Add cmake(Qt6CorePrivate), required by Qt6 private components.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.1.113-1
 - Initial Fedora package.

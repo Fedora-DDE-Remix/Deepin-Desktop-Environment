@@ -1,6 +1,6 @@
 Name:           dde-clipboard
 Version:        6.1.39
-Release:        1%{?dist}
+Release:        5%{?dist}
 Summary:        Clipboard history service for DDE
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-clipboard
@@ -16,9 +16,14 @@ BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6DBus)
 BuildRequires:  cmake(Qt6Concurrent)
 BuildRequires:  cmake(Qt6WaylandClient)
+BuildRequires:  cmake(Qt6Qml)
+BuildRequires:  cmake(Qt6Quick)
 BuildRequires:  cmake(Qt6LinguistTools)
+BuildRequires:  cmake(Qt6Test)
+BuildRequires:  gtest-devel
 BuildRequires:  cmake(Qt6GuiPrivate)
 BuildRequires:  cmake(Qt6WaylandClientPrivate)
+BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(Dtk6Gui)
 BuildRequires:  cmake(Dtk6Widget)
@@ -62,5 +67,14 @@ clipboard plugin.
 %{_userunitdir}/dde-clipboard-daemon.service
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.1.39-5
+- Add Qt6Test/gtest-devel for the unconditionally built unit tests.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.1.39-3
+- Add Qt6Qml/Qt6Quick required by DDEShellConfig.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.1.39-2
+- Add cmake(Qt6CorePrivate), required by Qt6 private components.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.1.39-1
 - Initial Fedora package.
