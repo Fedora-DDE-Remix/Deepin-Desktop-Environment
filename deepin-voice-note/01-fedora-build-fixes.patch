@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] fix: Qt 6 JSON include and Fedora translation tools
+
+Qt 6.11 no longer pulls QJsonDocument in through QJsonParseError.  This
+file constructs a QJsonDocument, so include its header directly.
+
+Fedora's qt6-linguist installs lupdate-qt6/lrelease-qt6 in /usr/bin, not
+the bare lupdate/lrelease names assumed by the translation script.
+
+--- a/src/common/vnotea2tmanager.cpp
++++ b/src/common/vnotea2tmanager.cpp
+@@ -11,6 +11,7 @@
+ #include <QDBusInterface>
+ #include <QDBusError>
+ #include <QJsonParseError>
++#include <QJsonDocument>
+ 
+ #include <QTimer>
+ 
+--- a/assets/translate_generation.sh
++++ b/assets/translate_generation.sh
+@@ -14,11 +14,15 @@
+ project=$4
+ en_ts_file=${translations_dir}/${project}.ts
+ 
++# Fedora installs the Qt 6 tools as lupdate-qt6/lrelease-qt6 in /usr/bin.
++LUPDATE_BIN=${LUPDATE_BIN:-$(command -v lupdate-qt6 || command -v lupdate)}
++LRELEASE_BIN=${LRELEASE_BIN:-$(command -v lrelease-qt6 || command -v lrelease)}
++
+ #check if need to update ts file
+ if echo "$need_update_trans" | grep -qwi "true"
+ then
+     printf "\nBegin--> ${en_ts_file}\n"
+-    lupdate ${source_dir}  -ts ${en_ts_file}
++    ${LUPDATE_BIN} ${source_dir}  -ts ${en_ts_file}
+ fi
+ 
+ ts_list=(`ls ${translations_dir}/*.ts`)
+@@ -30,6 +34,6 @@
+     if [ -f "/usr/lib/qt6/bin/lrelease" ]; then
+         /usr/lib/qt6/bin/lrelease "${ts}"
+     else
+-        lrelease "${ts}"
++        ${LRELEASE_BIN} "${ts}"
+     fi
+ done

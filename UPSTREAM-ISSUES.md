@@ -221,3 +221,15 @@ sent as patches upstream.  None of them is a behavioural DDE change.
   the converters optional build-time tools.
 - Local workaround: `01-skip-ts-convert.patch` drops the two custom targets;
   the already translated files are installed directly.
+
+## deepin-voice-note
+
+- `src/common/vnotea2tmanager.cpp` constructs a `QJsonDocument` but only
+  includes `<QJsonParseError>`; Qt 6.11 no longer provides the transitive
+  include.
+- `assets/translate_generation.sh` calls bare `lupdate`/`lrelease`.  Fedora
+  installs the Qt 6 tools as `lupdate-qt6`/`lrelease-qt6` in `/usr/bin`.
+- Suggested upstream fix: include `<QJsonDocument>` explicitly and use the
+  Qt CMake targets or a `command -v` fallback for the translation tools.
+- Local workaround: `01-fedora-build-fixes.patch`, which also keeps the 77
+  translation `.qm` files in the package.
