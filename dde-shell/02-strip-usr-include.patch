@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sat, 21 Nov 2026 00:00:00 +0800
+Subject: [PATCH] build: strip /usr/include from OpenGL/X11 imported targets
+
+Fedora's FindOpenGL and FindX11 modules put /usr/include into the
+INTERFACE_INCLUDE_DIRECTORIES of their imported targets.  GCC then treats
+/usr/include as an explicit system include directory, so libstdc++'s
+#include_next <stdlib.h> skips it and compilation fails.
+
+Strip the redundant entry after Qt has created the imported targets.
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -62,1 +63,12 @@
+-find_package(Dtk${DTK_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui)
++# Fedora's FindOpenGL/FindX11 put /usr/include into imported targets.
++foreach(_dde_target OpenGL::OpenGL OpenGL::GL OpenGL::GLX OpenGL::GLES2 OpenGL::GLES3 OpenGL::EGL OpenGL::GLU X11::X11)
++    if(TARGET ${_dde_target})
++        get_target_property(_dde_incs ${_dde_target} INTERFACE_INCLUDE_DIRECTORIES)
++        if(_dde_incs)
++            list(REMOVE_ITEM _dde_incs "/usr/include")
++            set_target_properties(${_dde_target} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${_dde_incs}")
++        endif()
++    endif()
++endforeach()
++
++find_package(Dtk${DTK_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui)

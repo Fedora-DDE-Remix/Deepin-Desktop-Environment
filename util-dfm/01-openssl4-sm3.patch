@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sat, 21 Nov 2026 00:00:00 +0800
+Subject: [PATCH] Use the OpenSSL 4 digest lookup API for SM3
+
+OpenSSL 4 no longer provides the EVP_sm3() convenience helper.
+Look the digest up by name, which works on OpenSSL 3 and 4.
+
+diff --git a/src/dfm-burn/dfm-burn-lib/private/dsm3hash.cpp b/src/dfm-burn/dfm-burn-lib/private/dsm3hash.cpp
+--- a/src/dfm-burn/dfm-burn-lib/private/dsm3hash.cpp
++++ b/src/dfm-burn/dfm-burn-lib/private/dsm3hash.cpp
+@@ -35,7 +35,7 @@ QString DSM3Hash::sm3File(const QString &filePath)
+     if (!ctx)
+         return {};
+ 
+-    const EVP_MD *md = EVP_sm3();
++    const EVP_MD *md = EVP_get_digestbyname("SM3");
+     if (!md || EVP_DigestInit_ex(ctx, md, nullptr) != 1) {
+         EVP_MD_CTX_free(ctx);
+         return {};

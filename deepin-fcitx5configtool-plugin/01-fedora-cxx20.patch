@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sat, 21 Nov 2026 00:00:00 +0800
+Subject: [PATCH] Build against Fedora fcitx5 5.1.23
+
+Fedora's fcitx5 headers require C++20 and fcitx-utils/stringutils.h.
+The upstream subdirectories pin CMAKE_CXX_STANDARD 17, so raise it and add
+the Fcitx5 Utils include directory / forced include at the src/ level.
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -3,5 +3,7 @@
+-set(CMAKE_CXX_STANDARD 17)
++set(CMAKE_CXX_STANDARD 20)
+ set(CMAKE_INCLUDE_CURRENT_DIR ON)
+ set(CMAKE_AUTOMOC ON)
+ set(CMAKE_AUTORCC ON)
+ set(CMAKE_CXX_FLAGS "-g -Wall")
++include_directories(/usr/include/Fcitx5/Utils)
++add_compile_options(-include fcitx-utils/stringutils.h)
+diff --git a/src/dcc-fcitx5configtool/CMakeLists.txt b/src/dcc-fcitx5configtool/CMakeLists.txt
+--- a/src/dcc-fcitx5configtool/CMakeLists.txt
++++ b/src/dcc-fcitx5configtool/CMakeLists.txt
+@@ -7 +7 @@
+-set(CMAKE_CXX_STANDARD 17)
++set(CMAKE_CXX_STANDARD 20)
+diff --git a/src/dcc-fcitx5configtool-exec/CMakeLists.txt b/src/dcc-fcitx5configtool-exec/CMakeLists.txt
+--- a/src/dcc-fcitx5configtool-exec/CMakeLists.txt
++++ b/src/dcc-fcitx5configtool-exec/CMakeLists.txt
+@@ -7 +7 @@
+-set(CMAKE_CXX_STANDARD 17)
++set(CMAKE_CXX_STANDARD 20)
+diff --git a/src/fcitx5helper/CMakeLists.txt b/src/fcitx5helper/CMakeLists.txt
+--- a/src/fcitx5helper/CMakeLists.txt
++++ b/src/fcitx5helper/CMakeLists.txt
+@@ -24 +24 @@
+-set(CMAKE_CXX_STANDARD 17)
++set(CMAKE_CXX_STANDARD 20)

@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] Use the system OpenCV and current ncnn API
+
+Fedora provides OpenCV 4 as opencv4.pc.  The OCR manager only uses the
+core, imgproc and highgui modules, which are available in the system
+OpenCV build.
+
+ncnn removed ncnn::Extractor::set_vulkan_compute().  The whole block only
+tuned the per-extractor Vulkan usage; create_extractor() now follows the
+network-level option, so drop the obsolete block.
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 45e8fb1..d2ed8bf 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -25,7 +25,7 @@ find_package(OpenMP REQUIRED)
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+ 
+-pkg_check_modules(3rd_lib REQUIRED ncnn opencv_mobile)
++pkg_check_modules(3rd_lib REQUIRED ncnn opencv4)
+ 
+ target_include_directories(${PROJECT_NAME} PUBLIC ${3rd_lib_INCLUDE_DIRS})
+ target_link_libraries(${PROJECT_NAME} ${3rd_lib_LIBRARIES} -lstdc++fs -ldl)
+diff --git a/src/paddleocr-ncnn/paddleocr.cpp b/src/paddleocr-ncnn/paddleocr.cpp
+index 5c438f8..8493d29 100644
+--- a/src/paddleocr-ncnn/paddleocr.cpp
++++ b/src/paddleocr-ncnn/paddleocr.cpp
+@@ -384,18 +384,6 @@ void PaddleOCRApp::rec(const std::vector<cv::Mat> &detectImg)
+         auto outIndexes = recNet->output_indexes();
+         ncnn::Extractor extractor = recNet->create_extractor();
+ 
+-        if(recNet->opt.use_vulkan_compute) {
+-            //当可用线程 > 1 同时不是第 1 个线程时，使用CPU进行计算
+-            //即确保显卡只处理单次的推理
+-#if defined(_loongarch) || defined(__loongarch__) || defined(__loongarch64)
+-            extractor.set_vulkan_compute(false);
+-#else
+-            if (maxThreadsUsed > 1 && i % maxThreadsUsed != 1) {
+-                extractor.set_vulkan_compute(false);
+-            }
+-#endif
+-        }
+-
+         extractor.input(0, input);
+         ncnn::Mat out;
+         extractor.extract(outIndexes[outIndexes.size() - 1], out);

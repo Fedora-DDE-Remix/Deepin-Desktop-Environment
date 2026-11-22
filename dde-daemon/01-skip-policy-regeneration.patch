@@ -1,0 +1,14 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sat, 21 Nov 2026 00:00:00 +0800
+Subject: [PATCH] build: use the shipped polkit policy files
+
+Fedora does not ship deepin-policy-ts-convert.  The generated policies are
+already present in misc/ts and are copied into misc/polkit-action by the spec.
+
+diff --git a/Makefile b/Makefile
+--- a/Makefile
++++ b/Makefile
+@@ -157 +157 @@
+-build: prepare out/bin/default-terminal out/bin/default-file-manager out/bin/desktop-toggle $(addprefix out/bin/, ${BINARIES}) ts_to_policy icons translate
++build: prepare out/bin/default-terminal out/bin/default-file-manager out/bin/desktop-toggle $(addprefix out/bin/, ${BINARIES}) icons translate

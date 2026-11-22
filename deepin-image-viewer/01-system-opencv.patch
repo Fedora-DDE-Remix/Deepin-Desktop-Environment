@@ -1,0 +1,21 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] Use the system OpenCV instead of opencv-mobile
+
+Fedora provides OpenCV 4 as opencv4.pc.  The image viewer uses only the
+core and imgproc modules.
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 5dc79b0..6c03865 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -25,7 +25,7 @@ find_package(Dtk${DTK_VERSION_MAJOR} REQUIRED COMPONENTS
+ # OCR
+ find_package(PkgConfig REQUIRED)
+ pkg_search_module(OCR_PLUGIN REQUIRED deepin-ocr-plugin-manager)
+-pkg_check_modules(InferenceEngine REQUIRED ncnn opencv_mobile)
++pkg_check_modules(InferenceEngine REQUIRED ncnn opencv4)
+ include_directories(${OCR_PLUGIN_INCLUDE_DIRS})
+ include_directories(${InferenceEngine_INCLUDE_DIRS})
+ 

@@ -1,0 +1,65 @@
+%global debug_package %{nil}
+
+%global repo seetaface-tracker
+%global commit e5e1a895fd60bd3e056d03143ab527c8d63ce99f
+%global shortcommit e5e1a895
+
+Name:           seetaface-tracker
+Version:        6.0.0
+Release:        0.1.20251122git%{shortcommit}%{?dist}
+Summary:        SeetaFace face tracking module
+License:        BSD-3-Clause
+URL:            https://github.com/linuxdeepin/%{repo}
+Source0:        %{url}/archive/%{commit}/%{repo}-%{commit}.tar.gz
+
+BuildRequires:  cmake
+BuildRequires:  gcc-c++
+BuildRequires:  ninja-build
+BuildRequires:  seetaface-open-role-zoo-devel
+BuildRequires:  seetaface-tennis-devel
+BuildRequires:  seetaface-authorize-devel
+%description
+SeetaFace face tracking module.
+
+%package        devel
+Summary:        Development files for %{name}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       seetaface-common
+%description    devel
+This package contains development files for %{name}.
+
+
+%prep
+%autosetup -n %{repo}-%{commit} -p1
+
+%build
+%cmake -GNinja -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+  -DCMAKE_BUILD_TYPE=Release -DPLATFORM=x64 -DCONFIGURATION=Release \
+  -DSEETA_INSTALL_PATH=%{_prefix} -DSEETA_AUTHORIZE=ON -DSEETA_MODEL_ENCRYPT=ON \
+  -DORZ_ROOT_DIR=%{_prefix} -DCMAKE_MODULE_PATH=%{_prefix}/cmake \
+  -DCMAKE_CXX_FLAGS="-include cstdlib -include functional -include memory"
+%cmake_build
+
+%install
+%cmake_install
+if [ -d %{buildroot}%{_prefix}/cmake ]; then
+  mkdir -p %{buildroot}%{_datadir}/cmake
+  mv %{buildroot}%{_prefix}/cmake/* %{buildroot}%{_datadir}/cmake/
+  rmdir %{buildroot}%{_prefix}/cmake
+fi
+
+%files
+%license LICENSE
+%doc README.md
+%{_libdir}/libSeetaFaceTracking600.so
+
+%files devel
+%{_includedir}/seeta/CTrackingFaceInfo.h
+%{_includedir}/seeta/FaceTracker.h
+%{_datadir}/cmake/FindSeetaFaceTracking.cmake
+%exclude %{_includedir}/seeta/Common/
+
+
+%changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.0-0.1.20251122gite5e1a895
+- Initial Fedora package (upstream commit e5e1a895fd60bd3e056d03143ab527c8d63ce99f).

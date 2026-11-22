@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sat, 21 Nov 2026 00:00:00 +0800
+Subject: [PATCH] Relax the vendored wlroots pixman version check
+
+Fedora 45 ships pixman 0.46.2.  The wlroots 0.20.2 check asks for 0.46.4,
+but the APIs used by the DRM backend are already present in 0.46.2.
+
+diff --git a/wlroots/CMakeLists.txt b/wlroots/CMakeLists.txt
+--- a/wlroots/CMakeLists.txt
++++ b/wlroots/CMakeLists.txt
+@@ -65,7 +65,7 @@
+ pkg_check_modules(WAYLAND_SERVER REQUIRED IMPORTED_TARGET wayland-server>=1.26.0)
+ pkg_check_modules(LIBDRM REQUIRED IMPORTED_TARGET libdrm>=2.4.134)
+ pkg_check_modules(XKBCOMMON REQUIRED IMPORTED_TARGET xkbcommon)
+-pkg_check_modules(PIXMAN REQUIRED IMPORTED_TARGET pixman-1>=0.46.4)
++pkg_check_modules(PIXMAN REQUIRED IMPORTED_TARGET pixman-1>=0.46.2)
+ pkg_check_modules(WAYLAND_PROTOCOLS REQUIRED wayland-protocols>=1.49)
+ pkg_check_modules(WAYLAND_CLIENT REQUIRED IMPORTED_TARGET wayland-client>=1.26.0)
+ pkg_check_modules(WAYLAND_SCANNER_PC REQUIRED wayland-scanner)

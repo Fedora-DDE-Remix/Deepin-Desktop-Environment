@@ -1,0 +1,14 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] Install to the caller-provided prefix
+
+The upstream CMakeLists forces the install prefix into a source-tree
+build directory.  Let the RPM build use /usr.
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -11 +11 @@
+-set(CMAKE_INSTALL_PREFIX ${SOLUTION_DIR}/../build CACHE STRING "set install prefix" FORCE)
++set(CMAKE_INSTALL_PREFIX /usr CACHE STRING "set install prefix" FORCE)

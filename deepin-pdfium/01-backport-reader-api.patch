@@ -1,0 +1,150 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] Backport the file identifier and image object APIs
+
+deepin-reader 6.6 uses DPdfDoc::fileIdentifier() and
+DPdfPage::imageObjectRects(), which are present in the copy of
+deepin-pdfium bundled with the reader but not in the 1.5.8 release.
+
+diff --git a/include/dpdfdoc.h b/include/dpdfdoc.h
+index 8efdc0a..57398f0 100755
+--- a/include/dpdfdoc.h
++++ b/include/dpdfdoc.h
+@@ -111,6 +111,13 @@ public:
+      */
+     QString label(int index) const;
+ 
++    /**
++     * @brief 获取 PDF 文档的永久标识符（Trailer /ID 的第一个值）
++     * 此 ID 在文档创建时生成，改名/移动不变，可用于唯一标识同一文档
++     * @return 永久 ID 的十六进制字符串，获取失败返回空串
++     */
++    QString fileIdentifier() const;
++
+     /**
+      * @brief 保存到当前文件
+      * @return
+diff --git a/include/dpdfpage.h b/include/dpdfpage.h
+index fccb585..7b850c8 100755
+--- a/include/dpdfpage.h
++++ b/include/dpdfpage.h
+@@ -50,6 +50,15 @@ public:
+      */
+     QImage image(int width, int height, QRect slice = QRect());
+ 
++    /**
++     * @brief 获取页面上图片对象的包围盒
++     * 坐标与 image(width, height) 的整页渲染输出像素一一对齐(已处理页面自身旋转)
++     * @param width (in pixel) 目标渲染宽
++     * @param height (in pixel) 目标渲染高
++     * @return 图片对象包围盒列表(像素坐标,Qt 坐标系);无图片对象返回空
++     */
++    QVector<QRectF> imageObjectRects(int width, int height);
++
+     /**
+      * @brief 字符数
+      * @return
+diff --git a/src/dpdfdoc.cpp b/src/dpdfdoc.cpp
+index b6675c7..41a711d 100755
+--- a/src/dpdfdoc.cpp
++++ b/src/dpdfdoc.cpp
+@@ -426,6 +426,27 @@ int DPdfDoc::pageCount() const
+     return d_func()->m_pageCount;
+ }
+ 
++QString DPdfDoc::fileIdentifier() const
++{
++    FPDF_DOCUMENT doc = reinterpret_cast<FPDF_DOCUMENT>(d_func()->m_docHandler);
++    if (!doc)
++        return QString();
++
++    // 先查询所需缓冲区大小
++    unsigned long len = FPDF_GetFileIdentifier(doc, FILEIDTYPE_PERMANENT, nullptr, 0);
++    if (len == 0)
++        return QString();
++
++    QByteArray buf(static_cast<int>(len), '\0');
++    FPDF_GetFileIdentifier(doc, FILEIDTYPE_PERMANENT, buf.data(), len);
++
++    // PDF /ID 是原始字节串（通常为 16 字节 MD5），非 UTF-8 文本
++    // 转为十六进制字符串，确保可打印、可存储、可比较
++    // len 包含末尾 NUL，buf.size()-1 为实际数据长度
++    QByteArray data = QByteArray::fromRawData(buf.constData(), buf.size() - 1);
++    return QString::fromLatin1(data.toHex());
++}
++
+ DPdfDoc::Status DPdfDoc::status() const
+ {
+     return d_func()->m_status;
+diff --git a/src/dpdfpage.cpp b/src/dpdfpage.cpp
+index 1d2f9ff..c583f02 100755
+--- a/src/dpdfpage.cpp
++++ b/src/dpdfpage.cpp
+@@ -670,6 +670,66 @@ QImage DPdfPage::image(int width, int height, QRect slice)
+     return image;
+ }
+ 
++QVector<QRectF> DPdfPage::imageObjectRects(int width, int height)
++{
++    QVector<QRectF> rects;
++
++    if (nullptr == d_func()->m_doc || width <= 0 || height <= 0)
++        return rects;
++
++    DPdfMutexLocker locker("DPdfPage::imageObjectRects index = " + QString::number(index()));
++
++    // 目标像素尺寸对应的缩放(与 image(width,height) 整页渲染对齐)
++    const QSizeF viewPx = d_func()->sizeF();
++
++    if (viewPx.width() <= 0 || viewPx.height() <= 0)
++        return rects;
++
++    // 对象列表需要解析内容(与 image() 一致用 FPDF_LoadPage);
++    // 取完后立即关闭,不缓存句柄,避免与渲染线程的页面句柄生命周期冲突
++    FPDF_PAGE page = FPDF_LoadPage(d_func()->m_doc, d_func()->m_index);
++
++    if (nullptr == page)
++        return rects;
++
++    CPDF_Page *pPage = CPDFPageFromFPDFPage(page);
++    const int rotation = pPage ? pPage->GetPageRotation() : 0;
++
++    const qreal sx = width / viewPx.width();
++    const qreal sy = height / viewPx.height();
++
++    const int count = FPDFPage_CountObjects(page);
++
++    for (int i = 0; i < count; ++i) {
++        FPDF_PAGEOBJECT obj = FPDFPage_GetObject(page, i);
++
++        if (nullptr == obj || FPDF_PAGEOBJ_IMAGE != FPDFPageObj_GetType(obj))
++            continue;
++
++        float left = 0, bottom = 0, right = 0, top = 0;
++
++        if (!FPDFPageObj_GetBounds(obj, &left, &bottom, &right, &top))
++            continue;
++
++        // 坐标链:PDF 用户空间(y 向上)→ 旋转后视图坐标 → dpi 像素 → 目标像素
++        FS_RECTF fs;
++        fs.left = left;
++        fs.top = top;
++        fs.right = right;
++        fs.bottom = bottom;
++
++        QRectF viewPt = d_func()->transRect(rotation, fs);
++        QRectF px = d_func()->transPointToPixel(viewPt);
++
++        QRectF out(px.x() * sx, px.y() * sy, px.width() * sx, px.height() * sy);
++        rects.append(out.normalized());
++    }
++
++    FPDF_ClosePage(page);
++
++    return rects;
++}
++
+ int DPdfPage::countChars()
+ {
+     d_func()->loadTextPage();
