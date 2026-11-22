@@ -1,6 +1,6 @@
 Name:           ddm
 Version:        0.5.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Deepin Display Manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/linuxdeepin/ddm
@@ -18,6 +18,7 @@ BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(Dtk6Tools)
 BuildRequires:  cmake(TreelandProtocols) >= 0.5.3
 BuildRequires:  pkgconfig(libsystemd)
+BuildRequires:  pkgconfig(systemd)
 BuildRequires:  pkgconfig(pam)
 BuildRequires:  pkgconfig(xau)
 BuildRequires:  pkgconfig(wayland-client)
@@ -85,6 +86,10 @@ install -Dm644 %{SOURCE1} %{buildroot}%{_presetdir}/90-ddm.preset
 %{_libdir}/cmake/DDM/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-5
+- Require pkgconfig(systemd); systemd.pc lives in the systemd package and
+  supplies the install directory variables.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-4
 - Use a raw URL for the systemd preset so COPR spec builds work.
 

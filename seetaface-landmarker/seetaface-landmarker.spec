@@ -6,7 +6,7 @@
 
 Name:           seetaface-landmarker
 Version:        6.0.0
-Release:        0.1.20251122git%{shortcommit}%{?dist}
+Release:        0.2.20251122git%{shortcommit}%{?dist}
 Summary:        SeetaFace facial landmark module
 License:        BSD-3-Clause
 URL:            https://github.com/linuxdeepin/%{repo}
@@ -36,7 +36,7 @@ This package contains development files for %{name}.
 %cmake -GNinja -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
   -DCMAKE_BUILD_TYPE=Release -DPLATFORM=x64 -DCONFIGURATION=Release \
   -DSEETA_INSTALL_PATH=%{_prefix} -DSEETA_AUTHORIZE=ON -DSEETA_MODEL_ENCRYPT=ON \
-  -DORZ_ROOT_DIR=%{_prefix} -DCMAKE_MODULE_PATH=%{_prefix}/cmake \
+  -DORZ_ROOT_DIR=%{_prefix} -DCMAKE_MODULE_PATH=%{_datadir}/cmake \
   -DCMAKE_CXX_FLAGS="-include cstdlib -include functional -include memory"
 %cmake_build
 
@@ -61,5 +61,8 @@ fi
 
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.0-0.2.20251122gitb2609f84
+- Point CMAKE_MODULE_PATH at /usr/share/cmake for the SeetaFace Find modules.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.0-0.1.20251122gitb2609f84
 - Initial Fedora package (upstream commit b2609f848612eb0982ba6d5108bb7e7fbc549062).

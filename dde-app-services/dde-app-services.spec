@@ -1,6 +1,6 @@
 Name:           dde-app-services
 Version:        1.0.47
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        DConfig service and tools for DDE
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-app-services
@@ -16,6 +16,7 @@ BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6LinguistTools)
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(Dtk6Gui)
+BuildRequires:  cmake(Dtk6Widget)
 BuildRequires:  pkgconfig(libsystemd)
 
 %description
@@ -60,5 +61,8 @@ command line tool and the DConfig editor.
 %systemd_postun_with_restart dde-dconfig-daemon.service
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.47-2
+- Add the missing Dtk6Widget build dependency.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 1.0.47-1
 - Initial Fedora package.
