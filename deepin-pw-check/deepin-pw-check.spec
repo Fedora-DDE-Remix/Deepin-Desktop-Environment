@@ -7,8 +7,8 @@ Summary:        Password validation library and service for DDE
 License:        GPL-2.0-only
 URL:            https://github.com/linuxdeepin/deepin-pw-check
 Source0:        %{url}/archive/%{version}/deepin-pw-check-%{version}.tar.gz
-Patch0:         01-use-shipped-policy.patch
-Patch1:         02-Mangle-Suit-Cracklib2.9.6.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-pw-check/01-use-shipped-policy.patch
+Patch1:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-pw-check/02-Mangle-Suit-Cracklib2.9.6.patch
 
 BuildRequires:  gcc
 BuildRequires:  golang

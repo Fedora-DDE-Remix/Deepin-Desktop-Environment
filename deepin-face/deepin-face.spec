@@ -5,7 +5,7 @@ Summary:        Face recognition service for Deepin authentication
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/deepin-face
 Source0:        %{url}/archive/%{version}/deepin-face-%{version}.tar.gz
-Patch0:         01-fedora-paths.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-face/01-fedora-paths.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  make

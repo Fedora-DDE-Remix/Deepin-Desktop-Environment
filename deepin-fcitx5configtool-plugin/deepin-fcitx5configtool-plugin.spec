@@ -5,7 +5,7 @@ Summary:        Fcitx5 input method configuration plugin for DDE Control Center
 License:        GPL-2.0-or-later AND LGPL-2.1-or-later
 URL:            https://github.com/linuxdeepin/deepin-fcitx5configtool-plugin
 Source0:        %{url}/archive/%{version}/deepin-fcitx5configtool-plugin-%{version}.tar.gz
-Patch0:         01-fedora-cxx20.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-fcitx5configtool-plugin/01-fedora-cxx20.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++

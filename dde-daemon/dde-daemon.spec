@@ -7,7 +7,7 @@ Summary:        Daemon handling the DDE session settings
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-daemon
 Source0:        %{url}/archive/%{version}/dde-daemon-%{version}.tar.gz
-Patch0:         01-skip-policy-regeneration.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-daemon/01-skip-policy-regeneration.patch
 
 BuildRequires:  golang
 BuildRequires:  gcc

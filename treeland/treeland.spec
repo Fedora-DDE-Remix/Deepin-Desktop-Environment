@@ -7,7 +7,7 @@ Summary:        Wayland compositor for the Deepin desktop environment
 License:        (Apache-2.0 OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only) AND MIT AND CC0-1.0
 URL:            https://github.com/linuxdeepin/treeland
 Source0:        %{url}/archive/%{version}/treeland-%{version}.tar.gz
-Patch0:         01-relax-pixman.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/treeland/01-relax-pixman.patch
 
 Provides:       bundled(waylib) = 0.20.2
 Provides:       bundled(wlroots) = 0.20.2

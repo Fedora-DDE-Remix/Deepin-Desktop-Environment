@@ -11,7 +11,7 @@ Summary:        SeetaFace image quality assessment module
 License:        BSD-3-Clause
 URL:            https://github.com/linuxdeepin/%{repo}
 Source0:        %{url}/archive/%{commit}/%{repo}-%{commit}.tar.gz
-Patch0: 01-install-prefix.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/seetaface-quality-assessor/01-install-prefix.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++

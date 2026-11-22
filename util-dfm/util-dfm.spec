@@ -5,7 +5,7 @@ Summary:        I/O, mount, burn and search libraries for DDE File Manager
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/util-dfm
 Source0:        %{url}/archive/%{version}/util-dfm-%{version}.tar.gz
-Patch0:         01-openssl4-sm3.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/util-dfm/01-openssl4-sm3.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++

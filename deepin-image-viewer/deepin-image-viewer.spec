@@ -6,7 +6,7 @@ Summary:        Image viewer for the Deepin desktop environment
 License:        GPL-3.0-or-later AND CC0-1.0 AND CC-BY-4.0
 URL:            https://github.com/linuxdeepin/deepin-image-viewer
 Source0:        %{url}/archive/%{version}/deepin-image-viewer-%{version}.tar.gz
-Patch0:         01-system-opencv.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-image-viewer/01-system-opencv.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++

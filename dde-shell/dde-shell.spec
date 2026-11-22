@@ -7,8 +7,8 @@ Summary:        DDE shell, dock and desktop plugin framework
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-shell
 Source0:        %{url}/archive/%{version}/dde-shell-%{version}.tar.gz
-Patch0:         01-optional-examples.patch
-Patch1:         02-strip-usr-include.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-shell/01-optional-examples.patch
+Patch1:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-shell/02-strip-usr-include.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++

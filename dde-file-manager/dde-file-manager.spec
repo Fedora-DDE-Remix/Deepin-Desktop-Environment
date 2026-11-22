@@ -5,7 +5,7 @@ Summary:        File manager for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-file-manager
 Source0:        %{url}/archive/%{version}/dde-file-manager-%{version}.tar.gz
-Patch0:         01-fedora-disable-appimage-qt611.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-file-manager/01-fedora-disable-appimage-qt611.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++

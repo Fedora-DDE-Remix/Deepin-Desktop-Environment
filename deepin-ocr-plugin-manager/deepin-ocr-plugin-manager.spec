@@ -6,7 +6,7 @@ Summary:        OCR plugin manager for the Deepin desktop environment
 License:        LGPL-2.1-or-later
 URL:            https://github.com/linuxdeepin/deepin-ocr-plugin-manager
 Source0:        %{url}/archive/%{version}/deepin-ocr-plugin-manager-%{version}.tar.gz
-Patch0:         01-fedora-deps.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-ocr-plugin-manager/01-fedora-deps.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++

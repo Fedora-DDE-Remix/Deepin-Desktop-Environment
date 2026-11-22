@@ -7,7 +7,7 @@ Summary:        Qt 6 wrapper for GSettings
 License:        LGPL-3.0-only
 URL:            https://gitlab.com/ubports/development/core/gsettings-qt
 Source0:        %{url}/-/archive/v%{version}/%{srcname}-v%{version}.tar.gz
-Patch0:         01-optional-qml-plugin.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/gsettings-qt/01-optional-qml-plugin.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++

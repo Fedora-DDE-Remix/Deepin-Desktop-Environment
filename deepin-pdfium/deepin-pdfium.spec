@@ -5,7 +5,7 @@ Summary:        PDF rendering library based on PDFium
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/deepin-pdfium
 Source0:        %{url}/archive/%{version}/deepin-pdfium-%{version}.tar.gz
-Patch0:         01-backport-reader-api.patch
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-pdfium/01-backport-reader-api.patch
 
 Provides:       bundled(pdfium)
 

@@ -20,6 +20,9 @@ file name follows the Fedora binary/source package name.
 - Build-time compatibility fixes are kept in the spec (`%build` flags) or in
   `*.patch` files next to the spec.  No behavioural DDE source change is
   carried by the resulting packages.
+- Every `PatchN:` tag points at the raw GitHub URL of the patch in this
+  repository (`.../refs/heads/main/<repo>/<patch>`); the same `.patch` file is
+  kept next to the spec for local builds and `spectool -g`.
 - Fedora 45 provides newer Qt (6.11.2) than the Fedora 44 DTK specs; the DTK
   specs here are therefore newer upstream releases (6.7.54) and supersede the
   older Fedora 44/rawhide `dtk6*` builds by EVR in COPR.
