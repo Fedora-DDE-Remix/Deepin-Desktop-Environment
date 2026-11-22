@@ -2,7 +2,7 @@
 
 Name:           dde-daemon
 Version:        6.2.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Daemon handling the DDE session settings
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-daemon
@@ -12,6 +12,7 @@ Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Deskto
 
 BuildRequires:  golang
 BuildRequires:  gcc
+BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  gettext
 BuildRequires:  pkgconfig(alsa)
@@ -127,6 +128,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-7
+- Add gcc-c++ for cgo C++ sources.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-6
 - Require gdk-pixbuf-xlib for the Go gdkpixbuf bindings.
 

@@ -2,7 +2,7 @@
 
 Name:           deepin-pw-check
 Version:        6.0.13
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Password validation library and service for DDE
 License:        GPL-2.0-only
 URL:            https://github.com/linuxdeepin/deepin-pw-check
@@ -42,7 +42,7 @@ This package contains development files for %{name}.
 export GO111MODULE=on
 export GOFLAGS="-mod=mod"
 export GOPATH=%{_builddir}/gopath
-%make_build PREFIX=%{_prefix} libdir=/%{_lib} \
+%make_build GOPATH=%{_builddir}/gopath PREFIX=%{_prefix} libdir=/%{_lib} \
   PAM_MODULE_DIR=%{_libdir}/security \
   PKG_FILE_DIR=%{_libdir}/pkgconfig
 
@@ -50,7 +50,7 @@ export GOPATH=%{_builddir}/gopath
 export GO111MODULE=on
 export GOFLAGS="-mod=mod"
 export GOPATH=%{_builddir}/gopath
-%make_install PREFIX=%{_prefix} libdir=/%{_lib} \
+%make_install GOPATH=%{_builddir}/gopath PREFIX=%{_prefix} libdir=/%{_lib} \
   PAM_MODULE_DIR=%{_libdir}/security \
   PKG_FILE_DIR=%{_libdir}/pkgconfig
 # The upstream Makefile installs the shared library into /usr/lib, not
@@ -87,6 +87,10 @@ mv %{buildroot}%{_prefix}/lib/libdeepin_pw_check* %{buildroot}%{_libdir}/
 %{_libdir}/pkgconfig/libdeepin_pw_check.pc
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.13-3
+- Pass GOPATH on the make command line; the Makefile overrides the
+  environment assignment.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.13-2
 - Point GOPATH at the build directory so the Go module cache is writable.
 

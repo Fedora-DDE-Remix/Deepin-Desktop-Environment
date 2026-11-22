@@ -2,7 +2,7 @@
 
 Name:           dde-api
 Version:        6.2.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Go language bindings and helper services for dde-daemon
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-api
@@ -10,10 +10,12 @@ Source0:        %{url}/archive/%{version}/dde-api-%{version}.tar.gz
 
 BuildRequires:  golang
 BuildRequires:  gcc
+BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(gdk-pixbuf-xlib-2.0)
+BuildRequires:  pkgconfig(gudev-1.0)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(libcanberra)
 BuildRequires:  pkgconfig(libpulse)
@@ -90,6 +92,9 @@ sed -i 's|set(DDE_API_INCLUDE_DIRS "/usr/include")|set(DDE_API_INCLUDE_DIRS "")|
 %systemd_postun_with_restart deepin-login-sound.service deepin-shutdown-sound.service deepin-api-device.service deepin-sound-theme-player.service
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-3
+- Add gcc-c++ and gudev for the remaining cgo targets.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
 - Require gdk-pixbuf-xlib for the Go gdkpixbuf bindings.
 
