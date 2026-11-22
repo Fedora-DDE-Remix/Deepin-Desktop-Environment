@@ -42,12 +42,23 @@ This package contains development files for %{name}.
 
 %install
 %meson_install
+install -Dm644 contrib/systemd/seatd.service %{buildroot}%{_unitdir}/dde-seatd.service
+
+%post
+%systemd_post dde-seatd.service
+
+%preun
+%systemd_preun dde-seatd.service
+
+%postun
+%systemd_postun_with_restart dde-seatd.service
 
 %files
 %license LICENSE
 %doc README.md
 %{_bindir}/seatd
 %{_bindir}/seatd-launch
+%{_unitdir}/dde-seatd.service
 
 %files libs
 %{_libdir}/libseat.so.1*
