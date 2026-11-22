@@ -1,0 +1,7 @@
+# Fallback enables for upgrades or minimal installs.  The component packages
+# also ship their own presets; systemd preset is idempotent.
+enable ddm.service
+enable dde-seatd.service
+enable dde-system-daemon.service
+enable dde-dconfig-daemon.service
+enable deepin-service-manager.service

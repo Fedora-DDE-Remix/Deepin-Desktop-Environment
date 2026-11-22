@@ -2,14 +2,17 @@
 
 Name:           dde-desktop
 Version:        1.0.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Complete DDE desktop environment
 
 License:        MIT
 URL:            https://github.com/Fedora-DDE-Remix/Deepin-Desktop-Environment
 Source0:        README.md
 Source1:        LICENSE
+Source2:        90-dde-desktop.preset
 BuildArch:      noarch
+
+BuildRequires:  systemd-rpm-macros
 
 
 Requires:       NetworkManager
@@ -91,7 +94,8 @@ Deepin applications.
 
 Music playback is provided by VLC, log viewing by GNOME Logs, and USB image
 writing by Fedora Media Writer.  Each DDE component enables its own systemd
-services from its own package preset.
+services from its own package preset; the meta package repeats the same
+enables as a fallback for upgrades and minimal installs.
 
 %prep
 %setup -q -T -c
@@ -102,13 +106,20 @@ cp %{SOURCE1} LICENSE
 # Meta package: no build step.
 
 %install
-# Meta package: the component packages own their service presets.
+install -Dm644 %{SOURCE2} %{buildroot}%{_presetdir}/90-dde-desktop.preset
+
+%post
+%systemd_post ddm.service dde-seatd.service dde-system-daemon.service dde-dconfig-daemon.service deepin-service-manager.service
 
 %files
 %license LICENSE
 %doc README.md
+%{_presetdir}/90-dde-desktop.preset
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-4
+- Keep the component service enables as a meta-package fallback.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-3
 - Leave service enabling to the packages that own the units.
 

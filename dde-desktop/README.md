@@ -27,8 +27,9 @@ components:
 
 Each component package installs its own systemd preset and enables its own
 service: `ddm`, `dde-seatd` and `dde-system-daemon` are enabled by their
-respective packages.  Select the `DDE` Wayland session at the DDM login
-screen.
+respective packages.  The meta package repeats the same `systemd preset`
+enables as a fallback for upgrades and minimal installs.  Select the `DDE`
+Wayland session at the DDM login screen.
 
 The Deepin icon, GTK and sound themes are installed through
 deepin-desktop-schemas.  The optional Deepin desktop-theme and wallpaper
