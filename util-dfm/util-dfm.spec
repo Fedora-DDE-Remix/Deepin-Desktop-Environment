@@ -79,9 +79,11 @@ This package contains development files for %{name}.
 %install
 %cmake_install
 
-%files io
+%files
 %license LICENSE
 %doc README.md
+
+%files io
 %{_libdir}/libdfm6-io.so.1*
 
 %files mount

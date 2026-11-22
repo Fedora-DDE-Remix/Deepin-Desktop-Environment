@@ -2,7 +2,7 @@
 
 Name:           dde-desktop
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Complete DDE desktop environment
 
 License:        MIT
@@ -29,7 +29,7 @@ Requires:       dde-file-manager-desktop
 Requires:       dde-file-manager-services-plugins
 Requires:       dde-launchpad
 Requires:       dde-polkit-agent
-Requires:       dde-seatd
+Requires:       dde-seatd >= 0.9.3-3
 Requires:       dde-services
 Requires:       dde-session
 Requires:       dde-shell
@@ -66,7 +66,10 @@ Requires:       treeland-protocols
 Requires:       udisks2
 Requires:       udisks2-qt6
 Requires:       upower
-Requires:       util-dfm
+Requires:       util-dfm-burn
+Requires:       util-dfm-io
+Requires:       util-dfm-mount
+Requires:       util-dfm-search
 Requires:       vlc
 Requires:       wireplumber
 Requires:       xdg-desktop-portal
@@ -112,5 +115,8 @@ install -Dm644 %{SOURCE1} %{buildroot}%{_presetdir}/90-dde-desktop.preset
 %{_presetdir}/90-dde-desktop.preset
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-2
+- Require the dde-seatd control-socket version needed by DDM.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-1
 - Initial Fedora meta package.

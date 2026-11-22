@@ -1,6 +1,6 @@
 Name:           ddm
 Version:        0.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Deepin Display Manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/linuxdeepin/ddm
@@ -27,6 +27,7 @@ BuildRequires:  wayland-devel
 
 Requires:       accountsservice
 Requires:       systemd
+Requires:       systemd-pam
 Requires:       pam
 
 %description
@@ -81,5 +82,8 @@ This package contains development files for %{name}.
 %{_libdir}/cmake/DDM/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-2
+- Require systemd-pam for pam_systemd.so.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-1
 - Initial Fedora package.

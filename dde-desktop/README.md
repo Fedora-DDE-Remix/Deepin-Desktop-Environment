@@ -29,6 +29,7 @@ The package also installs a systemd preset that enables DDM, the DDE seat
 daemon and the DDE system services.  Select the `DDE` Wayland session at the
 DDM login screen.
 
-Deepin theme/icon/wallpaper packages are not part of the current COPR spec
-set; the desktop falls back to the icon theme shipped by Fedora.  They can
-be added later without changing this meta package.
+The Deepin icon, GTK and sound themes are installed through
+deepin-desktop-schemas.  The optional Deepin desktop-theme and wallpaper
+packages are not part of the current COPR spec set; they can be added later
+without changing this meta package.

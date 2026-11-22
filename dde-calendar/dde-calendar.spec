@@ -26,7 +26,7 @@ BuildRequires:  cmake(Dtk6Gui)
 BuildRequires:  pkgconfig(libical)
 
 Requires:       dde-api
-Requires:       dde-qt6integration
+Requires:       deepin-qt6integration
 Requires:       dtk6widget
 Requires:       hicolor-icon-theme
 Recommends:     deepin-manual

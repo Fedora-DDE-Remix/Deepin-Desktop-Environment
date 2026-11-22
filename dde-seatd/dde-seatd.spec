@@ -1,17 +1,20 @@
+%global tag 0.9.3-3
+
 Name:           dde-seatd
 Version:        0.9.3
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        Seat management daemon and library for DDE
 License:        MIT
 URL:            https://github.com/linuxdeepin/dde-seatd
-Source0:        %{url}/archive/%{version}/dde-seatd-%{version}.tar.gz
+Source0:        %{url}/archive/%{tag}/dde-seatd-%{tag}.tar.gz
+Source1:        dde-seatd.conf
 
 BuildRequires:  meson
 BuildRequires:  gcc
 BuildRequires:  pkgconfig(libsystemd)
 BuildRequires:  scdoc
 
-Conflicts:      seatd
+Provides:       group(seat) = ZyBzZWF0IC0A
 
 %description
 dde-seatd is the DDE fork of seatd.  It provides the seatd daemon and the
@@ -34,7 +37,7 @@ Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 This package contains development files for %{name}.
 
 %prep
-%autosetup -n dde-seatd-%{version} -p1
+%autosetup -n dde-seatd-%{tag} -p1
 
 %build
 %meson -Dlibseat-seatd=enabled -Dlibseat-logind=systemd -Dman-pages=disabled
@@ -42,7 +45,7 @@ This package contains development files for %{name}.
 
 %install
 %meson_install
-install -Dm644 contrib/systemd/seatd.service %{buildroot}%{_unitdir}/dde-seatd.service
+install -Dm644 %{SOURCE1} %{buildroot}%{_sysusersdir}/dde-seatd.conf
 
 %post
 %systemd_post dde-seatd.service
@@ -56,17 +59,18 @@ install -Dm644 contrib/systemd/seatd.service %{buildroot}%{_unitdir}/dde-seatd.s
 %files
 %license LICENSE
 %doc README.md
-%{_bindir}/seatd
-%{_bindir}/seatd-launch
+%{_sbindir}/dde-seatd
+%{_bindir}/dde-seatd-launch
 %{_unitdir}/dde-seatd.service
+%{_sysusersdir}/dde-seatd.conf
 
 %files libs
-%{_libdir}/libseat.so.1*
+%{_libdir}/libdde-seat.so.1*
 
 %files devel
-%{_includedir}/libseat.h
-%{_libdir}/libseat.so
-%{_libdir}/pkgconfig/libseat.pc
+%{_includedir}/dde-seatd/libseat.h
+%{_libdir}/libdde-seat.so
+%{_libdir}/pkgconfig/libdde-seat.pc
 
 %changelog
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 0.9.3-1

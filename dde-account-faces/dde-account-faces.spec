@@ -27,7 +27,7 @@ AccountsService and the DDE account settings.
 %files
 %license LICENSE
 %doc README.md
-%{_var}/lib/AccountsService/icons/
+%{_var}/lib/AccountsService/icons/*
 
 %changelog
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 1.0.19-1

@@ -29,7 +29,7 @@ BuildRequires:  pkgconfig(gio-qt6)
 
 Requires:       dde-shell
 Requires:       dde-tray-loader
-Requires:       gio-qt6
+Requires:       gio-qt-qt6
 
 %description
 dde-clipboard provides clipboard history, a clipboard daemon and the dock

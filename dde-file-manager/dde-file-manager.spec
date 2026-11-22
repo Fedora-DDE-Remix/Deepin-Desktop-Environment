@@ -57,7 +57,10 @@ Requires:       dde-shell
 Requires:       dde-tray-loader
 Requires:       deepin-pdfium
 Requires:       udisks2-qt6
-Requires:       util-dfm
+Requires:       util-dfm-io
+Requires:       util-dfm-mount
+Requires:       util-dfm-burn
+Requires:       util-dfm-search
 Requires:       gvfs
 Requires:       gvfs-fuse
 Requires:       polkit
