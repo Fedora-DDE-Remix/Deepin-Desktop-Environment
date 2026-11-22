@@ -1,0 +1,17 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] fix: honour DESTDIR when creating hicolor links
+
+The hicolor-links target always writes to ./usr/share/icons/hicolor,
+which bypasses the packaging buildroot.  Pass DESTDIR through so the
+links are created below the requested root.
+
+--- a/Makefile
++++ b/Makefile
+@@ -54,4 +54,4 @@
+ 	cp -r bloom-classic-dark/* $(DESTDIR)$(PREFIX)/share/icons/bloom-classic-dark
+ 
+ hicolor-links:
+-	./tools/hicolor.links bloom hicolor.list ./
++	./tools/hicolor.links bloom hicolor.list $(DESTDIR)

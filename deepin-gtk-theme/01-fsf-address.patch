@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] chore: point the license notice at the FSF URL
+
+Use the current GPL URL instead of the postal address so rpmlint no
+longer reports an outdated FSF address.
+
+--- a/deepin/gnome-shell/gnome-shell.css
++++ b/deepin/gnome-shell/gnome-shell.css
+@@ -13,8 +13,7 @@
+  * more details.
+  *
+  * You should have received a copy of the GNU Lesser General Public License
+- * along with this program; if not, write to the Free Software Foundation,
+- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
++ * along with this program; if not, see <https://www.gnu.org/licenses/>.
+  */
+ stage {
+   font-family: Futura Bk bt, Cantarell, Sans-Serif;
+--- a/deepin-dark/gnome-shell/gnome-shell.css
++++ b/deepin-dark/gnome-shell/gnome-shell.css
+@@ -13,8 +13,7 @@
+  * more details.
+  *
+  * You should have received a copy of the GNU Lesser General Public License
+- * along with this program; if not, write to the Free Software Foundation,
+- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
++ * along with this program; if not, see <https://www.gnu.org/licenses/>.
+  */
+ stage {
+   font-family: Futura Bk bt, Cantarell, Sans-Serif;
