@@ -6,7 +6,7 @@
 
 Name:           seetaface-tracker
 Version:        6.0.0
-Release:        0.2.20251122git%{shortcommit}%{?dist}
+Release:        0.3.20251122git%{shortcommit}%{?dist}
 Summary:        SeetaFace face tracking module
 License:        BSD-3-Clause
 URL:            https://github.com/linuxdeepin/%{repo}
@@ -18,6 +18,7 @@ BuildRequires:  ninja-build
 BuildRequires:  seetaface-open-role-zoo-devel
 BuildRequires:  seetaface-tennis-devel
 BuildRequires:  seetaface-authorize-devel
+BuildRequires:  seetaface-boxes-devel
 %description
 SeetaFace face tracking module.
 
@@ -61,6 +62,9 @@ fi
 
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.0-0.3.20251122gite5e1a895
+- Add seetaface-boxes-devel for FindSeetaFaceDetector.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.0-0.2.20251122gite5e1a895
 - Point CMAKE_MODULE_PATH at /usr/share/cmake for the SeetaFace Find modules.
 
