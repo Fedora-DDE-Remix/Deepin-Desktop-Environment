@@ -1,6 +1,6 @@
 Name:           deepin-terminal
 Version:        6.5.42
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Terminal emulator for the Deepin desktop environment
 License:        GPL-3.0-or-later AND BSD-3-Clause
 URL:            https://github.com/linuxdeepin/deepin-terminal
@@ -29,7 +29,7 @@ BuildRequires:  pkgconfig(icu-uc)
 BuildRequires:  pkgconfig(libsecret-1)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xcb-ewmh)
-BuildRequires:  pkgconfig(utf8proc)
+BuildRequires:  pkgconfig(libutf8proc)
 BuildRequires:  uchardet-devel
 
 Requires:       hicolor-icon-theme
@@ -71,5 +71,8 @@ rm -r %{buildroot}%{_includedir}/terminalwidget6/ \
 %{_datadir}/icons/hicolor/scalable/apps/deepin-terminal.svg
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.5.42-2
+- Use Fedora's pkgconfig(libutf8proc) name.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.5.42-1
 - Initial Fedora package.

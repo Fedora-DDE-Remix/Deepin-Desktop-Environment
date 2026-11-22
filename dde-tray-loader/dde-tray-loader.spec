@@ -1,6 +1,6 @@
 Name:           dde-tray-loader
 Version:        6.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Tray plugin loader and dock plugins for DDE
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-tray-loader
@@ -48,8 +48,10 @@ BuildRequires:  pkgconfig(xcursor)
 BuildRequires:  pkgconfig(xtst)
 BuildRequires:  pkgconfig(cups)
 
-Requires:       dde-shell
-Requires:       dde-application-manager
+# The loader is started by dde-shell through dde-tray-loader.target.  Do not
+# add a hard dde-shell requirement here: dde-shell BuildRequires this
+# package's -devel files, and a runtime requirement would create a build cycle.
+Requires:       dde-daemon
 
 %description
 dde-tray-loader provides the tray plugin loader, the tray plugin interface
@@ -101,5 +103,9 @@ if [ -d %{buildroot}%{_prefix}/etc/dde-dock ]; then mv %{buildroot}%{_prefix}/et
 %{_libdir}/cmake/DdeDock/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
+- Match upstream: require dde-daemon, not dde-shell/dde-application-manager.
+  This removes the dde-shell <-> dde-tray-loader build cycle.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-1
 - Initial Fedora package.

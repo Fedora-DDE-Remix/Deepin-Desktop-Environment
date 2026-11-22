@@ -2,7 +2,7 @@
 
 Name:           dde-daemon
 Version:        6.2.1
-Release:        3%{?dist}
+Release:        5%{?dist}
 Summary:        Daemon handling the DDE session settings
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-daemon
@@ -22,7 +22,7 @@ BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
 BuildRequires:  pkgconfig(gtk+-3.0)
-BuildRequires:  pkgconfig(libgudev-1.0)
+BuildRequires:  pkgconfig(gudev-1.0)
 BuildRequires:  pkgconfig(libinput)
 BuildRequires:  pkgconfig(libnl-3.0)
 BuildRequires:  pkgconfig(libpulse)
@@ -39,8 +39,9 @@ BuildRequires:  pkgconfig(xi)
 Requires:       deepin-desktop-base
 Requires:       deepin-desktop-schemas
 Requires:       dde-api
-Requires:       dde-session
-Requires:       dde-polkit-agent
+# dde-session pulls in dde-daemon; depending back on it is unnecessary and
+# creates a build-order cycle with dde-shell.
+Recommends:     dde-polkit-agent
 Requires:       gvfs
 Requires:       bluez
 Requires:       rfkill
@@ -125,6 +126,13 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-5
+- Use Fedora's pkgconfig(gudev-1.0) name.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-4
+- Drop the reverse dde-session requirement and make dde-polkit-agent a
+  Recommends, removing the session/polkit build cycle.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-3
 - Use a raw URL for the systemd preset so COPR spec builds work.
 

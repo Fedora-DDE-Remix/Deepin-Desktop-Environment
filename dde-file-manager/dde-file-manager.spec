@@ -1,11 +1,12 @@
 Name:           dde-file-manager
 Version:        6.6.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        File manager for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-file-manager
 Source0:        %{url}/archive/%{version}/dde-file-manager-%{version}.tar.gz
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-file-manager/01-fedora-disable-appimage-qt611.patch
+Patch1:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-file-manager/02-pc-remove-libappimage.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -41,7 +42,7 @@ BuildRequires:  pkgconfig(icu-uc)
 BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires:  pkgconfig(icu-io)
 BuildRequires:  pkgconfig(libheif)
-BuildRequires:  pkgconfig(libmount)
+BuildRequires:  pkgconfig(mount)
 BuildRequires:  pkgconfig(libsecret-1)
 BuildRequires:  pkgconfig(libsystemd)
 BuildRequires:  pkgconfig(minizip)
@@ -209,5 +210,9 @@ fi
 %{_datadir}/dsg/configs/overrides/org.deepin.dde.treeland/org.deepin.dde.treeland.app/dde-trash/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-2
+- Use Fedora's pkgconfig(mount) name.
+- Drop libappimage from dfm6-base.pc now that the AppImage code is disabled.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-1
 - Initial Fedora package.

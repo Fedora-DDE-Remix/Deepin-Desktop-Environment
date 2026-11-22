@@ -289,3 +289,37 @@ sent as patches upstream.  None of them is a behavioural DDE change.
   `dde-account-faces` owned the same directory with 0755, which RPM treats
   as a file conflict.
 - Local fix: list the contents (`icons/*`) instead of owning the directory.
+
+## COPR build order and dependency cycles
+
+The first COPR import exposed three packaging mistakes that made the build
+graph cyclic.  They were fixed without bootstrap packages:
+
+- `dde-tray-loader` does not depend on `dde-shell` in upstream Debian
+  packaging; it only has `Breaks: dde-shell (<< 2.0.55)`.  Our spec had a hard
+  `Requires: dde-shell`, which closed a cycle because `dde-shell` needs
+  `dde-tray-loader-devel` at build time.  The runtime requirement is now
+  `dde-daemon`, matching upstream.
+- `dde-daemon` does not depend on `dde-session` upstream.  Our spec added that
+  reverse dependency, which pulled `dde-polkit-agent` into every buildroot
+  that installed `dde-application-manager-devel`.
+- `dde-daemon` still uses PolicyKit, but now declares `dde-polkit-agent` as a
+  `Recommends`.  `dde-session` and the `dde-desktop` meta package require the
+  agent explicitly.  COPR/mock buildroots use `install_weak_deps=0`, so the
+  weak dependency does not recreate the cycle during builds.
+
+Other dependency-name fixes found by resolving every spec's BuildRequires in a
+clean Fedora 45 root:
+
+- `pkgconfig(libmount)` is `pkgconfig(mount)` on Fedora.
+- `pkgconfig(libgudev-1.0)` is `pkgconfig(gudev-1.0)`.
+- `pkgconfig(utf8proc)` is `pkgconfig(libutf8proc)`.
+- `dtk6log`'s CMake package version is `0.7.54` by upstream design, even
+  though the RPM version is `6.7.54`; `dtk6core` no longer requires a
+  `cmake(Dtk6Log) >= 6.7.54` version.
+- `util-dfm`'s `dfm6-search.pc` listed the CMake names `Boostsystem` and
+  `Threads` as pkgconfig modules.  They are removed.
+- `dde-file-manager`'s `dfm6-base.pc` listed `libappimage`, which Fedora does
+  not ship and the AppImage code is disabled.  It is removed from the pc file.
+- `dareader-libs` required a `dareader` base package that the spec never
+  produced; the bogus requirement is gone.

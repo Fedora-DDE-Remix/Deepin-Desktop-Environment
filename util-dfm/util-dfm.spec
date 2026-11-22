@@ -1,11 +1,12 @@
 Name:           util-dfm
 Version:        1.4.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        I/O, mount, burn and search libraries for DDE File Manager
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/util-dfm
 Source0:        %{url}/archive/%{version}/util-dfm-%{version}.tar.gz
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/util-dfm/01-openssl4-sm3.patch
+Patch1:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/util-dfm/02-pc-remove-cmake-modules.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -18,7 +19,7 @@ BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gio-2.0)
 BuildRequires:  pkgconfig(gio-unix-2.0)
 BuildRequires:  pkgconfig(libsecret-1)
-BuildRequires:  pkgconfig(libmount)
+BuildRequires:  pkgconfig(mount)
 BuildRequires:  pkgconfig(udisks2)
 BuildRequires:  pkgconfig(libisoburn-1)
 BuildRequires:  pkgconfig(libmediainfo)
@@ -117,5 +118,9 @@ This package contains development files for %{name}.
 %{_libdir}/libdfm6-search.so
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.4.6-2
+- Remove CMake-only Boostsystem/Threads names from dfm6-search.pc so the
+  devel package has resolvable pkgconfig dependencies.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 1.4.6-1
 - Initial Fedora package.

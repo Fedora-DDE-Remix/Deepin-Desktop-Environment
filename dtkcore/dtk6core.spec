@@ -2,7 +2,7 @@
 
 Name:           dtk6core
 Version:        6.7.54
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Deepin tool kit core modules
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dtkcore
@@ -17,7 +17,7 @@ BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Qt6Xml)
 BuildRequires:  cmake(Qt6ToolsTools)
 BuildRequires:  cmake(Qt6Concurrent)
-BuildRequires:  cmake(Dtk6Log) >= %{version}
+BuildRequires:  cmake(Dtk6Log)
 BuildRequires:  cmake(DtkBuildHelper) >= %{version}
 BuildRequires:  cmake(spdlog)
 BuildRequires:  pkgconfig(icu-uc)
@@ -68,5 +68,9 @@ sed -i 's|/etc/os-version|/etc/dde-version|' src/dsysinfo.cpp
 %{_qt6_archdatadir}/mkspecs/features/*.prf
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.7.54-2
+- Do not require a 6.7.54 CMake version from dtk6log; upstream's CMake
+  package version is 0.7.54.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.7.54-1
 - Initial Fedora package (DTK 6.7.54, Qt 6 only).

@@ -2,7 +2,7 @@ Name:           dareader
 %global commit 79892d8d4e223b436b0f9a9bb55a5735b553cc76
 
 Version:        1.0.1
-Release:        1.20260729git79892d8%{?dist}
+Release:        2.20260729git79892d8%{?dist}
 Summary:        Library for reading image/video data from deepin-authentication
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dareader
@@ -17,7 +17,6 @@ service over a file descriptor.
 
 %package        libs
 Summary:        Shared library for %{name}
-Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description    libs
 This package contains the dareader shared library.
@@ -50,5 +49,8 @@ This package contains development files for %{name}.
 %{_libdir}/pkgconfig/dareader.pc
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.1-2.20260729git79892d8
+- Drop the dependency on a non-existent base package.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 1.0.1-1.20260729git79892d8
 - Initial Fedora package.
