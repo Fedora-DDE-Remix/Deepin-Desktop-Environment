@@ -1,6 +1,6 @@
 Name:           deepin-reader
 Version:        6.6.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Document viewer for the Deepin desktop environment
 
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later
@@ -30,6 +30,7 @@ BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(ddjvuapi)
 BuildRequires:  pkgconfig(deepin-pdfium)
 BuildRequires:  pkgconfig(libgxps)
+BuildRequires:  cups-devel
 BuildRequires:  pkgconfig(cairo)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
@@ -80,5 +81,8 @@ documents.  PDF rendering is provided by the Deepin PDF library.
 %{_datadir}/mime/packages/xps.xml
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.4-2
+- Add cups-devel for the batch print helper.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.4-1
 - Initial Fedora package.

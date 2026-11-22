@@ -1,6 +1,6 @@
 Name:           deepin-compressor
 Version:        6.5.38
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        Archive manager for the Deepin desktop environment
 License:        GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-2.1-or-later AND MPL-1.1
 URL:            https://github.com/linuxdeepin/deepin-compressor
@@ -19,6 +19,8 @@ BuildRequires:  cmake(Dtk6Widget)
 BuildRequires:  cmake(KF6Archive)
 BuildRequires:  cmake(KF6Codecs)
 BuildRequires:  libarchive-devel
+BuildRequires:  libzip-devel
+BuildRequires:  minizip-ng-compat-devel
 BuildRequires:  openssl-devel
 BuildRequires:  zlib-devel
 BuildRequires:  pkgconfig(gio-unix-2.0)
@@ -68,5 +70,11 @@ sed -i 's|/lib/qt${QT_VERSION_MAJOR}/bin/lrelease|%{_qt6_bindir}/lrelease|' cmak
 %{_datadir}/mime/packages/deepin-compressor.xml
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.5.38-3
+- Add minizip-ng-compat-devel for the minizip plugin.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.5.38-2
+- Add libzip-devel for the zip plugin.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.5.38-1
 - Initial Fedora package.

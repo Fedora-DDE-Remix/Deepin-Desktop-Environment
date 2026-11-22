@@ -1,6 +1,6 @@
 Name:           deepin-editor
 Version:        6.6.4
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        Text editor for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/deepin-editor
@@ -14,6 +14,8 @@ BuildRequires:  cmake(Qt6DBus)
 BuildRequires:  cmake(Qt6Gui)
 BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6Concurrent)
+BuildRequires:  cmake(Qt6Svg)
+BuildRequires:  cmake(Qt6WebEngineWidgets)
 BuildRequires:  cmake(Qt6Core5Compat)
 BuildRequires:  cmake(Qt6LinguistTools)
 BuildRequires:  cmake(Dtk6Core)
@@ -53,5 +55,11 @@ environment, with syntax highlighting, tabbed editing and print support.
 %{_datadir}/icons/hicolor/scalable/apps/deepin-editor.svg
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.4-3
+- Add Qt6WebEngineWidgets.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.4-2
+- Add Qt6Svg.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.6.4-1
 - Initial Fedora package.

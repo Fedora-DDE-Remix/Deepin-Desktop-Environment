@@ -2,12 +2,13 @@
 
 Name:           treeland
 Version:        0.12.0
-Release:        1%{?dist}
+Release:        10%{?dist}
 Summary:        Wayland compositor for the Deepin desktop environment
 License:        (Apache-2.0 OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only) AND MIT AND CC0-1.0
 URL:            https://github.com/linuxdeepin/treeland
 Source0:        %{url}/archive/%{version}/treeland-%{version}.tar.gz
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/treeland/01-relax-pixman.patch
+Patch1:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/treeland/02-pnpids-no-heredoc.patch
 
 Provides:       bundled(waylib) = 0.20.2
 Provides:       bundled(wlroots) = 0.20.2
@@ -25,9 +26,12 @@ BuildRequires:  cmake(Qt6QuickControls2)
 BuildRequires:  cmake(Qt6ShaderTools)
 BuildRequires:  cmake(Qt6Concurrent)
 BuildRequires:  cmake(Qt6RemoteObjects)
+BuildRequires:  cmake(Qt6HttpServer)
 BuildRequires:  cmake(Qt6Network)
 BuildRequires:  cmake(Qt6LinguistTools)
 BuildRequires:  cmake(Qt6QuickPrivate)
+BuildRequires:  cmake(Qt6GuiPrivate)
+BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Qt6QuickTemplates2Private)
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(Dtk6Declarative)
@@ -42,15 +46,34 @@ BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  pkgconfig(pixman-1)
 BuildRequires:  pkgconfig(wayland-server)
 BuildRequires:  pkgconfig(wayland-client)
+BuildRequires:  pkgconfig(xcb)
+BuildRequires:  pkgconfig(xcb-randr)
+BuildRequires:  pkgconfig(xcb-errors)
+BuildRequires:  pkgconfig(xcb-dri3)
+BuildRequires:  pkgconfig(xcb-present)
+BuildRequires:  pkgconfig(xcb-render)
+BuildRequires:  pkgconfig(xcb-renderutil)
+BuildRequires:  pkgconfig(xcb-shm)
+BuildRequires:  pkgconfig(xcb-xfixes)
+BuildRequires:  pkgconfig(xcb-xinput)
+BuildRequires:  pkgconfig(xcb-composite)
+BuildRequires:  pkgconfig(xcb-ewmh)
+BuildRequires:  pkgconfig(xcb-icccm)
+BuildRequires:  pkgconfig(xcb-res)
+BuildRequires:  pkgconfig(xcb-shape)
+BuildRequires:  pkgconfig(xwayland)
 BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  pkgconfig(egl)
 BuildRequires:  pkgconfig(glesv2)
 BuildRequires:  pkgconfig(gbm)
 BuildRequires:  pkgconfig(vulkan)
-BuildRequires:  pkgconfig(xcb)
-BuildRequires:  pkgconfig(xcb-randr)
-BuildRequires:  pkgconfig(xcb-errors)
+BuildRequires:  mpv-devel
+BuildRequires:  pkgconfig(systemd)
+BuildRequires:  glslang
 BuildRequires:  pkgconfig(libliftoff)
+BuildRequires:  libdisplay-info-devel
+BuildRequires:  pkgconfig(hwdata)
+BuildRequires:  hwdata
 BuildRequires:  pkgconfig(lcms2)
 BuildRequires:  pkgconfig(xau)
 BuildRequires:  pkgconfig(pam)
@@ -151,5 +174,33 @@ environment.  It integrates with DDM for the greeter and lock screen.
 %systemd_user_postun_with_restart treeland.service
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-10
+- Avoid the gen_pnpids.sh here-document, which fails under the mock
+  build shell.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-9
+- Require the hwdata package for pnp.ids.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-8
+- Add mpv-devel and pkgconfig(systemd).
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-7
+- Add Qt6HttpServer for treeland-debug.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-6
+- Add Qt6GuiPrivate/Qt6CorePrivate.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-5
+- Add the Xwayland xcb module set.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-4
+- Add glslang for the Vulkan renderer.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-3
+- Add the full XCB dependency set and xwayland for the X11 backend.
+
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-2
+- Require libdisplay-info-devel and hwdata-devel.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-1
 - Initial Fedora package.

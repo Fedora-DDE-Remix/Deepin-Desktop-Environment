@@ -1,6 +1,6 @@
 Name:           dde-calendar
 Version:        6.6.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Calendar application for the Deepin desktop environment
 
 License:        LGPL-3.0-or-later AND LGPL-2.0-or-later AND GPL-3.0-or-later
@@ -8,6 +8,7 @@ URL:            https://github.com/linuxdeepin/dde-calendar
 Source0:        %{url}/archive/%{version}/dde-calendar-%{version}.tar.gz
 
 BuildRequires:  cmake
+BuildRequires:  systemd-rpm-macros
 BuildRequires:  gcc-c++
 BuildRequires:  ninja-build
 BuildRequires:  qt6-linguist

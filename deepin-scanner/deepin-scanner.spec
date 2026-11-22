@@ -1,6 +1,6 @@
 Name:           deepin-scanner
 Version:        0.1.26
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Document scanner for the Deepin desktop environment
 
 License:        GPL-3.0-or-later AND MIT
@@ -15,6 +15,7 @@ BuildRequires:  cmake(Qt6Core)
 BuildRequires:  cmake(Qt6Gui)
 BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6Concurrent)
+BuildRequires:  cmake(Qt6LinguistTools)
 BuildRequires:  cmake(Qt6Core5Compat)
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(Dtk6Widget)
@@ -61,5 +62,8 @@ sed -i 's|/lib/qt${QT_VERSION_MAJOR}/bin/|%{_qt6_bindir}/|g' \
 %{_datadir}/icons/hicolor/scalable/apps/deepin-scanner.svg
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.1.26-2
+- Add Qt6LinguistTools for translation generation.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.1.26-1
 - Initial Fedora package.

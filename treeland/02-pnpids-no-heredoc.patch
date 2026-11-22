@@ -1,0 +1,27 @@
+--- a/3rdparty/wlroots/backend/drm/gen_pnpids.sh
++++ b/3rdparty/wlroots/backend/drm/gen_pnpids.sh
+@@ -12,15 +12,12 @@
+ 	done
+ }
+ 
+-cat << EOF
+-#include "backend/drm/util.h"
+-
+-#define PNP_ID(a, b, c) ((a & 0x1f) << 10) | ((b & 0x1f) << 5) | (c & 0x1f)
+-const char *get_pnp_manufacturer(const char code[static 3]) {
+-	switch (PNP_ID(code[0], code[1], code[2])) {
+-$(gen_pnps)
+-	}
+-	return NULL;
+-}
+-#undef PNP_ID
+-EOF
++printf "%s\n" '#include "backend/drm/util.h"' ""
++printf "%s\n" '#define PNP_ID(a, b, c) ((a & 0x1f) << 10) | ((b & 0x1f) << 5) | (c & 0x1f)'
++printf "%s\n" 'const char *get_pnp_manufacturer(const char code[static 3]) {'
++printf "%s\n" '	switch (PNP_ID(code[0], code[1], code[2])) {'
++gen_pnps
++printf "%s\n" '	}'
++printf "%s\n" '	return NULL;'
++printf "%s\n" '}'
++printf "%s\n" '#undef PNP_ID'

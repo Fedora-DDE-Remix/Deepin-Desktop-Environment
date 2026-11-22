@@ -1,6 +1,6 @@
 Name:           dde-tray-loader
 Version:        6.2.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Tray plugin loader and dock plugins for DDE
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-tray-loader
@@ -30,6 +30,7 @@ BuildRequires:  cmake(Dtk6Widget)
 BuildRequires:  cmake(Dtk6Tools)
 BuildRequires:  cmake(KF6WindowSystem) >= 6.6
 BuildRequires:  pkgconfig(gio-2.0)
+BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xcb)
@@ -103,6 +104,9 @@ if [ -d %{buildroot}%{_prefix}/etc/dde-dock ]; then mv %{buildroot}%{_prefix}/et
 %{_libdir}/cmake/DdeDock/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-3
+- Add wayland-protocols so WAYLAND_PROTOCOLS_DATADIR is set.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
 - Match upstream: require dde-daemon, not dde-shell/dde-application-manager.
   This removes the dde-shell <-> dde-tray-loader build cycle.

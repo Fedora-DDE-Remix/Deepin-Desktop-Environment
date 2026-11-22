@@ -1,6 +1,6 @@
 Name:           dde-services
 Version:        6.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        DDE system and session service plugins
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later AND MIT
 URL:            https://github.com/linuxdeepin/dde-services
@@ -23,6 +23,7 @@ BuildRequires:  cmake(Dtk6Widget)
 BuildRequires:  cmake(Dtk6DConfig)
 BuildRequires:  cmake(TreelandProtocols) >= 0.6.0
 BuildRequires:  cmake(deepin-qdbus-service)
+BuildRequires:  dbus-daemon
 BuildRequires:  pkgconfig(libpcap)
 BuildRequires:  pkgconfig(polkit-qt6-1)
 BuildRequires:  pkgconfig(libsystemd)
@@ -91,5 +92,8 @@ This package contains the DdeShortcutI18n CMake module.
 %{_prefix}/lib/cmake/DdeShortcutI18n/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
+- Require dbus-daemon for the unit tests.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-1
 - Initial Fedora package.
