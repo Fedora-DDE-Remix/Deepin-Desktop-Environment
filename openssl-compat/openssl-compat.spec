@@ -2,11 +2,16 @@
 
 Name:           openssl-compat
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        OpenSSL 3 SM3/SM4 compatibility shims for Fedora
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-file-manager
-Source0:        %{name}-%{version}.tar.gz
+Source0:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/openssl-compat/sm3_compat.c
+Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/openssl-compat/sm4_compat.c
+Source2:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/openssl-compat/openssl-compat.map
+Source3:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/openssl-compat/openssl-sm3-compat.h
+Source4:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/openssl-compat/LICENSE
+Source5:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/openssl-compat/README.md
 
 BuildRequires:  gcc
 BuildRequires:  openssl-devel
@@ -26,7 +31,13 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 This package contains the build-time SM3 compatibility header.
 
 %prep
-%autosetup -n %{name}-%{version} -p1
+%setup -q -T -c -n %{name}-%{version}
+cp %{SOURCE0} sm3_compat.c
+cp %{SOURCE1} sm4_compat.c
+cp %{SOURCE2} openssl-compat.map
+cp %{SOURCE3} openssl-sm3-compat.h
+cp %{SOURCE4} LICENSE
+cp %{SOURCE5} README.md
 
 %build
 gcc -O2 -fPIC -shared -Wl,-soname,libopenssl_compat.so.0 \
@@ -55,5 +66,8 @@ install -m644 openssl-sm3-compat.h %{buildroot}%{_includedir}/openssl-compat/
 %{_libdir}/libopenssl_compat.so
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-2
+- Build from individual raw source URLs instead of a local tarball.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-1
 - Initial Fedora package.

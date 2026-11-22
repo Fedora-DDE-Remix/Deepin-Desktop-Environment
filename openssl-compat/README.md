@@ -19,10 +19,6 @@ This package provides:
 `deepin-authenticate` binaries can load `libopenssl_compat.so.0` through
 `patchelf --add-needed`.
 
-Create the source archive for COPR with:
-
-```sh
-tar -czf openssl-compat-1.0.0.tar.gz \
-    --transform 's#^#openssl-compat-1.0.0/#' \
-    openssl-compat.spec openssl-sm3-compat.h sm3_compat.c sm4_compat.c openssl-compat.map
-```
+COPR builds this package directly from the online spec.  The spec lists each
+file as an individual raw GitHub `SourceN` URL, so no local source archive is
+needed.

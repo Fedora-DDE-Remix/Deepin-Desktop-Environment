@@ -118,14 +118,16 @@ dnf install dde-desktop
 
 ## Source archives
 
-`Source0` points at the upstream GitHub/GitLab tag archive.  Two packages are
-local source trees without an upstream tag:
+Every `SourceN` and `PatchN` entry is a fully qualified https URL.  Upstream
+tarballs come from the GitHub/GitLab tag archives; the small local helper files
+(systemd presets, sysusers config, compat shims) are fetched from this spec
+repository itself.  COPR can therefore build each package directly from its
+online spec URL, with `%_disable_source_fetch` set to 0, without a prebuilt
+SRPM.
 
-- `deepin-authenticate-compat`: create
-  `deepin-authenticate-compat-1.0.0.tar.gz` from this directory.
-- `fcitx5-dde-integration`: intentionally not packaged as an RPM because it
-  replaces files owned by the Fedora `fcitx5` / `fcitx5-configtool` packages.
-  Apply it from the ISO kickstart or as a local integration step.
+`fcitx5-dde-integration` is intentionally not packaged as an RPM because it
+replaces files owned by the Fedora `fcitx5` / `fcitx5-configtool` packages.
+Apply it from the ISO kickstart or as a local integration step.
 
 ## Known Fedora-specific build workarounds
 

@@ -2,13 +2,13 @@
 
 Name:           dde-daemon
 Version:        6.2.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Daemon handling the DDE session settings
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-daemon
 Source0:        %{url}/archive/%{version}/dde-daemon-%{version}.tar.gz
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-daemon/01-skip-policy-regeneration.patch
-Source1:        90-dde-daemon.preset
+Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-daemon/90-dde-daemon.preset
 
 BuildRequires:  golang
 BuildRequires:  gcc
@@ -125,6 +125,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-3
+- Use a raw URL for the systemd preset so COPR spec builds work.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
 - Enable dde-system-daemon.service from the dde-daemon package preset.
 

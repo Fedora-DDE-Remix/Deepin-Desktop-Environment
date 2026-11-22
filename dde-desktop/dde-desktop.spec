@@ -2,14 +2,14 @@
 
 Name:           dde-desktop
 Version:        1.0.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Complete DDE desktop environment
 
 License:        MIT
 URL:            https://github.com/Fedora-DDE-Remix/Deepin-Desktop-Environment
-Source0:        README.md
-Source1:        LICENSE
-Source2:        90-dde-desktop.preset
+Source0:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-desktop/README.md
+Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-desktop/LICENSE
+Source2:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-desktop/90-dde-desktop.preset
 BuildArch:      noarch
 
 BuildRequires:  systemd-rpm-macros
@@ -117,6 +117,9 @@ install -Dm644 %{SOURCE2} %{buildroot}%{_presetdir}/90-dde-desktop.preset
 %{_presetdir}/90-dde-desktop.preset
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-5
+- Use raw URLs for the README, license and preset sources.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-4
 - Keep the component service enables as a meta-package fallback.
 

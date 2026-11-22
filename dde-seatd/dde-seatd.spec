@@ -2,13 +2,13 @@
 
 Name:           dde-seatd
 Version:        0.9.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Seat management daemon and library for DDE
 License:        MIT
 URL:            https://github.com/linuxdeepin/dde-seatd
 Source0:        %{url}/archive/%{tag}/dde-seatd-%{tag}.tar.gz
-Source1:        dde-seatd.conf
-Source2:        90-dde-seatd.preset
+Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-seatd/dde-seatd.conf
+Source2:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-seatd/90-dde-seatd.preset
 
 BuildRequires:  meson
 BuildRequires:  gcc

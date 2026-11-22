@@ -1,0 +1,7 @@
+OPENSSL_3.0.0 {
+    global:
+        EVP_sm4_cbc;
+        EVP_sm4_ecb;
+    local:
+        *;
+};

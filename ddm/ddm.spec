@@ -1,11 +1,11 @@
 Name:           ddm
 Version:        0.5.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Deepin Display Manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/linuxdeepin/ddm
 Source0:        %{url}/archive/%{version}/ddm-%{version}.tar.gz
-Source1:        90-ddm.preset
+Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/ddm/90-ddm.preset
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -85,6 +85,9 @@ install -Dm644 %{SOURCE1} %{buildroot}%{_presetdir}/90-ddm.preset
 %{_libdir}/cmake/DDM/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-4
+- Use a raw URL for the systemd preset so COPR spec builds work.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-3
 - Enable ddm.service from the ddm package preset.
 
