@@ -2,7 +2,7 @@
 
 Name:           dde-daemon
 Version:        6.2.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Daemon handling the DDE session settings
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-daemon
@@ -19,6 +19,7 @@ BuildRequires:  pkgconfig(dbus-1)
 BuildRequires:  pkgconfig(ddcutil)
 BuildRequires:  librsvg2-tools
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
+BuildRequires:  pkgconfig(gdk-pixbuf-xlib-2.0)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
 BuildRequires:  pkgconfig(gtk+-3.0)
@@ -126,6 +127,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-6
+- Require gdk-pixbuf-xlib for the Go gdkpixbuf bindings.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-5
 - Use Fedora's pkgconfig(gudev-1.0) name.
 

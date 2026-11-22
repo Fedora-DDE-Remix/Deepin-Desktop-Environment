@@ -2,13 +2,14 @@ Name:           dareader
 %global commit 79892d8d4e223b436b0f9a9bb55a5735b553cc76
 
 Version:        1.0.1
-Release:        2.20260729git79892d8%{?dist}
+Release:        3.20260729git79892d8%{?dist}
 Summary:        Library for reading image/video data from deepin-authentication
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dareader
 Source0:        %{url}/archive/%{commit}/dareader-%{commit}.tar.gz
 
 BuildRequires:  cmake
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 
 %description
@@ -49,6 +50,9 @@ This package contains development files for %{name}.
 %{_libdir}/pkgconfig/dareader.pc
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.1-3
+- Require ninja-build for the Ninja CMake generator.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.1-2.20260729git79892d8
 - Drop the dependency on a non-existent base package.
 

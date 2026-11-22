@@ -1,6 +1,6 @@
 Name:           treeland-protocols
 Version:        0.9.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Wayland protocol definitions for Treeland
 License:        MIT
 URL:            https://github.com/linuxdeepin/treeland-protocols
@@ -8,6 +8,7 @@ Source0:        %{url}/archive/%{version}/treeland-protocols-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  cmake
+BuildRequires:  ninja-build
 BuildRequires:  make
 
 %description
@@ -41,5 +42,8 @@ This package contains CMake and pkg-config files for %{name}.
 %{_datadir}/pkgconfig/treeland-protocols.pc
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.9.1-2
+- Require ninja-build for the Ninja CMake generator.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 0.9.1-1
 - Initial Fedora package.

@@ -1,6 +1,6 @@
 Name:           deepin-default-settings
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Fedora-safe Deepin skel and XDG defaults
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/deepin-default-settings
@@ -21,7 +21,7 @@ Distribution-wide files (PAM, sudoers, X11, sysctl, /etc/lsb-release and
 LightDM) are intentionally not installed by this package.
 
 %prep
-%autosetup -n deepin-default-settings-%{version} -p1
+%autosetup -n deepin-settings-default-%{version} -p1
 
 %build
 # Data-only package; make build is not needed on Fedora.
@@ -41,5 +41,8 @@ install -Dm644 usr.share.d/deepin-default-settings/fontconfig.json \
 %{_datadir}/deepin-default-settings/fontconfig.json
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-2
+- Match the upstream archive top-level directory (deepin-settings-default).
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-1
 - Initial Fedora package (Fedora-safe data subset).

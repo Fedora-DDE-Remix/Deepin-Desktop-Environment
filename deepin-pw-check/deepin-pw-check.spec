@@ -2,7 +2,7 @@
 
 Name:           deepin-pw-check
 Version:        6.0.13
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Password validation library and service for DDE
 License:        GPL-2.0-only
 URL:            https://github.com/linuxdeepin/deepin-pw-check
@@ -41,6 +41,7 @@ This package contains development files for %{name}.
 %build
 export GO111MODULE=on
 export GOFLAGS="-mod=mod"
+export GOPATH=%{_builddir}/gopath
 %make_build PREFIX=%{_prefix} libdir=/%{_lib} \
   PAM_MODULE_DIR=%{_libdir}/security \
   PKG_FILE_DIR=%{_libdir}/pkgconfig
@@ -48,6 +49,7 @@ export GOFLAGS="-mod=mod"
 %install
 export GO111MODULE=on
 export GOFLAGS="-mod=mod"
+export GOPATH=%{_builddir}/gopath
 %make_install PREFIX=%{_prefix} libdir=/%{_lib} \
   PAM_MODULE_DIR=%{_libdir}/security \
   PKG_FILE_DIR=%{_libdir}/pkgconfig
@@ -85,5 +87,8 @@ mv %{buildroot}%{_prefix}/lib/libdeepin_pw_check* %{buildroot}%{_libdir}/
 %{_libdir}/pkgconfig/libdeepin_pw_check.pc
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.13-2
+- Point GOPATH at the build directory so the Go module cache is writable.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.0.13-1
 - Initial Fedora package.

@@ -2,13 +2,14 @@
 
 Name:           dtkcommon
 Version:        6.7.54
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A public project for building DTK libraries
 License:        BSD-3-Clause
 URL:            https://github.com/linuxdeepin/dtkcommon
 Source0:        %{url}/archive/%{version}/dtkcommon-%{version}.tar.gz
 
 BuildRequires:  cmake
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  make
 
@@ -44,5 +45,8 @@ This package contains the DTK CMake helper modules.
 %{_libdir}/cmake/DtkBuildHelper/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.7.54-2
+- Require ninja-build for the Ninja CMake generator.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.7.54-1
 - Initial Fedora package (DTK 6.7.54, Qt 6 only).

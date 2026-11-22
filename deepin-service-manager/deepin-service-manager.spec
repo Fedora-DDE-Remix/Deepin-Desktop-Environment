@@ -1,6 +1,6 @@
 Name:           deepin-service-manager
 Version:        6.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Service manager framework for DDE
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/deepin-service-manager
@@ -11,6 +11,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  ninja-build
 BuildRequires:  cmake(Qt6Core)
 BuildRequires:  cmake(Qt6DBus)
+BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  pkgconfig(dbus-1)
 
 %description
@@ -69,5 +70,8 @@ This package contains libdeepin-qdbus-service development files.
 %systemd_postun_with_restart deepin-service-manager.service
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
+- Add the missing Dtk6Core build dependency.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-1
 - Initial Fedora package.

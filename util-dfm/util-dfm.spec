@@ -1,6 +1,6 @@
 Name:           util-dfm
 Version:        1.4.6
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        I/O, mount, burn and search libraries for DDE File Manager
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/util-dfm
@@ -15,6 +15,7 @@ BuildRequires:  cmake(Qt6Core)
 BuildRequires:  cmake(Qt6Gui)
 BuildRequires:  cmake(Qt6DBus)
 BuildRequires:  cmake(Qt6Concurrent)
+BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gio-2.0)
 BuildRequires:  pkgconfig(gio-unix-2.0)
@@ -118,6 +119,9 @@ This package contains development files for %{name}.
 %{_libdir}/libdfm6-search.so
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.4.6-3
+- Add the missing Dtk6Core build dependency.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.4.6-2
 - Remove CMake-only Boostsystem/Threads names from dfm6-search.pc so the
   devel package has resolvable pkgconfig dependencies.
