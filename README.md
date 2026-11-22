@@ -7,7 +7,7 @@ file name follows the Fedora binary/source package name.
 ## Conventions
 
 - Target: Fedora 45, x86_64 and aarch64, COPR (`mozixun/Fedora-DDE-Remix`).
-- 66 source packages in total, including the SeetaFace stack used by
+- 67 source packages in total, including the SeetaFace stack used by
   `deepin-face`, the OCR engine and the Deepin applications.
 - Qt 6 only. DTK 5 (Qt 5) builds are explicitly disabled with `-DDTK5=OFF`.
 - Package names follow Fedora where Fedora already has a package
@@ -73,6 +73,7 @@ deepin-editor
 dde-calendar
 deepin-system-monitor
 deepin-voice-note
+deepin-font-manager
 deepin-image-viewer
 deepin-draw
 deepin-reader
@@ -140,6 +141,9 @@ local source trees without an upstream tag:
 - `deepin-voice-note` builds with Qt 6/DTK 6 and VLC; its translation script
   now finds Fedora's `lupdate-qt6`/`lrelease-qt6`, and a missing
   `<QJsonDocument>` include is fixed.
+- `deepin-font-manager` needs the plugin factory IIDs defined in the
+  translation unit for Qt 6.8+ moc and installs its preview plugin with
+  `CMAKE_INSTALL_LIBDIR` so it lands in `/usr/lib64`.
 
 See `UPSTREAM-ISSUES.md` for the corresponding upstream fixes.
 

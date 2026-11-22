@@ -1,0 +1,40 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] fix: Qt 6 moc IIDs and Fedora plugin directory
+
+Qt 6.8+ moc only expands macros that are visible in the translation
+unit when parsing Q_PLUGIN_METADATA.  Define the two factory IIDs
+locally with the same values as the dfm headers.
+
+The preview plugin install path hard-codes lib/; use CMAKE_INSTALL_LIBDIR
+so it lands in lib64 on Fedora.
+
+--- a/deepin-font-preview-plugin/main.cpp
++++ b/deepin-font-preview-plugin/main.cpp
+@@ -13,6 +13,16 @@
+ #include "dde-file-manager/dfmfilepreviewplugin.h"
+ #endif
+ 
++// Qt 6.8+ moc only expands macros visible in this translation unit when it
++// parses Q_PLUGIN_METADATA, so define the IIDs locally.  They must match the
++// values in the dfm-base / dde-file-manager headers.
++#ifndef FilePreviewFactoryInterface_iid
++#define FilePreviewFactoryInterface_iid "com.deepin.filemanager.FilePreviewFactoryInterface_iid"
++#endif
++#ifndef DFMFilePreviewFactoryInterface_iid
++#define DFMFilePreviewFactoryInterface_iid "com.deepin.filemanager.DFMFilePreviewFactoryInterface_iid"
++#endif
++
+ #ifdef DFM_BASE
+ DFMBASE_BEGIN_NAMESPACE
+ #else
+--- a/deepin-font-preview-plugin/CMakeLists.txt
++++ b/deepin-font-preview-plugin/CMakeLists.txt
+@@ -106,5 +106,5 @@
+ 
+ target_link_libraries(${APP_PLUGIN} PRIVATE ${LIBS})
+ 
+-set(PLUGIN_INSTALL_DIR lib/${CMAKE_LIBRARY_ARCHITECTURE}/dde-file-manager/plugins/previews)
++set(PLUGIN_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/dde-file-manager/plugins/previews)
+ install(TARGETS ${APP_PLUGIN} LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})

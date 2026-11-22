@@ -233,3 +233,16 @@ sent as patches upstream.  None of them is a behavioural DDE change.
   Qt CMake targets or a `command -v` fallback for the translation tools.
 - Local workaround: `01-fedora-build-fixes.patch`, which also keeps the 77
   translation `.qm` files in the package.
+
+## deepin-font-manager
+
+- `deepin-font-preview-plugin/main.cpp` uses `Q_PLUGIN_METADATA` with IID
+  macros defined only in the dfm headers.  Qt 6.8+ moc does not follow
+  includes when expanding the IID, so the plugin fails with
+  `Parse error at "IID"`.
+- The preview plugin install destination hard-codes `lib/`, which bypasses
+  `CMAKE_INSTALL_LIBDIR` and installs into `/usr/lib` on x86_64.
+- Suggested upstream fix: define/export the IIDs in the same translation
+  unit and use `CMAKE_INSTALL_LIBDIR` for the plugin destination.
+- Local workaround: `01-qt6-moc-iid.patch`; the package still ships all 77
+  translation `.qm` files.
