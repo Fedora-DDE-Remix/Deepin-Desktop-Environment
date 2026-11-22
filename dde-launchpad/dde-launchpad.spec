@@ -1,6 +1,6 @@
 Name:           dde-launchpad
 Version:        6.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Application launcher for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-launchpad
@@ -12,6 +12,8 @@ BuildRequires:  ninja-build
 BuildRequires:  extra-cmake-modules
 BuildRequires:  cmake(Qt6Core)
 BuildRequires:  cmake(Qt6Gui)
+BuildRequires:  cmake(Qt6GuiPrivate)
+BuildRequires:  cmake(Qt6CorePrivate)
 BuildRequires:  cmake(Qt6DBus)
 BuildRequires:  cmake(Qt6Qml)
 BuildRequires:  cmake(Qt6Quick)
@@ -57,5 +59,8 @@ launcher applet for DDE.
 %{_datadir}/deepin-log-viewer/deepin-log.conf.d/org.deepin.dde.launchpad.json
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
+- Add Qt6GuiPrivate/Qt6CorePrivate.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-1
 - Initial Fedora package.

@@ -1,6 +1,6 @@
 Name:           dde-polkit-agent
 Version:        6.0.25
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        PolicyKit authentication agent for DDE
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-polkit-agent
@@ -13,6 +13,8 @@ BuildRequires:  cmake(Qt6Core)
 BuildRequires:  cmake(Qt6Gui)
 BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6DBus)
+BuildRequires:  cmake(Qt6Qml)
+BuildRequires:  cmake(Qt6Quick)
 BuildRequires:  cmake(Qt6Concurrent)
 BuildRequires:  cmake(Qt6LinguistTools)
 BuildRequires:  cmake(Dtk6Core)
@@ -56,5 +58,8 @@ This package contains the dde-polkit-agent extension headers.
 %{_includedir}/dpa/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.25-2
+- Add Qt6Qml/Qt6Quick required by DDEShellConfig.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.0.25-1
 - Initial Fedora package.
