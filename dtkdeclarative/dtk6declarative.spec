@@ -2,11 +2,12 @@
 
 Name:           dtk6declarative
 Version:        6.7.54
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Deepin widget development toolkit based on QtQuick/QtQml
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dtkdeclarative
 Source0:        %{url}/archive/%{version}/%{srcname}-%{version}.tar.gz
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dtkdeclarative/01-qt611-palette.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -76,5 +77,8 @@ This package contains development files for %{name}.
 %{_datadir}/qtcreator/templates/wizards/projects/qml6-app-template/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.7.54-2
+- Fix the QML DTK.makeIconPalette() crash with Qt 6.11.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.7.54-1
 - Initial Fedora package (DTK 6.7.54, Qt 6 only).

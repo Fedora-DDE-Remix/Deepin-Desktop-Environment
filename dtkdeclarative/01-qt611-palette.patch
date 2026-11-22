@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] fix: avoid a const QQuickPalette pointer in QML
+
+Qt 6.11's QML engine cannot produce a meta object for
+"const QQuickPalette *" when calling DTK.makeIconPalette() from QML and
+crashes in QtPrivate::MetaObjectForType<const QQuickPalette *>.
+
+The QML property already exposes a non-const QQuickPalette pointer, so
+take that pointer type in the invokable as well.
+
+--- a/src/private/dqmlglobalobject_p.h
++++ b/src/private/dqmlglobalobject_p.h
+@@ -227,7 +227,7 @@
+ #if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
+     Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QPalette &palette);
+ #else
+-    Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(const QQuickPalette *palette);
++    Q_INVOKABLE DTK_GUI_NAMESPACE::DDciIconPalette makeIconPalette(QQuickPalette *palette);
+ #endif
+ 
+     Q_INVOKABLE bool sendMessage(QObject *target, const QString &content, const QString &iconName = QString(), int duration = 4000, const QString &msgId = QString());
+--- a/src/private/dqmlglobalobject.cpp
++++ b/src/private/dqmlglobalobject.cpp
+@@ -435,7 +435,7 @@
+     return iconPalette;
+ }
+ #else
+-DDciIconPalette DQMLGlobalObject::makeIconPalette(const QQuickPalette *palette)
++DDciIconPalette DQMLGlobalObject::makeIconPalette(QQuickPalette *palette)
+ {
+     DDciIconPalette iconPalette;
+     iconPalette.setForeground(palette->windowText());

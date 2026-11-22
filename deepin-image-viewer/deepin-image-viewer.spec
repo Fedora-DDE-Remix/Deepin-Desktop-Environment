@@ -1,12 +1,13 @@
 Name:           deepin-image-viewer
 Version:        6.1.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Image viewer for the Deepin desktop environment
 
 License:        GPL-3.0-or-later AND CC0-1.0 AND CC-BY-4.0
 URL:            https://github.com/linuxdeepin/deepin-image-viewer
 Source0:        %{url}/archive/%{version}/deepin-image-viewer-%{version}.tar.gz
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-image-viewer/01-system-opencv.patch
+Patch1:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-image-viewer/02-raw-plugin-null-device.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -69,5 +70,8 @@ editing and OCR-based live text.
 %{_datadir}/icons/hicolor/scalable/apps/deepin-image-viewer.svg
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.1.4-2
+- Fix a null-device crash in the RAW image plugin.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.1.4-1
 - Initial Fedora package.

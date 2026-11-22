@@ -1,0 +1,21 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mozixun <mozixun@fedoraproject.org>
+Date: Sun, 22 Nov 2026 00:00:00 +0800
+Subject: [PATCH] fix: handle a null device in the RAW plugin
+
+QImageReader::supportedImageFormats() calls capabilities() with a null
+device.  The plugin dereferenced it, which crashes every Qt application
+that enumerates image formats, including Treeland.
+
+--- a/qimage-plugins/libraw/main.cpp
++++ b/qimage-plugins/libraw/main.cpp
+@@ -46,6 +46,9 @@
+ FreeimageQt5Plugin::capabilities(QIODevice *device, const QByteArray &format) const
+ {
+     Capabilities cap;
++    if (!device)
++        return cap;
++
+     if (keys().contains(format.toUpper()) ||
+             format == "tif" ||
+             format == "tiff") {

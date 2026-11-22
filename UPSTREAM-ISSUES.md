@@ -246,3 +246,46 @@ sent as patches upstream.  None of them is a behavioural DDE change.
   unit and use `CMAKE_INSTALL_LIBDIR` for the plugin destination.
 - Local workaround: `01-qt6-moc-iid.patch`; the package still ships all 77
   translation `.qm` files.
+
+## dde-seatd / DDM control socket
+
+- DDM 0.5.0 requires `dde-seatd.service` and connects to
+  `/run/dde-seatd-control.sock`.  The 0.9.3 tag only provides the old
+  `seatd.service`/`/run/seatd.sock` interface and uses the `libseat` name.
+- The 0.9.3-3 tag provides the control socket, renames the daemon to
+  `dde-seatd`, and installs `libdde-seat` so it can coexist with Fedora's
+  `libseat`.
+- The package used here is built from 0.9.3-3; Fedora's `seatd` package is
+  not required.
+
+## ddm / pam_systemd
+
+- DDM's Fedora PAM stack uses `pam_systemd.so`, but Fedora splits that module
+  into `systemd-pam`.  Without it, `pam_open_session` fails with
+  `Module is unknown` and DDM cannot open the user session.
+- Local fix: the `ddm` package requires `systemd-pam`.
+
+## dtkdeclarative / Qt 6.11 QML palette
+
+- `DTK.makeIconPalette()` was declared with `const QQuickPalette *`.
+  Qt 6.11's QML engine cannot build a meta object for that const pointer
+  during a QML call and crashes in
+  `QtPrivate::MetaObjectForType<const QQuickPalette *>`.
+- Local fix: `01-qt611-palette.patch` changes the invokable to take a
+  non-const `QQuickPalette *`, matching the QML property type.
+
+## deepin-image-viewer / RAW plugin
+
+- The `xraw` image plugin's `capabilities()` dereferences `device` without
+  a null check.  `QImageReader::supportedImageFormats()` calls it with a
+  null device, crashing every Qt application that enumerates image formats
+  (including Treeland).
+- Local fix: `02-raw-plugin-null-device.patch` returns an empty capability
+  set when the device is null.
+
+## dde-account-faces
+
+- `accountsservice` owns `/var/lib/AccountsService/icons` with mode 0775;
+  `dde-account-faces` owned the same directory with 0755, which RPM treats
+  as a file conflict.
+- Local fix: list the contents (`icons/*`) instead of owning the directory.
