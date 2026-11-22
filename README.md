@@ -7,8 +7,8 @@ file name follows the Fedora binary/source package name.
 ## Conventions
 
 - Target: Fedora 45, x86_64 and aarch64, COPR (`mozixun/Fedora-DDE-Remix`).
-- 63 source packages in total, including the SeetaFace stack used by
-  `deepin-face`, the OCR engine and the four optional Deepin applications.
+- 64 source packages in total, including the SeetaFace stack used by
+  `deepin-face`, the OCR engine and the Deepin applications.
 - Qt 6 only. DTK 5 (Qt 5) builds are explicitly disabled with `-DDTK5=OFF`.
 - Package names follow Fedora where Fedora already has a package
   (`dtk6core`, `dtk6gui`, `dtk6widget`, `dtk6declarative`, `dtk6log`,
@@ -70,6 +70,7 @@ deepin-fcitx5configtool-plugin
 dde-qtintegration (deepin-qt6integration)
 deepin-terminal
 deepin-editor
+dde-calendar
 deepin-image-viewer
 deepin-draw
 deepin-reader
