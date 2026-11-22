@@ -2,7 +2,7 @@
 
 Name:           deepin-pw-check
 Version:        6.0.13
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Password validation library and service for DDE
 License:        GPL-2.0-only
 URL:            https://github.com/linuxdeepin/deepin-pw-check
@@ -19,6 +19,8 @@ BuildRequires:  cracklib-devel
 BuildRequires:  iniparser-devel
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
+BuildRequires:  pkgconfig(gio-2.0)
+BuildRequires:  pkgconfig(gdk-3.0)
 
 Requires:       cracklib
 Requires:       iniparser
@@ -89,6 +91,9 @@ mv %{buildroot}%{_prefix}/lib/libdeepin_pw_check* %{buildroot}%{_libdir}/
 %{_libdir}/pkgconfig/libdeepin_pw_check.pc
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.13-5
+- Add gio and gdk pkgconfig BuildRequires for the Go service.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.13-4
 - Add glib/gobject pkgconfig BuildRequires for the Go service.
 
