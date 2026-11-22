@@ -2,17 +2,15 @@
 
 Name:           dde-desktop
 Version:        1.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Complete DDE desktop environment
 
 License:        MIT
 URL:            https://github.com/Fedora-DDE-Remix/Deepin-Desktop-Environment
 Source0:        README.md
-Source1:        90-dde-desktop.preset
-Source2:        LICENSE
+Source1:        LICENSE
 BuildArch:      noarch
 
-BuildRequires:  systemd-rpm-macros
 
 Requires:       NetworkManager
 Requires:       accountsservice
@@ -92,29 +90,28 @@ services, the control center, file manager, launcher and the standard
 Deepin applications.
 
 Music playback is provided by VLC, log viewing by GNOME Logs, and USB image
-writing by Fedora Media Writer.  A systemd preset enables DDM, the DDE seat
-manager and the DDE system services.
+writing by Fedora Media Writer.  Each DDE component enables its own systemd
+services from its own package preset.
 
 %prep
 %setup -q -T -c
 cp %{SOURCE0} README.md
-cp %{SOURCE2} LICENSE
+cp %{SOURCE1} LICENSE
 
 %build
 # Meta package: no build step.
 
 %install
-install -Dm644 %{SOURCE1} %{buildroot}%{_presetdir}/90-dde-desktop.preset
-
-%post
-%systemd_post ddm.service dde-seatd.service dde-system-daemon.service dde-dconfig-daemon.service deepin-service-manager.service
+# Meta package: the component packages own their service presets.
 
 %files
 %license LICENSE
 %doc README.md
-%{_presetdir}/90-dde-desktop.preset
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-3
+- Leave service enabling to the packages that own the units.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-2
 - Require the dde-seatd control-socket version needed by DDM.
 

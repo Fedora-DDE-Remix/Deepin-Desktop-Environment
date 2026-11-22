@@ -2,12 +2,13 @@
 
 Name:           dde-seatd
 Version:        0.9.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Seat management daemon and library for DDE
 License:        MIT
 URL:            https://github.com/linuxdeepin/dde-seatd
 Source0:        %{url}/archive/%{tag}/dde-seatd-%{tag}.tar.gz
 Source1:        dde-seatd.conf
+Source2:        90-dde-seatd.preset
 
 BuildRequires:  meson
 BuildRequires:  gcc
@@ -46,6 +47,7 @@ This package contains development files for %{name}.
 %install
 %meson_install
 install -Dm644 %{SOURCE1} %{buildroot}%{_sysusersdir}/dde-seatd.conf
+install -Dm644 %{SOURCE2} %{buildroot}%{_presetdir}/90-dde-seatd.preset
 
 %post
 %systemd_post dde-seatd.service
@@ -63,6 +65,7 @@ install -Dm644 %{SOURCE1} %{buildroot}%{_sysusersdir}/dde-seatd.conf
 %{_bindir}/dde-seatd-launch
 %{_unitdir}/dde-seatd.service
 %{_sysusersdir}/dde-seatd.conf
+%{_presetdir}/90-dde-seatd.preset
 
 %files libs
 %{_libdir}/libdde-seat.so.1*

@@ -1,6 +1,0 @@
-# Enable the DDE display manager and its seat/system services on install.
-enable ddm.service
-enable dde-seatd.service
-enable dde-system-daemon.service
-enable dde-dconfig-daemon.service
-enable deepin-service-manager.service

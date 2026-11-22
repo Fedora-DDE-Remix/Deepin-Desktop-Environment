@@ -2,12 +2,13 @@
 
 Name:           dde-daemon
 Version:        6.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Daemon handling the DDE session settings
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-daemon
 Source0:        %{url}/archive/%{version}/dde-daemon-%{version}.tar.gz
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-daemon/01-skip-policy-regeneration.patch
+Source1:        90-dde-daemon.preset
 
 BuildRequires:  golang
 BuildRequires:  gcc
@@ -67,6 +68,7 @@ export GO111MODULE=on
 export GOFLAGS="-mod=mod"
 export GOPATH=%{_builddir}/gopath
 %make_install BUILD_TAGS=noscheduler GOBUILD_OPTIONS=
+install -Dm644 %{SOURCE1} %{buildroot}%{_presetdir}/90-dde-daemon.preset
 mkdir -p %{buildroot}%{_unitdir} %{buildroot}%{_userunitdir}
 mv %{buildroot}/lib/systemd/system/* %{buildroot}%{_unitdir}/ 2>/dev/null || :
 mv %{buildroot}/lib/systemd/user/* %{buildroot}%{_userunitdir}/ 2>/dev/null || :
@@ -104,6 +106,7 @@ rm -f  %{buildroot}%{_unitdir}/deepin-grub2.service
 %{_unitdir}/dde-greeter-setter.service
 %{_unitdir}/dde-lock-service.service
 %{_unitdir}/dde-system-daemon.service
+%{_presetdir}/90-dde-daemon.preset
 %{_userunitdir}/org.dde.session.Daemon1.service
 %{_userunitdir}/org.deepin.dde.SoundEffect1.service
 %{_userunitdir}/dde-display-task-refresh-brightness.service
@@ -122,5 +125,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
+- Enable dde-system-daemon.service from the dde-daemon package preset.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-1
 - Initial Fedora package.

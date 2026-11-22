@@ -1,10 +1,11 @@
 Name:           ddm
 Version:        0.5.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Deepin Display Manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/linuxdeepin/ddm
 Source0:        %{url}/archive/%{version}/ddm-%{version}.tar.gz
+Source1:        90-ddm.preset
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -50,6 +51,7 @@ This package contains development files for %{name}.
 
 %install
 %cmake_install
+install -Dm644 %{SOURCE1} %{buildroot}%{_presetdir}/90-ddm.preset
 
 %post
 %systemd_post ddm.service
@@ -66,6 +68,7 @@ This package contains development files for %{name}.
 %{_bindir}/ddm
 %{_libexecdir}/ddm-helper
 %{_unitdir}/ddm.service
+%{_presetdir}/90-ddm.preset
 %{_sysusersdir}/dde.conf
 %{_tmpfilesdir}/ddm.conf
 %config(noreplace) %{_sysconfdir}/pam.d/ddm
@@ -82,6 +85,9 @@ This package contains development files for %{name}.
 %{_libdir}/cmake/DDM/
 
 %changelog
+* Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-3
+- Enable ddm.service from the ddm package preset.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-2
 - Require systemd-pam for pam_systemd.so.
 

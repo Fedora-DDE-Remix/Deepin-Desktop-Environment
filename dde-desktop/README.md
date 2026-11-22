@@ -25,9 +25,10 @@ components:
 | Deepin Log Viewer | GNOME Logs |
 | Deepin Boot Maker | Fedora Media Writer |
 
-The package also installs a systemd preset that enables DDM, the DDE seat
-daemon and the DDE system services.  Select the `DDE` Wayland session at the
-DDM login screen.
+Each component package installs its own systemd preset and enables its own
+service: `ddm`, `dde-seatd` and `dde-system-daemon` are enabled by their
+respective packages.  Select the `DDE` Wayland session at the DDM login
+screen.
 
 The Deepin icon, GTK and sound themes are installed through
 deepin-desktop-schemas.  The optional Deepin desktop-theme and wallpaper
