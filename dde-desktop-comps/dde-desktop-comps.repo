@@ -1,0 +1,7 @@
+[dde-desktop-comps]
+name=Deepin Desktop group metadata
+baseurl=file:///usr/share/dde-desktop/comps-repo
+enabled=1
+gpgcheck=0
+repo_gpgcheck=0
+metadata_expire=0

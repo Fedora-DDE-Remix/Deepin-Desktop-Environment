@@ -28,8 +28,12 @@ components:
 
 ## Install
 
+COPR's Pulp storage cannot publish comps metadata.  `dde-desktop-comps`
+carries a small local comps repository and enables it, so install it first:
+
 ```bash
 sudo dnf copr enable mozixun/Fedora-DDE-Remix
+sudo dnf install dde-desktop-comps
 sudo dnf groupinstall dde-desktop
 ```
 

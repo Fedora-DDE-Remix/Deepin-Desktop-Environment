@@ -7,7 +7,7 @@ file name follows the Fedora binary/source package name.
 ## Conventions
 
 - Target: Fedora 45, x86_64 and aarch64, COPR (`mozixun/Fedora-DDE-Remix`).
-- 70 source packages in total, plus the dde-desktop comps group, including
+- 71 source packages in total, plus the dde-desktop comps group, including
 the SeetaFace stack used by
   `deepin-face`, the OCR engine and the Deepin applications.
 - Qt 6 only. DTK 5 (Qt 5) builds are explicitly disabled with `-DDTK5=OFF`.
@@ -48,6 +48,7 @@ dareader
 deepin-pw-check
 dde-seatd
 ddm
+dde-desktop-comps
 treeland
 dde-api
 dde-session
@@ -110,10 +111,15 @@ deepin-face
 `dde-desktop` is a comps group, not an RPM package.  It installs the complete
 DDE Wayland desktop, including DDM, the session, the shell and the standard
 applications.  It uses VLC for music, GNOME Logs for journal viewing and
-Fedora Media Writer for USB image writing.  Install it with:
+Fedora Media Writer for USB image writing.
+
+COPR's Pulp storage cannot publish comps metadata, so `dde-desktop-comps`
+carries a small local comps repository and enables it.  Install the metadata
+package first, then the group:
 
 ```text
 sudo dnf copr enable mozixun/Fedora-DDE-Remix
+sudo dnf install dde-desktop-comps
 sudo dnf groupinstall dde-desktop
 ```
 

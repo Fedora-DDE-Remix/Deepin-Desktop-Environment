@@ -69,10 +69,7 @@
       <packagereq type="mandatory">xdg-desktop-portal</packagereq>
       <packagereq type="mandatory">xdg-desktop-portal-gtk</packagereq>
       <packagereq type="mandatory">xdg-user-dirs</packagereq>
-      <packagereq type="default">deepin-desktop-theme</packagereq>
       <packagereq type="default">deepin-icon-theme</packagereq>
-      <packagereq type="default">deepin-manual</packagereq>
-      <packagereq type="default">deepin-wallpapers</packagereq>
       <packagereq type="default">fcitx5-chinese-addons</packagereq>
     </packagelist>
   </group>
