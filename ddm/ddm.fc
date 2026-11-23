@@ -6,9 +6,3 @@
 # treeland.service is started by DDM over systemd.  Label it as an XDM unit
 # so xdm_t can use the existing start/status/stop allow rules.
 /usr/lib/systemd/system/treeland.service -- gen_context(system_u:object_r:xdm_unit_file_t,s0)
-
-# DDE system services historically live in /usr/lib, whose default label is
-# lib_t.  systemd then executes them as init_t.  Marking the executables as
-# bin_t gives them the normal init_t -> unconfined_service_t transition.
-/usr/lib/deepin-daemon(/.*)?	--	gen_context(system_u:object_r:bin_t,s0)
-/usr/lib/deepin-api(/.*)?	--	gen_context(system_u:object_r:bin_t,s0)

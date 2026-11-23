@@ -1,0 +1,6 @@
+policy_module(dde_daemon, 1.0.0)
+
+# dde-daemon installs its system helpers in /usr/lib/deepin-daemon.  The
+# default label for /usr/lib is lib_t, which makes systemd execute these
+# helpers in init_t.  Marking them as bin_t gives the normal
+# init_t -> unconfined_service_t transition.

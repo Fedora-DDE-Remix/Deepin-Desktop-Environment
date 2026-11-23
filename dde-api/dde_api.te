@@ -1,0 +1,6 @@
+policy_module(dde_api, 1.0.0)
+
+# dde-api installs its helper services in /usr/lib/deepin-api.  The default
+# label for /usr/lib is lib_t, which makes systemd execute these helpers in
+# init_t.  Marking them as bin_t gives the normal init_t ->
+# unconfined_service_t transition.

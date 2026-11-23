@@ -1,6 +1,6 @@
 Name:           ddm
 Version:        0.5.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Deepin Display Manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/linuxdeepin/ddm
@@ -58,10 +58,7 @@ Requires:       policycoreutils
 This package installs the SELinux file contexts that map DDM onto Fedora's
 generic xdm_t display-manager domain: /usr/bin/ddm and /usr/libexec/ddm-helper
 use xdm_exec_t, /run/ddm uses xdm_var_run_t and /var/lib/ddm uses
-xdm_var_lib_t.  It also marks the DDE daemons in /usr/lib/deepin-daemon and
-/usr/lib/deepin-api as bin_t so systemd gives them the normal
-unconfined_service_t transition instead of leaving them in init_t.  It does
-not introduce a new SELinux domain.
+xdm_var_lib_t.  It does not introduce a new SELinux domain.
 
 %prep
 %autosetup -n ddm-%{version} -p1
@@ -94,22 +91,20 @@ if [ -x /usr/sbin/semodule ]; then
     /usr/sbin/semodule -i /usr/share/selinux/packages/ddm.pp 2>/dev/null || :
 fi
 for p in /usr/bin/ddm /usr/libexec/ddm-helper /run/ddm /var/lib/ddm \
-         /usr/lib/systemd/system/treeland.service /usr/lib/deepin-daemon /usr/lib/deepin-api; do
+         /usr/lib/systemd/system/treeland.service; do
     [ -e "$p" ] && /usr/sbin/restorecon -R "$p" 2>/dev/null || :
 done
 
 %posttrans selinux
-# treeland and the DDE daemons may be installed later in the same transaction.
-for p in /usr/lib/systemd/system/treeland.service /usr/lib/deepin-daemon /usr/lib/deepin-api; do
-    [ -e "$p" ] && /usr/sbin/restorecon -R "$p" 2>/dev/null || :
-done
+# treeland may be installed later in the same transaction.
+[ -e /usr/lib/systemd/system/treeland.service ] && /usr/sbin/restorecon -R /usr/lib/systemd/system/treeland.service 2>/dev/null || :
 /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun selinux
 if [ "$1" -eq 0 ] && [ -x /usr/sbin/semodule ]; then
     /usr/sbin/semodule -r ddm 2>/dev/null || :
     for p in /usr/bin/ddm /usr/libexec/ddm-helper /run/ddm /var/lib/ddm \
-             /usr/lib/systemd/system/treeland.service /usr/lib/deepin-daemon /usr/lib/deepin-api; do
+             /usr/lib/systemd/system/treeland.service; do
         [ -e "$p" ] && /usr/sbin/restorecon -R "$p" 2>/dev/null || :
     done
 fi
@@ -140,6 +135,10 @@ fi
 %{_datadir}/selinux/packages/ddm.pp
 
 %changelog
+* Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-7
+- Move the DDE /usr/lib/deepin-daemon and /usr/lib/deepin-api contexts into
+  the dedicated dde-daemon-selinux and dde-api-selinux packages.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-6
 - Install a Fedora PAM stack with pam_selinux, password-auth/system-auth,
   pam_loginuid and pam_namespace so DDM logins get the correct user domain.

@@ -2,14 +2,17 @@
 
 Name:           dde-api
 Version:        6.2.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Go language bindings and helper services for dde-daemon
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-api
 Source0:        %{url}/archive/%{version}/dde-api-%{version}.tar.gz
+Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-api/dde_api.te
+Source2:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-api/dde_api.fc
 
 BuildRequires:  golang
 BuildRequires:  gcc
+BuildRequires:  selinux-policy-devel
 BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  pkgconfig(alsa)
@@ -29,6 +32,7 @@ BuildRequires:  pkgconfig(xcursor)
 Requires:       deepin-desktop-base
 Requires:       rfkill
 Requires:       gvfs
+Requires:       %{name}-selinux = %{version}-%{release}
 
 %description
 dde-api provides Go language bindings for dde-daemon and a set of helper
@@ -44,6 +48,16 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %description    devel
 This package contains the DDEAPI C++ header and CMake configuration.
 
+%package        selinux
+Summary:        SELinux contexts for dde-api helper services
+Requires:       selinux-policy-targeted
+Requires:       policycoreutils
+
+%description    selinux
+This package marks the helper executables in /usr/lib/deepin-api as bin_t,
+so systemd starts them in unconfined_service_t instead of leaving them in
+init_t.  It does not introduce a new SELinux domain.
+
 %prep
 %autosetup -n dde-api-%{version} -p1
 
@@ -53,6 +67,9 @@ export GO111MODULE=on
 export GOFLAGS="-mod=mod"
 export GOPATH=%{_builddir}/gopath
 %make_build build-binary build-dev INSTALL_LOCALE_HELPER=0
+cp %{SOURCE1} dde_api.te
+cp %{SOURCE2} dde_api.fc
+make -f /usr/share/selinux/devel/Makefile dde_api.pp
 
 %install
 export GO111MODULE=on
@@ -60,6 +77,7 @@ export GOFLAGS="-mod=mod"
 export GOPATH=%{_builddir}/gopath
 make DESTDIR=%{buildroot} install-binary install-misc INSTALL_LOCALE_HELPER=0 SYSTEMD_SERVICE_DIR=%{_unitdir} LIBDIR=%{_prefix}/lib
 install -Dm644 misc/sysusers/deepin-daemon.conf %{buildroot}%{_sysusersdir}/deepin-daemon.conf
+install -Dm644 dde_api.pp %{buildroot}%{_datadir}/selinux/packages/dde_api.pp
 sed -i 's|set(DDE_API_INCLUDE_DIRS "/usr/include")|set(DDE_API_INCLUDE_DIRS "")|' %{buildroot}%{_datadir}/cmake/DDEAPI/DDEAPIConfig.cmake
 
 %files
@@ -93,7 +111,29 @@ sed -i 's|set(DDE_API_INCLUDE_DIRS "/usr/include")|set(DDE_API_INCLUDE_DIRS "")|
 %postun
 %systemd_postun_with_restart deepin-login-sound.service deepin-shutdown-sound.service deepin-api-device.service deepin-sound-theme-player.service
 
+%post selinux
+if [ -x /usr/sbin/semodule ]; then
+    /usr/sbin/semodule -i /usr/share/selinux/packages/dde_api.pp 2>/dev/null || :
+fi
+[ -e /usr/lib/deepin-api ] && /usr/sbin/restorecon -R /usr/lib/deepin-api 2>/dev/null || :
+
+%posttrans selinux
+[ -e /usr/lib/deepin-api ] && /usr/sbin/restorecon -R /usr/lib/deepin-api 2>/dev/null || :
+
+%postun selinux
+if [ "$1" -eq 0 ] && [ -x /usr/sbin/semodule ]; then
+    /usr/sbin/semodule -r dde_api 2>/dev/null || :
+    [ -e /usr/lib/deepin-api ] && /usr/sbin/restorecon -R /usr/lib/deepin-api 2>/dev/null || :
+fi
+
+%files selinux
+%{_datadir}/selinux/packages/dde_api.pp
+
 %changelog
+* Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-5
+- Add dde-api-selinux, labelling /usr/lib/deepin-api as bin_t so systemd
+  starts the helpers in unconfined_service_t instead of init_t.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-4
 - Provide cmake(DDEAPI) explicitly; the fileattr provide is missing in COPR.
 
