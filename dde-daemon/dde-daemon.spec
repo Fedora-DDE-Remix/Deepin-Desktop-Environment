@@ -2,18 +2,15 @@
 
 Name:           dde-daemon
 Version:        6.2.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Daemon handling the DDE session settings
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-daemon
 Source0:        %{url}/archive/%{version}/dde-daemon-%{version}.tar.gz
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-daemon/01-skip-policy-regeneration.patch
 Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-daemon/90-dde-daemon.preset
-Source2:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-daemon/dde_daemon.te
-Source3:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-daemon/dde_daemon.fc
 
 BuildRequires:  golang
-BuildRequires:  selinux-policy-devel
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  make
@@ -50,7 +47,7 @@ Recommends:     dde-polkit-agent
 Requires:       gvfs
 Requires:       bluez
 Requires:       rfkill
-Requires:       %{name}-selinux = %{version}-%{release}
+Requires:       dde-daemon-selinux
 Recommends:     lshw
 Recommends:     iso-codes
 Recommends:     mobile-broadband-provider-info
@@ -59,16 +56,6 @@ Recommends:     mobile-broadband-provider-info
 dde-daemon handles session and system settings for the Deepin desktop
 environment: accounts, audio, Bluetooth, display, input devices, power,
 timedate, tray icons and related D-Bus services.
-
-%package        selinux
-Summary:        SELinux contexts for dde-daemon system helpers
-Requires:       selinux-policy-targeted
-Requires:       policycoreutils
-
-%description    selinux
-This package marks the helper executables in /usr/lib/deepin-daemon as bin_t,
-so systemd starts them in unconfined_service_t instead of leaving them in
-init_t.  It does not introduce a new SELinux domain.
 
 %prep
 %autosetup -n dde-daemon-%{version} -p1
@@ -79,9 +66,6 @@ export GO111MODULE=on
 export GOFLAGS="-mod=mod"
 export GOPATH=%{_builddir}/gopath
 %make_build BUILD_TAGS=noscheduler GOBUILD_OPTIONS=
-cp %{SOURCE2} dde_daemon.te
-cp %{SOURCE3} dde_daemon.fc
-make -f /usr/share/selinux/devel/Makefile dde_daemon.pp
 
 %install
 export GO111MODULE=on
@@ -89,7 +73,6 @@ export GOFLAGS="-mod=mod"
 export GOPATH=%{_builddir}/gopath
 %make_install BUILD_TAGS=noscheduler GOBUILD_OPTIONS=
 install -Dm644 %{SOURCE1} %{buildroot}%{_presetdir}/90-dde-daemon.preset
-install -Dm644 dde_daemon.pp %{buildroot}%{_datadir}/selinux/packages/dde_daemon.pp
 mkdir -p %{buildroot}%{_unitdir} %{buildroot}%{_userunitdir}
 mv %{buildroot}/lib/systemd/system/* %{buildroot}%{_unitdir}/ 2>/dev/null || :
 mv %{buildroot}/lib/systemd/user/* %{buildroot}%{_userunitdir}/ 2>/dev/null || :
@@ -145,25 +128,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 %systemd_postun_with_restart dde-system-daemon.service dde-lock-service.service dde-greeter-setter.service dde-backlight-helper.service
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
-%post selinux
-if [ -x /usr/sbin/semodule ]; then
-    /usr/sbin/semodule -i /usr/share/selinux/packages/dde_daemon.pp 2>/dev/null || :
-fi
-[ -e /usr/lib/deepin-daemon ] && /usr/sbin/restorecon -R /usr/lib/deepin-daemon 2>/dev/null || :
-
-%posttrans selinux
-[ -e /usr/lib/deepin-daemon ] && /usr/sbin/restorecon -R /usr/lib/deepin-daemon 2>/dev/null || :
-
-%postun selinux
-if [ "$1" -eq 0 ] && [ -x /usr/sbin/semodule ]; then
-    /usr/sbin/semodule -r dde_daemon 2>/dev/null || :
-    [ -e /usr/lib/deepin-daemon ] && /usr/sbin/restorecon -R /usr/lib/deepin-daemon 2>/dev/null || :
-fi
-
-%files selinux
-%{_datadir}/selinux/packages/dde_daemon.pp
-
 %changelog
+* Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-10
+- Move the SELinux policy into the independent dde-daemon-selinux package
+  and use an unversioned dependency in both directions.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-9
 - Allow init_t to mount over /etc/shadow so the systemd InaccessiblePaths
   sandbox used by dde-backlight-helper and the greeter helpers works in

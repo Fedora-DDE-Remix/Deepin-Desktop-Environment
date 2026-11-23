@@ -1,6 +1,6 @@
 Name:           ddm
 Version:        0.5.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Deepin Display Manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/linuxdeepin/ddm
@@ -8,11 +8,8 @@ Source0:        %{url}/archive/%{version}/ddm-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/ddm/90-ddm.preset
 Source2:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/ddm/ddm.pam
 Source3:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/ddm/ddm-autologin.pam
-Source4:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/ddm/ddm.te
-Source5:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/ddm/ddm.fc
 
 BuildRequires:  cmake
-BuildRequires:  selinux-policy-devel
 BuildRequires:  gcc-c++
 BuildRequires:  ninja-build
 BuildRequires:  extra-cmake-modules
@@ -36,7 +33,7 @@ Requires:       accountsservice
 Requires:       systemd
 Requires:       systemd-pam
 Requires:       pam
-Requires:       %{name}-selinux = %{version}-%{release}
+Requires:       ddm-selinux
 
 %description
 DDM is the Deepin Display Manager, a Wayland greeter and session manager used
@@ -49,33 +46,18 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %description    devel
 This package contains development files for %{name}.
 
-%package        selinux
-Summary:        SELinux policy for the Deepin Display Manager
-Requires:       selinux-policy-targeted
-Requires:       policycoreutils
-
-%description    selinux
-This package installs the SELinux file contexts that map DDM onto Fedora's
-generic xdm_t display-manager domain: /usr/bin/ddm and /usr/libexec/ddm-helper
-use xdm_exec_t, /run/ddm uses xdm_var_run_t and /var/lib/ddm uses
-xdm_var_lib_t.  It does not introduce a new SELinux domain.
-
 %prep
 %autosetup -n ddm-%{version} -p1
 
 %build
 %cmake -GNinja -DBUILD_MAN_PAGES=OFF -DWERROR=OFF
 %cmake_build
-cp %{SOURCE4} ddm.te
-cp %{SOURCE5} ddm.fc
-make -f /usr/share/selinux/devel/Makefile ddm.pp
 
 %install
 %cmake_install
 install -Dm644 %{SOURCE1} %{buildroot}%{_presetdir}/90-ddm.preset
 install -Dm644 %{SOURCE2} %{buildroot}%{_sysconfdir}/pam.d/ddm
 install -Dm644 %{SOURCE3} %{buildroot}%{_sysconfdir}/pam.d/ddm-autologin
-install -Dm644 ddm.pp %{buildroot}%{_datadir}/selinux/packages/ddm.pp
 
 %post
 %systemd_post ddm.service
@@ -85,29 +67,6 @@ install -Dm644 ddm.pp %{buildroot}%{_datadir}/selinux/packages/ddm.pp
 
 %postun
 %systemd_postun_with_restart ddm.service
-
-%post selinux
-if [ -x /usr/sbin/semodule ]; then
-    /usr/sbin/semodule -i /usr/share/selinux/packages/ddm.pp 2>/dev/null || :
-fi
-for p in /usr/bin/ddm /usr/libexec/ddm-helper /run/ddm /var/lib/ddm \
-         /usr/lib/systemd/system/treeland.service; do
-    [ -e "$p" ] && /usr/sbin/restorecon -R "$p" 2>/dev/null || :
-done
-
-%posttrans selinux
-# treeland may be installed later in the same transaction.
-[ -e /usr/lib/systemd/system/treeland.service ] && /usr/sbin/restorecon -R /usr/lib/systemd/system/treeland.service 2>/dev/null || :
-/usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
-
-%postun selinux
-if [ "$1" -eq 0 ] && [ -x /usr/sbin/semodule ]; then
-    /usr/sbin/semodule -r ddm 2>/dev/null || :
-    for p in /usr/bin/ddm /usr/libexec/ddm-helper /run/ddm /var/lib/ddm \
-             /usr/lib/systemd/system/treeland.service; do
-        [ -e "$p" ] && /usr/sbin/restorecon -R "$p" 2>/dev/null || :
-    done
-fi
 
 %files
 %license LICENSES/
@@ -131,10 +90,11 @@ fi
 %{_libdir}/libddm-common.so
 %{_libdir}/cmake/DDM/
 
-%files selinux
-%{_datadir}/selinux/packages/ddm.pp
-
 %changelog
+* Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-8
+- Move the SELinux policy into the independent ddm-selinux package and use
+  an unversioned dependency in both directions.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-7
 - Move the DDE /usr/lib/deepin-daemon and /usr/lib/deepin-api contexts into
   the dedicated dde-daemon-selinux and dde-api-selinux packages.

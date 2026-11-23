@@ -1,4 +1,4 @@
-policy_module(dde_daemon, 1.0.1)
+policy_module(dde_daemon, 1.0.0)
 
 require {
     type init_t;

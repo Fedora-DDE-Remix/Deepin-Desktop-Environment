@@ -7,7 +7,7 @@ file name follows the Fedora binary/source package name.
 ## Conventions
 
 - Target: Fedora 45, x86_64 and aarch64, COPR (`mozixun/Fedora-DDE-Remix`).
-- 71 source packages in total, plus the dde-desktop comps group, including
+- 75 source packages in total, plus the dde-desktop comps group, including
 the SeetaFace stack used by
   `deepin-face`, the OCR engine and the Deepin applications.
 - Qt 6 only. DTK 5 (Qt 5) builds are explicitly disabled with `-DDTK5=OFF`.
@@ -47,10 +47,14 @@ openssl-compat
 dareader
 deepin-pw-check
 dde-seatd
+dde-daemon
+dde-daemon-selinux
 ddm
+ddm-selinux
 dde-desktop-comps
 treeland
 dde-api
+dde-api-selinux
 dde-session
 deepin-service-manager
 dde-app-services
@@ -74,6 +78,7 @@ deepin-terminal
 deepin-editor
 dde-calendar
 deepin-system-monitor
+deepin-system-monitor-selinux
 deepin-voice-note
 deepin-font-manager
 deepin-image-viewer
