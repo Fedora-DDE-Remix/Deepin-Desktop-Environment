@@ -1,0 +1,6 @@
+diff --git a/src/dde-grand-search-daemon/.readme b/src/dde-grand-search-daemon/.readme
+index e69de29..0fcb7a0 100644
+--- a/src/dde-grand-search-daemon/.readme
++++ b/src/dde-grand-search-daemon/.readme
+@@ -0,0 +1 @@
++This directory contains external dde-grand-search searcher plugins.

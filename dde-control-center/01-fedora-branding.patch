@@ -1,0 +1,82 @@
+diff --git a/src/plugin-systeminfo/operation/systeminfowork.cpp b/src/plugin-systeminfo/operation/systeminfowork.cpp
+index 8a1a87a..78786ae 100644
+--- a/src/plugin-systeminfo/operation/systeminfowork.cpp
++++ b/src/plugin-systeminfo/operation/systeminfowork.cpp
+@@ -99,12 +99,22 @@ void SystemInfoWork::activate()
+     m_model->setHostName(m_systemInfoDBusProxy->staticHostname());
+ 
+     m_model->setLogoPath(DSysInfo::distributionOrgLogo(DSysInfo::Distribution, DSysInfo::Normal));
++    const bool isFedora = DSysInfo::productType() == DSysInfo::Fedora;
+     if (DSysInfo::isDeepin()) {
+         m_model->setLicenseState(static_cast<ActiveState>(m_systemInfoDBusProxy->authorizationState()));
+         QString productName = QString("%1").arg(DSysInfo::uosSystemName());
+         m_model->setProductName(productName);
+         QString versionNumber = QString("%1").arg(DSysInfo::majorVersion());
+         m_model->setVersionNumber(versionNumber);
++    } else if (isFedora) {
++        // Fedora DDE Remix branding.  DTK cannot describe this spin, so use
++        // the distribution name and version reported by /etc/os-release.
++        m_model->setProductName(QStringLiteral("Fedora"));
++        m_model->setVersionNumber(DSysInfo::productVersion());
++        m_model->setVersion(QStringLiteral("Fedora DDE Remix"));
++        const QString logoPath = QStringLiteral("/usr/share/dde-control-center/logo/fedora-logo.png");
++        if (QFileInfo::exists(logoPath))
++            m_model->setLogoPath(logoPath);
+     }
+     QString version;
+     if (DSysInfo::uosType() == DSysInfo::UosServer || DSysInfo::uosEditionType() == DSysInfo::UosEuler) {
+@@ -118,7 +128,7 @@ void SystemInfoWork::activate()
+                                      this, SLOT(onLicenseAuthorizationProperty()));
+ 
+         onLicenseAuthorizationProperty();
+-    } else {
++    } else if (!isFedora) {
+         version = QString("%1 %2").arg(DSysInfo::productVersion(), DSysInfo::productTypeString());
+         m_model->setVersion(version);
+     }
+diff --git a/src/plugin-systeminfo/qml/NativeInfoPage.qml b/src/plugin-systeminfo/qml/NativeInfoPage.qml
+index 0802841..d899ea5 100644
+--- a/src/plugin-systeminfo/qml/NativeInfoPage.qml
++++ b/src/plugin-systeminfo/qml/NativeInfoPage.qml
+@@ -22,7 +22,9 @@ DccObject {
+         visible: !dccData.systemInfoMode().showDetail
+         page: RowLayout {
+             Image {
+-                source: "file://" + DTK.deepinDistributionOrgLogo
++                source: dccData.systemInfoMode().logoPath !== ""
++                        ? "file://" + dccData.systemInfoMode().logoPath
++                        : "file:///usr/share/dde-control-center/logo/fedora-logo.png"
+             }
+ 
+             ColumnLayout {
+@@ -30,7 +32,9 @@ DccObject {
+                     font.bold: true
+                     font.pixelSize: 22
+                     horizontalAlignment: Text.AlignLeft
+-                    text: qsTr("UOS")
++                    text: dccData.systemInfoMode().productName !== ""
++                          ? dccData.systemInfoMode().productName
++                          : qsTr("Fedora")
+                 }
+ 
+                 Label {
+@@ -57,7 +61,9 @@ DccObject {
+             Image {
+                 Layout.topMargin: 25
+                 Layout.alignment: Qt.AlignHCenter
+-                source: "file://" + dccData.systemInfoMode().logoPath
++                source: dccData.systemInfoMode().logoPath !== ""
++                        ? "file://" + dccData.systemInfoMode().logoPath
++                        : "file:///usr/share/dde-control-center/logo/fedora-logo.png"
+             }
+             Image {
+                 Layout.alignment: Qt.AlignHCenter
+@@ -65,7 +71,7 @@ DccObject {
+                 source: dccData.systemInfoMode().customerLogoSource
+             }
+             Label {
+-                Layout.topMargin: 5
++                Layout.topMargin: 10
+                 Layout.alignment: Qt.AlignHCenter
+                 text: dccData.systemInfoMode().systemCopyright
+                 Layout.bottomMargin: 25

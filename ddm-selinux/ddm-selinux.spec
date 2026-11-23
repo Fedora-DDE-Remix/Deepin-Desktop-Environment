@@ -1,6 +1,6 @@
 Name:           ddm-selinux
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SELinux policy for the Deepin Display Manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/Fedora-DDE-Remix/Deepin-Desktop-Environment
@@ -59,5 +59,9 @@ fi
 %{_datadir}/selinux/packages/ddm.pp
 
 %changelog
+* Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-2
+- Allow xdm_t to start the user dde-session.target and write the session
+  FIFO under ~/.cache, so the Treeland user socket and DDE session start.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-1
 - Independent SELinux policy package for DDM.

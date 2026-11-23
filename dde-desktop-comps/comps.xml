@@ -21,6 +21,7 @@
       <packagereq type="mandatory">dde-file-manager</packagereq>
       <packagereq type="mandatory">dde-file-manager-desktop</packagereq>
       <packagereq type="mandatory">dde-file-manager-services-plugins</packagereq>
+      <packagereq type="mandatory">dde-grand-search</packagereq>
       <packagereq type="mandatory">dde-launchpad</packagereq>
       <packagereq type="mandatory">dde-polkit-agent</packagereq>
       <packagereq type="mandatory">dde-seatd</packagereq>

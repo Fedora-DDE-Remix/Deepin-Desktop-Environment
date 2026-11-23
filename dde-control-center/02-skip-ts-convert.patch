@@ -1,0 +1,19 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 18cb855..23935c8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -66,12 +66,8 @@ include(DdeControlCenterPluginMacros)
+ set(DCC_DESKTOP_FILE "${CMAKE_CURRENT_BINARY_DIR}/misc/org.deepin.dde.control-center.desktop")
+ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/misc/org.deepin.dde.control-center.desktop"
+     "${DCC_DESKTOP_FILE}" COPYONLY)
+-execute_process(COMMAND bash "misc/translate_ts2desktop.sh" "${DCC_DESKTOP_FILE}"
+-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+-    RESULT_VARIABLE desktop_translation_result)
+-if(NOT desktop_translation_result STREQUAL "0")
+-    message(FATAL_ERROR "Failed to generate desktop translations: ${desktop_translation_result}")
+-endif()
++# Fedora does not ship deepin-desktop-ts-convert.  The desktop file copied
++# to the build tree above is installed as-is instead of being regenerated.
+ 
+ # asan 自己有内存泄露，暂不使用
+ if (CMAKE_BUILD_TYPE STREQUAL "Debug")

@@ -7,7 +7,7 @@ file name follows the Fedora binary/source package name.
 ## Conventions
 
 - Target: Fedora 45, x86_64 and aarch64, COPR (`mozixun/Fedora-DDE-Remix`).
-- 75 source packages in total, plus the dde-desktop comps group, including
+- 76 source packages in total, plus the dde-desktop comps group, including
 the SeetaFace stack used by
   `deepin-face`, the OCR engine and the Deepin applications.
 - Qt 6 only. DTK 5 (Qt 5) builds are explicitly disabled with `-DDTK5=OFF`.
@@ -72,6 +72,7 @@ deepin-ocr-plugin-manager
 util-dfm
 dde-file-manager
 dde-control-center
+dde-grand-search
 deepin-fcitx5configtool-plugin
 dde-qtintegration (deepin-qt6integration)
 deepin-terminal
@@ -112,6 +113,10 @@ deepin-face
 `dde-control-center` build-depends on `deepin-pw-check-devel` and
 `dareader-devel` for the accounts/authentication plugins, and on
 `dde-shell-devel` for the Treeland integration.  Build those first.
+
+`dde-grand-search` build-depends on `util-dfm-devel` (`dfm6-search`),
+`dde-shell-devel`, `dde-tray-loader-devel`, `deepin-service-manager-devel`,
+`deepin-pdfium-devel`, Qt6/DTK6, Boost and lucene++.
 
 `dde-desktop` is a comps group, not an RPM package.  It installs the complete
 DDE Wayland desktop, including DDM, the session, the shell and the standard
