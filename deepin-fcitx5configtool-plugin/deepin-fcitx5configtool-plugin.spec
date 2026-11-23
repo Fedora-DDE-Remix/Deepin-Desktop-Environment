@@ -1,6 +1,6 @@
 Name:           deepin-fcitx5configtool-plugin
 Version:        6.0.41
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Fcitx5 input method configuration plugin for DDE Control Center
 License:        GPL-2.0-or-later AND LGPL-2.1-or-later
 URL:            https://github.com/linuxdeepin/deepin-fcitx5configtool-plugin
@@ -31,6 +31,7 @@ BuildRequires:  cmake(KF6ItemViews)
 BuildRequires:  cmake(KF6WidgetsAddons)
 BuildRequires:  cmake(PolkitQt6-1)
 BuildRequires:  pkgconfig(icu-uc)
+BuildRequires:  pkgconfig(libudev)
 BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xkbfile)
