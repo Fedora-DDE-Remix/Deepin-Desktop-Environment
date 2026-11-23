@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE comps PUBLIC "-//Red Hat, Inc.//DTD Comps info//EN" "comps.dtd">
+<comps>
+  <group>
+    <id>dde-desktop</id>
+    <name>Deepin Desktop Environment</name>
+    <description>Complete Deepin Desktop Environment (DDE) for Fedora, including Treeland, DDM, dde-shell, the DDE services and the standard Deepin applications.</description>
+    <default>true</default>
+    <uservisible>true</uservisible>
+    <packagelist>
+      <packagereq type="mandatory">NetworkManager</packagereq>
+      <packagereq type="mandatory">accountsservice</packagereq>
+      <packagereq type="mandatory">dde-account-faces</packagereq>
+      <packagereq type="mandatory">dde-api</packagereq>
+      <packagereq type="mandatory">dde-app-services</packagereq>
+      <packagereq type="mandatory">dde-appearance</packagereq>
+      <packagereq type="mandatory">dde-application-manager</packagereq>
+      <packagereq type="mandatory">dde-clipboard</packagereq>
+      <packagereq type="mandatory">dde-control-center</packagereq>
+      <packagereq type="mandatory">dde-daemon</packagereq>
+      <packagereq type="mandatory">dde-file-manager</packagereq>
+      <packagereq type="mandatory">dde-file-manager-desktop</packagereq>
+      <packagereq type="mandatory">dde-file-manager-services-plugins</packagereq>
+      <packagereq type="mandatory">dde-launchpad</packagereq>
+      <packagereq type="mandatory">dde-polkit-agent</packagereq>
+      <packagereq type="mandatory">dde-seatd</packagereq>
+      <packagereq type="mandatory">dde-services</packagereq>
+      <packagereq type="mandatory">dde-session</packagereq>
+      <packagereq type="mandatory">dde-shell</packagereq>
+      <packagereq type="mandatory">dde-tray-loader</packagereq>
+      <packagereq type="mandatory">ddm</packagereq>
+      <packagereq type="mandatory">deepin-compressor</packagereq>
+      <packagereq type="mandatory">deepin-draw</packagereq>
+      <packagereq type="mandatory">deepin-editor</packagereq>
+      <packagereq type="mandatory">deepin-fcitx5configtool-plugin</packagereq>
+      <packagereq type="mandatory">deepin-font-manager</packagereq>
+      <packagereq type="mandatory">deepin-image-viewer</packagereq>
+      <packagereq type="mandatory">deepin-qt6integration</packagereq>
+      <packagereq type="mandatory">deepin-reader</packagereq>
+      <packagereq type="mandatory">deepin-scanner</packagereq>
+      <packagereq type="mandatory">deepin-system-monitor</packagereq>
+      <packagereq type="mandatory">deepin-terminal</packagereq>
+      <packagereq type="mandatory">deepin-voice-note</packagereq>
+      <packagereq type="mandatory">deepin-desktop-base</packagereq>
+      <packagereq type="mandatory">deepin-desktop-schemas</packagereq>
+      <packagereq type="mandatory">deepin-default-settings</packagereq>
+      <packagereq type="mandatory">deepin-service-manager</packagereq>
+      <packagereq type="mandatory">deepin-wayland-protocols</packagereq>
+      <packagereq type="mandatory">dde-calendar</packagereq>
+      <packagereq type="mandatory">fcitx5</packagereq>
+      <packagereq type="mandatory">gio-qt</packagereq>
+      <packagereq type="mandatory">gnome-logs</packagereq>
+      <packagereq type="mandatory">gsettings-qt6</packagereq>
+      <packagereq type="mandatory">mediawriter</packagereq>
+      <packagereq type="mandatory">pipewire</packagereq>
+      <packagereq type="mandatory">pipewire-pulseaudio</packagereq>
+      <packagereq type="mandatory">polkit</packagereq>
+      <packagereq type="mandatory">treeland</packagereq>
+      <packagereq type="mandatory">treeland-protocols</packagereq>
+      <packagereq type="mandatory">udisks2</packagereq>
+      <packagereq type="mandatory">udisks2-qt6</packagereq>
+      <packagereq type="mandatory">upower</packagereq>
+      <packagereq type="mandatory">util-dfm-burn</packagereq>
+      <packagereq type="mandatory">util-dfm-io</packagereq>
+      <packagereq type="mandatory">util-dfm-mount</packagereq>
+      <packagereq type="mandatory">util-dfm-search</packagereq>
+      <packagereq type="mandatory">vlc</packagereq>
+      <packagereq type="mandatory">wireplumber</packagereq>
+      <packagereq type="mandatory">xdg-desktop-portal</packagereq>
+      <packagereq type="mandatory">xdg-desktop-portal-gtk</packagereq>
+      <packagereq type="mandatory">xdg-user-dirs</packagereq>
+      <packagereq type="default">deepin-desktop-theme</packagereq>
+      <packagereq type="default">deepin-icon-theme</packagereq>
+      <packagereq type="default">deepin-manual</packagereq>
+      <packagereq type="default">deepin-wallpapers</packagereq>
+      <packagereq type="default">fcitx5-chinese-addons</packagereq>
+    </packagelist>
+  </group>
+</comps>

@@ -7,7 +7,8 @@ file name follows the Fedora binary/source package name.
 ## Conventions
 
 - Target: Fedora 45, x86_64 and aarch64, COPR (`mozixun/Fedora-DDE-Remix`).
-- 71 source packages in total, including the SeetaFace stack used by
+- 70 source packages in total, plus the dde-desktop comps group, including
+the SeetaFace stack used by
   `deepin-face`, the OCR engine and the Deepin applications.
 - Qt 6 only. DTK 5 (Qt 5) builds are explicitly disabled with `-DDTK5=OFF`.
 - Package names follow Fedora where Fedora already has a package
@@ -100,21 +101,24 @@ seetaface-pose-estimation
 seetaface-quality-assessor
 seetaface-models
 deepin-face
-dde-desktop
 ```
 
 `dde-control-center` build-depends on `deepin-pw-check-devel` and
 `dareader-devel` for the accounts/authentication plugins, and on
 `dde-shell-devel` for the Treeland integration.  Build those first.
 
-`dde-desktop` is a noarch meta package that installs the complete DDE
-Wayland desktop, including DDM, the session, the shell and the standard
+`dde-desktop` is a comps group, not an RPM package.  It installs the complete
+DDE Wayland desktop, including DDM, the session, the shell and the standard
 applications.  It uses VLC for music, GNOME Logs for journal viewing and
 Fedora Media Writer for USB image writing.  Install it with:
 
 ```text
-dnf install dde-desktop
+sudo dnf copr enable mozixun/Fedora-DDE-Remix
+sudo dnf groupinstall dde-desktop
 ```
+
+The group has no versioned package entries; components such as `dde-shell`
+and `dde-tray-loader` can be updated independently.
 
 ## Source archives
 

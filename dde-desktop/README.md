@@ -1,9 +1,10 @@
-# DDE Desktop meta package
+# DDE Desktop comps group
 
-`dde-desktop` installs the complete DDE Wayland desktop environment from the
+`dde-desktop` is a Fedora comps group, not an RPM package.  It installs the
+complete DDE Wayland desktop from the
 `Fedora-DDE-Remix/Deepin-Desktop-Environment` COPR repository.
 
-It pulls in:
+The group includes:
 
 - Treeland, DDM, the DDE session manager and dde-shell;
 - dde-daemon, dde-api, dde-application-manager, dde-tray-loader and the
@@ -25,13 +26,26 @@ components:
 | Deepin Log Viewer | GNOME Logs |
 | Deepin Boot Maker | Fedora Media Writer |
 
-Each component package installs its own systemd preset and enables its own
-service: `ddm`, `dde-seatd` and `dde-system-daemon` are enabled by their
-respective packages.  The meta package repeats the same `systemd preset`
-enables as a fallback for upgrades and minimal installs.  Select the `DDE`
-Wayland session at the DDM login screen.
+## Install
 
-The Deepin icon, GTK and sound themes are installed through
-deepin-desktop-schemas.  The optional Deepin desktop-theme and wallpaper
-packages are not part of the current COPR spec set; they can be added later
-without changing this meta package.
+```bash
+sudo dnf copr enable mozixun/Fedora-DDE-Remix
+sudo dnf groupinstall dde-desktop
+```
+
+The group has no versioned `packagereq` entries, so `dde-shell`,
+`dde-tray-loader` and the other components can be updated independently.
+
+## Publish the group metadata
+
+COPR stores comps per chroot:
+
+```bash
+copr-cli edit-chroot mozixun/Fedora-DDE-Remix/fedora-45-x86_64 \
+  --upload-comps comps.xml
+```
+
+Repeat for `fedora-45-aarch64` and the rawhide chroots if needed.
+
+Each component package installs and enables its own systemd service.  Select
+the `DDE` Wayland session at the DDM login screen.
