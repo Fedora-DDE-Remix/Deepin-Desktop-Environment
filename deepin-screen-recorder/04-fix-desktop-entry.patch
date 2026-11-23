@@ -1,0 +1,11 @@
+--- a/deepin-screen-recorder.desktop
++++ b/deepin-screen-recorder.desktop
+@@ -14,7 +14,7 @@
+ X-Deepin-Vendor=deepin
+ X-Deepin-TurboType=dtkwidget
+ X-Deepin-Singleton=true
+-NotShowIn=DeepinTablet
++NotShowIn=X-DeepinTablet;
+ 
+ # Translations:
+ # Do not manually modify!

@@ -1,0 +1,28 @@
+--- a/3rdparty/libcam/libcam_encoder/encoder.c
++++ b/3rdparty/libcam/libcam_encoder/encoder.c
+@@ -258,6 +258,17 @@
+  *
+  * returns: 1 - sample format is supported; 0 - is not supported
+  */
++#if LIBAVCODEC_VER_AT_LEAST(61,0)
++static int encoder_check_audio_sample_fmt(AVCodec *codec, enum AVSampleFormat sample_fmt)
++{
++	/* AVCodec.sample_fmts was removed in FFmpeg 7.  Accept the configured
++	 * format here and let avcodec_open2() reject it if the encoder cannot
++	 * use it; the fallback list below is only a convenience. */
++	(void)codec;
++	(void)sample_fmt;
++	return 1;
++}
++#else
+ static int encoder_check_audio_sample_fmt(AVCodec *codec, enum AVSampleFormat sample_fmt)
+ {
+ 	const enum AVSampleFormat *p = codec->sample_fmts;
+@@ -270,6 +281,7 @@
+ 	}
+ 	return 0;
+ }
++#endif
+ 
+ /*
+  * video encoder initialization for raw input

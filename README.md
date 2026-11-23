@@ -7,7 +7,7 @@ file name follows the Fedora binary/source package name.
 ## Conventions
 
 - Target: Fedora 45, x86_64 and aarch64, COPR (`mozixun/Fedora-DDE-Remix`).
-- 76 source packages in total, plus the dde-desktop comps group, including
+- 78 source packages in total, plus the dde-desktop comps group, including
 the SeetaFace stack used by
   `deepin-face`, the OCR engine and the Deepin applications.
 - Qt 6 only. DTK 5 (Qt 5) builds are explicitly disabled with `-DDTK5=OFF`.
@@ -73,6 +73,7 @@ util-dfm
 dde-file-manager
 dde-control-center
 dde-grand-search
+dde-network-core
 deepin-fcitx5configtool-plugin
 dde-qtintegration (deepin-qt6integration)
 deepin-terminal
@@ -87,6 +88,7 @@ deepin-draw
 deepin-reader
 deepin-scanner
 deepin-compressor
+deepin-screen-recorder
 deepin-deepinid-client
 deepin-account-faces
 deepin-desktop-schemas
@@ -117,6 +119,13 @@ deepin-face
 `dde-grand-search` build-depends on `util-dfm-devel` (`dfm6-search`),
 `dde-shell-devel`, `dde-tray-loader-devel`, `deepin-service-manager-devel`,
 `deepin-pdfium-devel`, Qt6/DTK6, Boost and lucene++.
+
+`dde-network-core` build-depends on `dde-control-center-devel`,
+`dde-tray-loader-devel`, KF6NetworkManagerQt, libnm, gsettings-qt6 and Qt6.
+The lock-screen plugin is disabled because `dde-session-shell` is not built.
+
+`deepin-screen-recorder` uses qmake6 and builds against the system FFmpeg,
+OpenCV, GStreamer, PortAudio, libv4l and DTK6 libraries.
 
 `dde-desktop` is a comps group, not an RPM package.  It installs the complete
 DDE Wayland desktop, including DDM, the session, the shell and the standard

@@ -10,6 +10,7 @@
     <packagelist>
       <packagereq type="mandatory">NetworkManager</packagereq>
       <packagereq type="mandatory">accountsservice</packagereq>
+      <packagereq type="mandatory">dcc-network-plugin</packagereq>
       <packagereq type="mandatory">dde-account-faces</packagereq>
       <packagereq type="mandatory">dde-api</packagereq>
       <packagereq type="mandatory">dde-app-services</packagereq>
@@ -23,6 +24,7 @@
       <packagereq type="mandatory">dde-file-manager-services-plugins</packagereq>
       <packagereq type="mandatory">dde-grand-search</packagereq>
       <packagereq type="mandatory">dde-launchpad</packagereq>
+      <packagereq type="mandatory">dde-network-core</packagereq>
       <packagereq type="mandatory">dde-polkit-agent</packagereq>
       <packagereq type="mandatory">dde-seatd</packagereq>
       <packagereq type="mandatory">dde-services</packagereq>
@@ -30,6 +32,7 @@
       <packagereq type="mandatory">dde-shell</packagereq>
       <packagereq type="mandatory">dde-tray-loader</packagereq>
       <packagereq type="mandatory">ddm</packagereq>
+      <packagereq type="mandatory">dock-network-plugin</packagereq>
       <packagereq type="mandatory">deepin-compressor</packagereq>
       <packagereq type="mandatory">deepin-draw</packagereq>
       <packagereq type="mandatory">deepin-editor</packagereq>
@@ -39,6 +42,7 @@
       <packagereq type="mandatory">deepin-qt6integration</packagereq>
       <packagereq type="mandatory">deepin-reader</packagereq>
       <packagereq type="mandatory">deepin-scanner</packagereq>
+      <packagereq type="mandatory">deepin-screen-recorder</packagereq>
       <packagereq type="mandatory">deepin-system-monitor</packagereq>
       <packagereq type="mandatory">deepin-terminal</packagereq>
       <packagereq type="mandatory">deepin-voice-note</packagereq>

@@ -1,0 +1,21 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -10,6 +10,7 @@
+ 
+ option(BUILD_TESTS "Build unit tests" OFF)
+ option(BUILD_EXAMPLE "Build example programs" OFF)
++option(BUILD_DSS_PLUGIN "Build the dss (lock screen) network plugin" ON)
+ 
+ set(DDE-Network-Core_INCLUDE_DIRS  "${CMAKE_SOURCE_DIR}/src-old")
+ set(DDE-Network-Core_LIBRARIES  dde-network-core)
+@@ -54,7 +55,9 @@
+     add_subdirectory("tests")
+ endif()
+ add_subdirectory("dock-network-plugin")
+-add_subdirectory("dss-network-plugin")
++if (BUILD_DSS_PLUGIN)
++  add_subdirectory("dss-network-plugin")
++endif()
+ if (BUILD_EXAMPLE)
+   add_subdirectory("example")
+   add_subdirectory("dss_example")

@@ -1,0 +1,31 @@
+--- a/src/src.pro
++++ b/src/src.pro
+@@ -83,11 +83,17 @@
+ equals(QT_MAJOR_VERSION, 6) {
+     QT += core gui widgets network dbus multimedia multimediawidgets concurrent svg \
+           sql xml opengl openglwidgets waylandclient waylandclient-private
++
++    # Fedora: the Treeland screenshot code always references the OCR/scroll
++    # classes, so enable the Deepin 25 feature set explicitly.
++    DEFINES += OCR_SCROLL_FLAGE_ON
+     
+     # Qt6 specific configurations
+-    PKGCONFIG += dtk6widget dtk6core dtk6gui xcb xcb-util gstreamer-app-1.0 libusb-1.0
++    PKGCONFIG += dtk6widget dtk6core dtk6gui xcb xcb-util gstreamer-app-1.0 libusb-1.0 \
++                 libavcodec libavformat libavutil libswscale libswresample libavfilter libavdevice \
++                 portaudio-2.0 libv4l2 libudev opencv4
+     
+-    QMAKE_LRELEASE = /usr/lib/qt6/bin/lrelease
++    QMAKE_LRELEASE = $$[QT_HOST_BINS]/lrelease
+     
+     # Comment out KF6 libraries that are not found
+     #LIBS += -L$$PREFIX/lib/$$QMAKE_HOST.arch-linux-gnu/ -lKF6GlobalAccel -lKF6I18n
+@@ -509,7 +515,7 @@
+ INCLUDEPATH += /usr/include/libdrm
+ 
+ contains(DEFINES, OCR_SCROLL_FLAGE_ON) {
+-    LIBS += -lopencv_small
++    # OpenCV is linked through pkg-config opencv4 above.
+ }
+ 
+ # Installation paths

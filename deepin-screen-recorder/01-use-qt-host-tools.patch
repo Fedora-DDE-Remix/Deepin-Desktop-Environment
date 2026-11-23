@@ -1,0 +1,16 @@
+--- a/screen_shot_recorder.pro
++++ b/screen_shot_recorder.pro
+@@ -15,10 +15,10 @@
+ isEmpty(TRANSLATIONS) {
+      include(./translations.pri)
+ }
+-CONFIG += update_translations release_translations
++CONFIG += release_translations
+ 
+-QT6_LUPDATE = /usr/lib/qt6/bin/lupdate
+-QT6_LRELEASE = /usr/lib/qt6/bin/lrelease
++QT6_LUPDATE = $$[QT_HOST_BINS]/lupdate
++QT6_LRELEASE = $$[QT_HOST_BINS]/lrelease
+ DEFAULT_LUPDATE = lupdate
+ DEFAULT_LRELEASE = lrelease
+ 

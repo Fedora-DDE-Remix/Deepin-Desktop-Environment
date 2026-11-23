@@ -1,6 +1,6 @@
 Name:           dde-desktop-comps
 Version:        6.2.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Group metadata for the Deepin Desktop Environment
 License:        MIT
 URL:            https://github.com/Fedora-DDE-Remix/Deepin-Desktop-Environment
@@ -33,6 +33,10 @@ install -Dm644 %{SOURCE1} %{buildroot}%{_sysconfdir}/yum.repos.d/dde-desktop-com
 %config(noreplace) %{_sysconfdir}/yum.repos.d/dde-desktop-comps.repo
 
 %changelog
+* Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-3
+- Add dde-network-core, dcc-network-plugin, dock-network-plugin and
+  deepin-screen-recorder to the dde-desktop group.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
 - Add dde-grand-search to the dde-desktop group.
 
