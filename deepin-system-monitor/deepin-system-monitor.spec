@@ -1,14 +1,17 @@
 Name:           deepin-system-monitor
 Version:        6.5.49
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        System monitor for the Deepin desktop environment
 
 License:        GPL-3.0-or-later AND MIT AND LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/deepin-system-monitor
 Source0:        %{url}/archive/%{version}/deepin-system-monitor-%{version}.tar.gz
+Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-system-monitor/deepin_system_monitor.te
+Source2:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-system-monitor/deepin_system_monitor.fc
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/deepin-system-monitor/01-skip-ts-convert.patch
 
 BuildRequires:  cmake
+BuildRequires:  selinux-policy-devel
 BuildRequires:  gcc-c++
 BuildRequires:  ninja-build
 BuildRequires:  qt6-linguist
@@ -39,6 +42,8 @@ Requires:       dde-tray-loader
 Requires:       deepin-service-manager
 Requires:       polkit
 Requires:       hicolor-icon-theme
+Requires:       dde-daemon-selinux >= 6.2.1-9
+Requires:       %{name}-selinux = %{version}-%{release}
 Recommends:     deepin-manual
 
 %description
@@ -46,15 +51,30 @@ Deepin System Monitor displays CPU, memory, disk and network usage,
 lists processes and services, and provides the DDE dock plugin that shows
 system load in the panel.
 
+%package        selinux
+Summary:        SELinux mount rules for the Deepin system monitor
+Requires:       selinux-policy-targeted
+Requires:       policycoreutils
+
+%description    selinux
+This package allows systemd's init_t domain to set up the InaccessiblePaths
+mounts used by the system monitor's root service.  It grants only the
+mount-on permission for /etc/shadow and /etc/selinux, not read or write
+access to those files.
+
 %prep
 %autosetup -n deepin-system-monitor-%{version} -p1
 
 %build
 %cmake -GNinja -DVERSION=%{version} -DDOTEST=OFF
 %cmake_build
+cp %{SOURCE1} deepin_system_monitor.te
+cp %{SOURCE2} deepin_system_monitor.fc
+make -f /usr/share/selinux/devel/Makefile deepin_system_monitor.pp
 
 %install
 %cmake_install
+install -Dm644 deepin_system_monitor.pp %{buildroot}%{_datadir}/selinux/packages/deepin_system_monitor.pp
 
 %post
 %systemd_post deepin-system-monitor-system-server.service
@@ -64,6 +84,16 @@ system load in the panel.
 
 %postun
 %systemd_postun_with_restart deepin-system-monitor-system-server.service
+
+%post selinux
+if [ -x /usr/sbin/semodule ]; then
+    /usr/sbin/semodule -i /usr/share/selinux/packages/deepin_system_monitor.pp 2>/dev/null || :
+fi
+
+%postun selinux
+if [ "$1" -eq 0 ] && [ -x /usr/sbin/semodule ]; then
+    /usr/sbin/semodule -r deepin_system_monitor 2>/dev/null || :
+fi
 
 %files
 %license LICENSE
@@ -93,6 +123,13 @@ system load in the panel.
 %{_datadir}/polkit-1/actions/com.deepin.pkexec.deepin-system-monitor.policy
 %{_datadir}/polkit-1/actions/org.deepin.deepin-system-monitor-system-server.policy
 
+%files selinux
+%{_datadir}/selinux/packages/deepin_system_monitor.pp
+
 %changelog
+* Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.5.49-2
+- Add deepin-system-monitor-selinux, allowing init_t to set up the
+  InaccessiblePaths mounts for /etc/shadow and /etc/selinux.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.5.49-1
 - Initial Fedora package.

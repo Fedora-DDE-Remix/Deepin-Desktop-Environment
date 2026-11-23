@@ -2,7 +2,7 @@
 
 Name:           dde-daemon
 Version:        6.2.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Daemon handling the DDE session settings
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-daemon
@@ -164,6 +164,11 @@ fi
 %{_datadir}/selinux/packages/dde_daemon.pp
 
 %changelog
+* Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-9
+- Allow init_t to mount over /etc/shadow so the systemd InaccessiblePaths
+  sandbox used by dde-backlight-helper and the greeter helpers works in
+  enforcing mode.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-8
 - Add dde-daemon-selinux, labelling /usr/lib/deepin-daemon as bin_t so
   systemd starts the helpers in unconfined_service_t instead of init_t.

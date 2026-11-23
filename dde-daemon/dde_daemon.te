@@ -1,6 +1,18 @@
-policy_module(dde_daemon, 1.0.0)
+policy_module(dde_daemon, 1.0.1)
+
+require {
+    type init_t;
+    type shadow_t;
+    class file mounton;
+}
 
 # dde-daemon installs its system helpers in /usr/lib/deepin-daemon.  The
 # default label for /usr/lib is lib_t, which makes systemd execute these
 # helpers in init_t.  Marking them as bin_t gives the normal
 # init_t -> unconfined_service_t transition.
+
+# Several dde-daemon units use InaccessiblePaths=/etc/shadow.  systemd
+# performs that bind mount as init_t, which Fedora's base policy does not
+# allow on shadow_t.  Only allow the mount-over operation; this does not
+# grant read or write access to the password database.
+allow init_t shadow_t:file mounton;

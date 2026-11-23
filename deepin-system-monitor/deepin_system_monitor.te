@@ -1,0 +1,18 @@
+policy_module(deepin_system_monitor, 1.0.0)
+
+require {
+    type init_t;
+    type shadow_t;
+    type selinux_config_t;
+    class file mounton;
+    class dir mounton;
+}
+
+# The system-monitor system service uses InaccessiblePaths for /etc/shadow
+# and /etc/selinux.  systemd performs those bind mounts as init_t, which the
+# base policy does not allow for these security file types.  Allow only the
+# mount-over operation; no read or write access to the underlying files is
+# granted.
+allow init_t shadow_t:file mounton;
+allow init_t selinux_config_t:file mounton;
+allow init_t selinux_config_t:dir mounton;

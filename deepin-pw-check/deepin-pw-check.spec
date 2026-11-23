@@ -2,7 +2,7 @@
 
 Name:           deepin-pw-check
 Version:        6.0.13
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Password validation library and service for DDE
 License:        GPL-2.0-only
 URL:            https://github.com/linuxdeepin/deepin-pw-check
@@ -25,6 +25,7 @@ BuildRequires:  pkgconfig(gdk-3.0)
 Requires:       cracklib
 Requires:       iniparser
 Requires:       polkit
+Requires:       dde-daemon-selinux >= 6.2.1-9
 
 %description
 deepin-pw-check provides the password validation library, the PAM module and
@@ -91,6 +92,10 @@ mv %{buildroot}%{_prefix}/lib/libdeepin_pw_check* %{buildroot}%{_libdir}/
 %{_libdir}/pkgconfig/libdeepin_pw_check.pc
 
 %changelog
+* Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.0.13-6
+- Require dde-daemon-selinux for the init_t mounton rule used by the
+  systemd InaccessiblePaths sandbox on /etc/shadow.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.13-5
 - Add gio and gdk pkgconfig BuildRequires for the Go service.
 
