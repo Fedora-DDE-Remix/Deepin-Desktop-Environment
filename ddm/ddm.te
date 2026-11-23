@@ -1,0 +1,20 @@
+policy_module(ddm, 1.0.1)
+
+require {
+    type xdm_t;
+    type var_run_t;
+    class sock_file { getattr open read write };
+    class unix_stream_socket connectto;
+}
+
+# DDM is a display manager.  Fedora already provides the generic xdm_t
+# domain used by SDDM, GDM and LightDM, so DDM does not need a new domain.
+# The file contexts in ddm.fc map the DDM binaries and runtime directories
+# onto the existing xdm_exec_t, xdm_var_run_t and xdm_var_lib_t types.
+#
+# DDM uses dde-seatd and the Treeland sockets under /run.  Those daemons
+# currently run as unconfined_service_t, but their sockets are labelled
+# var_run_t.  Allow the display manager to connect to and write those
+# trusted sockets; without this the QLocalSocket connection gets EACCES.
+allow xdm_t var_run_t:sock_file { getattr open read write };
+allow xdm_t var_run_t:unix_stream_socket connectto;

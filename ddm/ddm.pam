@@ -1,0 +1,28 @@
+#%PAM-1.0
+
+# Fedora display-manager stack.  Keep the SELinux and systemd session
+# handling in sync with /usr/lib/pam.d/plasmalogin from plasma-login-manager.
+auth        [success=done ignore=ignore default=bad] pam_selinux_permit.so
+auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin
+auth        substack    password-auth
+-auth       optional    pam_deepin_keyring.so
+-auth       optional    pam_gnome_keyring.so
+-auth       optional    pam_kwallet5.so
+auth        include     postlogin
+
+account     required    pam_nologin.so
+account     include     password-auth
+
+password    include     password-auth
+-password   optional    pam_gnome_keyring.so    use_authtok
+
+session     required    pam_selinux.so close
+session     required    pam_loginuid.so
+session     required    pam_selinux.so open
+session     optional    pam_keyinit.so          force revoke
+session     required    pam_namespace.so
+session     include     password-auth
+-session    optional    pam_deepin_keyring.so
+-session    optional    pam_gnome_keyring.so    auto_start
+-session    optional    pam_kwallet5.so         auto_start
+session     include     postlogin

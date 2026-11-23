@@ -1,0 +1,26 @@
+#%PAM-1.0
+
+# Fedora autologin stack, modelled on plasma-login-manager's
+# plasmalogin-autologin.  Do not use the Debian common-account/common-session
+# names here: Fedora only provides system-auth/password-auth.
+auth        required    pam_succeed_if.so shell notin /sbin/nologin:/usr/sbin/nologin:/bin/false:/usr/bin/false
+auth        requisite   pam_nologin.so
+auth        required    pam_env.so
+auth        required    pam_permit.so
+auth        include     postlogin
+
+account     required    pam_nologin.so
+account     include     system-auth
+
+password    include     system-auth
+
+session     required    pam_selinux.so close
+session     required    pam_loginuid.so
+session     required    pam_selinux.so open
+session     optional    pam_keyinit.so          force revoke
+session     required    pam_namespace.so
+session     include     system-auth
+-session    optional    pam_deepin_keyring.so
+-session    optional    pam_gnome_keyring.so    auto_start
+-session    optional    pam_kwallet5.so         auto_start
+session     include     postlogin
