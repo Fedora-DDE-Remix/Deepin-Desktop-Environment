@@ -1,0 +1,158 @@
+--- a/locale-helper/ifc.go
++++ b/locale-helper/ifc.go
+@@ -7,6 +7,8 @@
+ import (
+ 	"errors"
+ 	"fmt"
++	"io/ioutil"
++	"strings"
+ 
+ 	"github.com/godbus/dbus/v5"
+ 	polkit "github.com/linuxdeepin/go-dbus-factory/system/org.freedesktop.policykit1"
+@@ -17,7 +19,7 @@
+ const (
+ 	polkitManageLocale = "org.deepin.dde.locale-helper.manage-locale"
+ 
+-	defaultLocaleFile    = "/etc/default/locale"
++	defaultLocaleFile    = "/etc/locale.conf"
+ 	defaultLocaleGenFile = "/etc/locale.gen"
+ )
+ 
+@@ -39,10 +41,27 @@
+ 		return dbusutil.ToError(fmt.Errorf("invalid locale: %s", locale))
+ 	}
+ 
+-	err = writeContentToFile(defaultLocaleFile, "LANG="+locale)
++	err = writeLocaleConf(defaultLocaleFile, locale)
+ 	return dbusutil.ToError(err)
+ }
+ 
++// writeLocaleConf replaces LANG in /etc/locale.conf while preserving the
++// other locale variables that systemd and glibc may have written there.
++func writeLocaleConf(file, locale string) error {
++	var lines []string
++	if data, err := ioutil.ReadFile(file); err == nil {
++		for _, line := range strings.Split(string(data), "\n") {
++			trimmed := strings.TrimSpace(line)
++			if trimmed == "" || strings.HasPrefix(trimmed, "LANG=") {
++				continue
++			}
++			lines = append(lines, line)
++		}
++	}
++	lines = append(lines, "LANG="+locale)
++	return writeContentToFile(file, strings.Join(lines, "\n")+"\n")
++}
++
+ func (h *Helper) emitFailed(err error) {
+ 	erro := h.service.Emit(h, "Success", false, err.Error())
+ 	if erro != nil {
+--- a/locale-helper/main.go
++++ b/locale-helper/main.go
+@@ -5,7 +5,9 @@
+ package main
+ 
+ import (
++	"fmt"
+ 	"os/exec"
++	"strings"
+ 	"sync"
+ 	"time"
+ 
+@@ -114,8 +116,34 @@
+ 	}
+ }
+ 
++// splitLocale splits zh_CN.UTF-8 into its source locale and charmap.
++func splitLocale(locale string) (lang, charset string) {
++	lang = locale
++	charset = "UTF-8"
++	if i := strings.Index(locale, "."); i >= 0 {
++		lang = locale[:i]
++		charset = locale[i+1:]
++	}
++	if i := strings.Index(charset, "@"); i >= 0 {
++		charset = charset[:i]
++	}
++	return lang, charset
++}
++
+ // locales version <= 2.13
+ func (h *Helper) doGenLocaleWithParam(locale string) error {
++	// Fedora does not provide locale-gen or /etc/locale.gen.  Generate the
++	// locale directly from the glibc locale source shipped by
++	// glibc-locale-source.
++	if dutils.IsFileExist("/usr/bin/localedef") {
++		lang, charset := splitLocale(locale)
++		output, err := exec.Command("/usr/bin/localedef", "--no-archive", "-i", lang, "-f", charset, locale).CombinedOutput()
++		if err != nil {
++			return fmt.Errorf("localedef failed for %s: %v: %s", locale, err, strings.TrimSpace(string(output)))
++		}
++		return nil
++	}
++
+ 	if !dutils.IsFileExist(deepinImmutableCtlBin) {
+ 		logger.Warning("deepin-immutable-ctl not found, use locale-gen directly")
+ 		return exec.Command(localeGenBin, locale).Run()
+--- a/locale-helper/parser.go
++++ b/locale-helper/parser.go
+@@ -6,6 +6,7 @@
+ 
+ import (
+ 	"io/ioutil"
++	"os"
+ 	"regexp"
+ 	"strings"
+ 	"sync"
+@@ -31,6 +32,10 @@
+ }
+ 
+ func IsLocaleValid(locale string) bool {
++	if isFedoraLocaleSourceAvailable(locale) {
++		return true
++	}
++
+ 	finfo, err := NewLocaleFileInfo(defaultLocaleGenFile)
+ 	if err != nil {
+ 		return false
+@@ -39,6 +44,27 @@
+ 	return finfo.IsLocaleValid(locale)
+ }
+ 
++// isFedoraLocaleSourceAvailable checks the glibc locale source and charmap
++// trees used by localedef.  Fedora has no /etc/locale.gen, so the Debian
++// parser alone would reject every locale.
++func isFedoraLocaleSourceAvailable(locale string) bool {
++	lang, charset := splitLocale(locale)
++	if lang == "" {
++		return false
++	}
++	if _, err := os.Stat("/usr/share/i18n/locales/" + lang); err != nil {
++		return false
++	}
++	charmap := "/usr/share/i18n/charmaps/" + charset
++	if _, err := os.Stat(charmap); err == nil {
++		return true
++	}
++	if _, err := os.Stat(charmap + ".gz"); err == nil {
++		return true
++	}
++	return false
++}
++
+ func NewLocaleFileInfo(file string) (*localeFileInfo, error) {
+ 	datas, err := ioutil.ReadFile(file)
+ 	if err != nil {
+--- a/misc/systemd/system/deepin-locale-helper.service
++++ b/misc/systemd/system/deepin-locale-helper.service
+@@ -15,8 +15,8 @@
+ RuntimeDirectoryPreserve=yes
+ 
+ ReadWritePaths=/run/dde-api
+-ReadWritePaths=/etc/default/locale
+-ReadWritePaths=/etc/locale.gen
++ReadWritePaths=/etc/locale.conf
++ReadWritePaths=/usr/lib/locale
+ 
+ # Temporary workaround: ReadWritePaths conflicts with deepin-immutable-ctl
+ # TODO: Remove this comment when immutable system wraps locale-gen properly

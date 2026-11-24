@@ -7,9 +7,10 @@ file name follows the Fedora binary/source package name.
 ## Conventions
 
 - Target: Fedora 45, x86_64 and aarch64, COPR (`mozixun/Fedora-DDE-Remix`).
-- 78 source packages in total, plus the dde-desktop comps group, including
-the SeetaFace stack used by
-  `deepin-face`, the OCR engine and the Deepin applications.
+- 80 source packages in total, plus the dde-desktop comps group, including
+  the SeetaFace stack used by `deepin-face`, the OCR engine and the Deepin
+  applications.  Runtime packages from Fedora (for example `cryfs`, `fuse`
+  and `vlc`) are listed in the comps group instead of being rebuilt here.
 - Qt 6 only. DTK 5 (Qt 5) builds are explicitly disabled with `-DDTK5=OFF`.
 - Package names follow Fedora where Fedora already has a package
   (`dtk6core`, `dtk6gui`, `dtk6widget`, `dtk6declarative`, `dtk6log`,
@@ -74,6 +75,8 @@ dde-file-manager
 dde-control-center
 dde-grand-search
 dde-network-core
+mpris-qt6
+deepin-music
 deepin-fcitx5configtool-plugin
 dde-qtintegration (deepin-qt6integration)
 deepin-terminal
@@ -126,6 +129,13 @@ The lock-screen plugin is disabled because `dde-session-shell` is not built.
 
 `deepin-screen-recorder` uses qmake6 and builds against the system FFmpeg,
 OpenCV, GStreamer, PortAudio, libv4l and DTK6 libraries.
+
+`deepin-music` uses the system VLC, FFmpeg, TagLib, SDL2 and `mpris-qt6`.
+`mpris-qt6` is a small qmake6 library packaged before it.
+
+`dde-api` now builds and installs `locale-helper`, adapted for Fedora
+(`/etc/locale.conf` and `localedef`). `dde-daemon` provides the
+`LangSelector1` session service used by the Language and region page.
 
 `dde-desktop` is a comps group, not an RPM package.  It installs the complete
 DDE Wayland desktop, including DDM, the session, the shell and the standard

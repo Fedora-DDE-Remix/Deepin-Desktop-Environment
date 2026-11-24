@@ -2,7 +2,7 @@
 
 Name:           dde-daemon
 Version:        6.2.1
-Release:        10%{?dist}
+Release:        12%{?dist}
 Summary:        Daemon handling the DDE session settings
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-daemon
@@ -83,6 +83,10 @@ rm -rf %{buildroot}%{_sysconfdir}/default/grub.d
 rm -f  %{buildroot}%{_prefix}/lib/deepin-daemon/grub2
 rm -f  %{buildroot}%{_datadir}/lightdm/lightdm.conf.d/60-deepin.conf
 rm -f  %{buildroot}%{_unitdir}/deepin-grub2.service
+# DDM/Treeland handles the greeter and locking; these LightDM-only helpers
+# depend on a lightdm user that Fedora does not have.
+rm -f  %{buildroot}%{_unitdir}/dde-lock-service.service
+rm -f  %{buildroot}%{_unitdir}/dde-greeter-setter.service
 
 %files
 %license LICENSE
@@ -107,8 +111,6 @@ rm -f  %{buildroot}%{_unitdir}/deepin-grub2.service
 %config(noreplace) %{_sysconfdir}/deepin/
 %config(noreplace) %{_sysconfdir}/pulse/daemon.conf.d/
 %{_unitdir}/dde-backlight-helper.service
-%{_unitdir}/dde-greeter-setter.service
-%{_unitdir}/dde-lock-service.service
 %{_unitdir}/dde-system-daemon.service
 %{_presetdir}/90-dde-daemon.preset
 %{_userunitdir}/org.dde.session.Daemon1.service
@@ -118,17 +120,26 @@ rm -f  %{buildroot}%{_unitdir}/deepin-grub2.service
 %{_userunitdir}/dde-session-pre.target.wants/org.dde.session.Daemon1.service
 
 %post
-%systemd_post dde-system-daemon.service dde-lock-service.service dde-greeter-setter.service dde-backlight-helper.service
+%systemd_post dde-system-daemon.service dde-backlight-helper.service
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %preun
-%systemd_preun dde-system-daemon.service dde-lock-service.service dde-greeter-setter.service dde-backlight-helper.service
+%systemd_preun dde-system-daemon.service dde-backlight-helper.service
 
 %postun
-%systemd_postun_with_restart dde-system-daemon.service dde-lock-service.service dde-greeter-setter.service dde-backlight-helper.service
+%systemd_postun_with_restart dde-system-daemon.service dde-backlight-helper.service
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %changelog
+* Tue Nov 24 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-12
+- Use the automatically generated libddcutil soname dependency instead of
+  an explicit library Requires.
+
+* Tue Nov 24 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-11
+- Require libddcutil for the backlight helper.
+- Drop the LightDM-only lock and greeter units; DDM/Treeland handles both
+  and Fedora has no lightdm user.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-10
 - Move the SELinux policy into the independent dde-daemon-selinux package
   and use an unversioned dependency in both directions.

@@ -1,6 +1,6 @@
 Name:           dde-file-manager
 Version:        6.6.7
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        File manager for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-file-manager
@@ -72,6 +72,8 @@ Requires:       util-dfm-search
 Requires:       gvfs
 Requires:       gvfs-fuse
 Requires:       polkit
+Requires:       cryfs
+Requires:       fuse
 
 %description
 dde-file-manager is the Deepin file manager and desktop.  It provides the
@@ -217,6 +219,9 @@ fi
 %{_datadir}/dsg/configs/overrides/org.deepin.dde.treeland/org.deepin.dde.treeland.app/dde-trash/
 
 %changelog
+* Tue Nov 24 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-9
+- Require cryfs and fuse so the vault plugin is usable out of the box.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-8
 - Add xcb and xcb-ewmh for the desktop plugins.
 

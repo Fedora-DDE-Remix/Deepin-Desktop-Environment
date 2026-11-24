@@ -21,6 +21,8 @@
       <packagereq type="mandatory">dde-daemon</packagereq>
       <packagereq type="mandatory">dde-file-manager</packagereq>
       <packagereq type="mandatory">dde-file-manager-desktop</packagereq>
+      <packagereq type="mandatory">cryfs</packagereq>
+      <packagereq type="mandatory">fuse</packagereq>
       <packagereq type="mandatory">dde-file-manager-services-plugins</packagereq>
       <packagereq type="mandatory">dde-grand-search</packagereq>
       <packagereq type="mandatory">dde-launchpad</packagereq>
@@ -39,6 +41,7 @@
       <packagereq type="mandatory">deepin-fcitx5configtool-plugin</packagereq>
       <packagereq type="mandatory">deepin-font-manager</packagereq>
       <packagereq type="mandatory">deepin-image-viewer</packagereq>
+      <packagereq type="mandatory">deepin-music</packagereq>
       <packagereq type="mandatory">deepin-qt6integration</packagereq>
       <packagereq type="mandatory">deepin-reader</packagereq>
       <packagereq type="mandatory">deepin-scanner</packagereq>

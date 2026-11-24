@@ -1,6 +1,7 @@
+Epoch:          1
 Name:           dde-api-selinux
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SELinux policy for dde-api helper services
 License:        GPL-2.0-or-later
 URL:            https://github.com/Fedora-DDE-Remix/Deepin-Desktop-Environment
@@ -49,5 +50,9 @@ fi
 %{_datadir}/selinux/packages/dde_api.pp
 
 %changelog
+* Tue Nov 24 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-2
+- Set Epoch 1 so this policy package supersedes the old 6.x bundled
+  policy package.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-1
 - Independent SELinux policy package for dde-api.
