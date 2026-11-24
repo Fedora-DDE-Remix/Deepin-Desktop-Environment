@@ -1,6 +1,6 @@
 Name:           dde-network-core
 Version:        6.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        DDE network library, service and desktop plugins
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-network-core
@@ -34,6 +34,7 @@ BuildRequires:  libcurl-devel
 BuildRequires:  systemd-devel
 BuildRequires:  wayland-protocols-devel
 BuildRequires:  qt6-linguist
+BuildRequires:  qt6-qtbase-private-devel
 BuildRequires:  dde-control-center-devel >= 6.2.1
 BuildRequires:  dde-tray-loader-devel >= 6.2.1
 
@@ -132,6 +133,10 @@ The network tray plugin for the DDE dock.
 %{_datadir}/dde-dock/icons/dcc-setting/dcc-network.dci
 
 %changelog
+* Tue Nov 24 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-2
+- Add qt6-qtbase-private-devel; Qt6WaylandClientPrivate needs
+  Qt6CorePrivate, which the previous local buildroot provided implicitly.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-1
 - Initial Fedora package for DDE 25/Treeland.
 - Build the control center and dock network plugins; skip the lock-screen

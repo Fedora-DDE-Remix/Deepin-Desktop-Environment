@@ -1,6 +1,6 @@
 Name:           deepin-screen-recorder
 Version:        6.7.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Screen capture and recording tool for the Deepin desktop
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later AND MIT AND CC-BY-4.0 AND CC0-1.0
 URL:            https://github.com/linuxdeepin/deepin-screen-recorder
@@ -22,6 +22,7 @@ BuildRequires:  qt6-linguist
 BuildRequires:  dtk6core-devel
 BuildRequires:  dtk6gui-devel
 BuildRequires:  dtk6widget-devel
+BuildRequires:  dde-tray-loader-devel >= 6.2.1
 BuildRequires:  libxcb-devel
 BuildRequires:  xcb-util-devel
 BuildRequires:  gstreamer1-devel
@@ -108,6 +109,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 %{_datadir}/dsg/configs/overrides/org.deepin.dde.treeland/
 
 %changelog
+* Tue Nov 24 2026 mozixun <mozixun@fedoraproject.org> - 6.7.2-2
+- Add the missing dde-tray-loader-devel BuildRequires for the dde-dock
+  plugin headers. A polluted local buildroot had hidden this dependency.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.7.2-1
 - Initial Fedora package for DDE 25/Treeland.
 - Use qmake6 and Qt host tools from the Fedora Qt6 installation.
