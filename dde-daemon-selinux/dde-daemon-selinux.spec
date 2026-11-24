@@ -1,7 +1,7 @@
 Epoch:          1
 Name:           dde-daemon-selinux
 Version:        1.0.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        SELinux policy for dde-daemon system helpers
 License:        GPL-2.0-or-later
 URL:            https://github.com/Fedora-DDE-Remix/Deepin-Desktop-Environment
@@ -36,19 +36,19 @@ install -Dm644 %{name}-%{version}/dde_daemon.pp %{buildroot}%{_datadir}/selinux/
 if [ -x /usr/sbin/semodule ]; then
     /usr/sbin/semodule -i /usr/share/selinux/packages/dde_daemon.pp 2>/dev/null || :
 fi
-for p in /usr/lib/deepin-daemon /usr/lib/deepin-authenticate /usr/lib/deepin-deepinid-daemon; do
+for p in /usr/lib/deepin-daemon /usr/lib/deepin-authenticate /usr/lib/deepin-deepinid-daemon /usr/libexec/deepin-pw-check; do
     [ -e "$p" ] && /usr/sbin/restorecon -R "$p" 2>/dev/null || :
 done
 
 %posttrans
-for p in /usr/lib/deepin-daemon /usr/lib/deepin-authenticate /usr/lib/deepin-deepinid-daemon; do
+for p in /usr/lib/deepin-daemon /usr/lib/deepin-authenticate /usr/lib/deepin-deepinid-daemon /usr/libexec/deepin-pw-check; do
     [ -e "$p" ] && /usr/sbin/restorecon -R "$p" 2>/dev/null || :
 done
 
 %postun
 if [ "$1" -eq 0 ] && [ -x /usr/sbin/semodule ]; then
     /usr/sbin/semodule -r dde_daemon 2>/dev/null || :
-    for p in /usr/lib/deepin-daemon /usr/lib/deepin-authenticate /usr/lib/deepin-deepinid-daemon; do
+    for p in /usr/lib/deepin-daemon /usr/lib/deepin-authenticate /usr/lib/deepin-deepinid-daemon /usr/libexec/deepin-pw-check; do
         [ -e "$p" ] && /usr/sbin/restorecon -R "$p" 2>/dev/null || :
     done
 fi
@@ -57,6 +57,10 @@ fi
 %{_datadir}/selinux/packages/dde_daemon.pp
 
 %changelog
+* Tue Nov 24 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-4
+- Label the deepin-pw-check D-Bus service binary as bin_t.  dde-control-center
+  requires deepin-pw-check, so the dde-desktop group installs it.
+
 * Tue Nov 24 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-3
 - Label the deepin-deepinid sync helper as bin_t so D-Bus starts it in
   unconfined_service_t instead of system_dbusd_t.

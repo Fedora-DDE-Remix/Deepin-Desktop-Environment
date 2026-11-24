@@ -1,3 +1,4 @@
 /usr/lib/deepin-daemon(/.*)?	--	gen_context(system_u:object_r:bin_t,s0)
 /usr/lib/deepin-authenticate/deepin-authentication	--	gen_context(system_u:object_r:bin_t,s0)
 /usr/lib/deepin-deepinid-daemon/deepin-sync-helper	--	gen_context(system_u:object_r:bin_t,s0)
+/usr/libexec/deepin-pw-check/deepin-pw-check	--	gen_context(system_u:object_r:bin_t,s0)
