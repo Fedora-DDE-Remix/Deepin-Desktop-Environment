@@ -6,7 +6,7 @@
 
 Name:           seetaface-boxes
 Version:        6.0.0
-Release:        0.2.20251122git%{shortcommit}%{?dist}
+Release:        0.3.20251122git%{shortcommit}%{?dist}
 Summary:        SeetaFace face detector module
 License:        BSD-3-Clause
 URL:            https://github.com/linuxdeepin/%{repo}
@@ -47,7 +47,7 @@ seetaface modules.
   -DCMAKE_BUILD_TYPE=Release -DPLATFORM=x64 -DCONFIGURATION=Release \
   -DSEETA_INSTALL_PATH=%{_prefix} -DSEETA_AUTHORIZE=ON -DSEETA_MODEL_ENCRYPT=ON \
   -DORZ_ROOT_DIR=%{_prefix} -DCMAKE_MODULE_PATH=%{_datadir}/cmake \
-  -DCMAKE_CXX_FLAGS="-include cstdlib -include functional -include memory"
+  -DCMAKE_CXX_FLAGS:STRING="%{build_cxxflags} -include cstdlib -include functional -include memory"
 %cmake_build
 
 %install
@@ -73,6 +73,9 @@ fi
 
 
 %changelog
+* Fri Nov 27 2026 Fedora DDE Remix <fedora-dde-remix@users.noreply.github.com> - 6.0.0-0.3.20251122git2001378b
+- Preserve Fedora C++ build flags and required standard-library includes.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.0.0-0.2.20251122git2001378b
 - Point CMAKE_MODULE_PATH at /usr/share/cmake for the SeetaFace Find modules.
 

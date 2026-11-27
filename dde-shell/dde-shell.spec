@@ -2,7 +2,7 @@
 
 Name:           dde-shell
 Version:        6.2.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        DDE shell, dock and desktop plugin framework
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-shell
@@ -74,7 +74,7 @@ This package contains the dde-shell headers and CMake configuration.
 %build
 %cmake -GNinja -DBUILD_WITH_X11=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF \
   -DINCLUDE_INSTALL_DIR=%{_includedir}/dde-shell \
-  -DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations -fPIE"
+  -DCMAKE_CXX_FLAGS:STRING="%{build_cxxflags} -Wno-deprecated-declarations"
 %cmake_build
 
 %install
@@ -112,6 +112,10 @@ This package contains the dde-shell headers and CMake configuration.
 %{_libdir}/cmake/DDEShellDock/
 
 %changelog
+* Fri Nov 27 2026 Fedora DDE Remix <fedora-dde-remix@users.noreply.github.com> - 6.2.1-5
+- Preserve Fedora C++ build flags while suppressing deprecated declarations.
+- Remove the global PIE override; retain CMake shared-library PIC handling.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-4
 - Add wayland-protocols for ECM's FindWaylandProtocols.
 

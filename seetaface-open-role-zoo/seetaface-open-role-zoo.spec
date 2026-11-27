@@ -6,7 +6,7 @@
 
 Name:           seetaface-open-role-zoo
 Version:        1.0.0
-Release:        0.1.20251122git%{shortcommit}%{?dist}
+Release:        0.2.20251122git%{shortcommit}%{?dist}
 Summary:        OpenRoleZoo utility library for SeetaFace
 License:        BSD-3-Clause
 URL:            https://github.com/linuxdeepin/%{repo}
@@ -34,7 +34,7 @@ This package contains development files for %{name}.
   -DCMAKE_BUILD_TYPE=Release -DPLATFORM=x64 -DCONFIGURATION=Release \
   -DSEETA_INSTALL_PATH=%{_prefix} -DSEETA_AUTHORIZE=ON -DSEETA_MODEL_ENCRYPT=ON \
   -DORZ_ROOT_DIR=%{_prefix} -DCMAKE_MODULE_PATH=%{_prefix}/cmake \
-  -DCMAKE_CXX_FLAGS="-include cstdlib -include functional -include memory" \
+  -DCMAKE_CXX_FLAGS:STRING="%{build_cxxflags} -include cstdlib -include functional -include memory" \
   -DORZ_INSTALL=ON
 %cmake_build
 
@@ -58,5 +58,8 @@ fi
 
 
 %changelog
+* Fri Nov 27 2026 Fedora DDE Remix <fedora-dde-remix@users.noreply.github.com> - 1.0.0-0.2.20251122git52fc4caf
+- Preserve Fedora C++ build flags and required standard-library includes.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 1.0.0-0.1.20251122git52fc4caf
 - Initial Fedora package (upstream commit 52fc4cafd73ebc54d743257852b84cf14a88b8e5).
