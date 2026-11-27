@@ -2,13 +2,14 @@
 
 Name:           treeland
 Version:        0.12.0
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Wayland compositor for the Deepin desktop environment
 License:        (Apache-2.0 OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only) AND MIT AND CC0-1.0
 URL:            https://github.com/linuxdeepin/treeland
 Source0:        %{url}/archive/%{version}/treeland-%{version}.tar.gz
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/treeland/01-relax-pixman.patch
 Patch1:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/treeland/02-pnpids-no-heredoc.patch
+Patch2:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/02e1bdb0b632479ff9d20479982c5abbba7abf84/treeland/03-fix-logo-resource-url.patch
 
 Provides:       bundled(waylib) = 0.20.2
 Provides:       bundled(wlroots) = 0.20.2
@@ -94,6 +95,8 @@ BuildRequires:  lcms2-devel
 BuildRequires:  libliftoff-devel
 
 Requires:       ddm
+Requires:       dde-seatd
+Requires:       /usr/bin/Xwayland
 Requires:       dde-session
 Requires:       deepin-wayland-protocols
 Requires:       treeland-protocols
@@ -174,6 +177,11 @@ environment.  It integrates with DDM for the greeter and lock screen.
 %systemd_user_postun_with_restart treeland.service
 
 %changelog
+* Fri Nov 27 2026 Fedora DDE Remix contributors - 0.12.0-11
+- Require the seat daemon used by the system compositor service.
+- Require Xwayland, executed by the enabled treeland-xwayland helper.
+- Use the correct qrc URL for the embedded greeter fallback logo.
+
 * Sun Nov 22 2026 mozixun <mozixun@fedoraproject.org> - 0.12.0-10
 - Avoid the gen_pnpids.sh here-document, which fails under the mock
   build shell.
