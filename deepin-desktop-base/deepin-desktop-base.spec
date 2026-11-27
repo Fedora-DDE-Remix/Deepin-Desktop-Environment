@@ -2,7 +2,7 @@
 
 Name:           deepin-desktop-base
 Version:        2026.10.28
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Base data files for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/deepin-desktop-base
@@ -11,7 +11,7 @@ BuildArch:      noarch
 
 BuildRequires:  make
 
-Requires:       fedora-logos
+Requires:       system-logos
 
 %description
 This package provides the Deepin desktop version files, language metadata,
@@ -49,5 +49,8 @@ rm -rf %{buildroot}%{_datadir}/distro-info
 %{_datadir}/plymouth/deepin-logo.png
 
 %changelog
+* Fri Nov 27 2026 Fedora DDE Remix contributors - 2026.10.28-2
+- Accept the system-logos provider so Remix images can use generic artwork.
+
 * Sat Nov 21 2026 mozixun <mozixun@fedoraproject.org> - 2026.10.28-1
 - Initial Fedora package.

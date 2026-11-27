@@ -1,6 +1,6 @@
 Name:           ddm
 Version:        0.5.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Deepin Display Manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/linuxdeepin/ddm
@@ -8,6 +8,7 @@ Source0:        %{url}/archive/%{version}/ddm-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/ddm/90-ddm.preset
 Source2:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/ddm/ddm.pam
 Source3:        https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/ddm/ddm-autologin.pam
+Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/02e1bdb0b632479ff9d20479982c5abbba7abf84/ddm/01-fedora-kmscon-conflict.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -30,6 +31,7 @@ BuildRequires:  libXau-devel
 BuildRequires:  wayland-devel
 
 Requires:       accountsservice
+Requires:       dde-seatd
 Requires:       systemd
 Requires:       systemd-pam
 Requires:       pam
@@ -91,6 +93,10 @@ install -Dm644 %{SOURCE3} %{buildroot}%{_sysconfdir}/pam.d/ddm-autologin
 %{_libdir}/cmake/DDM/
 
 %changelog
+* Fri Nov 27 2026 Fedora DDE Remix contributors - 0.5.0-9
+- Require the seat daemon used by ddm.service.
+- Order against and conflict with kmscon on DDM's configured initial VT.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 0.5.0-8
 - Move the SELinux policy into the independent ddm-selinux package and use
   an unversioned dependency in both directions.

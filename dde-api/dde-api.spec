@@ -2,7 +2,7 @@
 
 Name:           dde-api
 Version:        6.2.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Go language bindings and helper services for dde-daemon
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-api
@@ -65,6 +65,13 @@ make DESTDIR=%{buildroot} install-binary install-misc INSTALL_LOCALE_HELPER=1 SY
 install -Dm644 misc/sysusers/deepin-daemon.conf %{buildroot}%{_sysusersdir}/deepin-daemon.conf
 sed -i 's|set(DDE_API_INCLUDE_DIRS "/usr/include")|set(DDE_API_INCLUDE_DIRS "")|' %{buildroot}%{_datadir}/cmake/DDEAPI/DDEAPIConfig.cmake
 
+# Drop the Debian sudo-group exception from polkit's unused state directory.
+# Keep the installed .policy action and administrator authentication unchanged.
+rm -f %{buildroot}%{_var}/lib/polkit-1/rules.d/org.deepin.dde.device.rules
+# The pinned source installs no other files below this package-specific tree.
+rmdir %{buildroot}%{_var}/lib/polkit-1/rules.d \
+  %{buildroot}%{_var}/lib/polkit-1
+
 %files
 %license LICENSE
 %doc README.md
@@ -75,7 +82,6 @@ sed -i 's|set(DDE_API_INCLUDE_DIRS "/usr/include")|set(DDE_API_INCLUDE_DIRS "")|
 %{_datadir}/dbus-1/system-services/
 %{_datadir}/dbus-1/system.d/
 %{_datadir}/polkit-1/actions/
-%{_var}/lib/polkit-1/rules.d/
 %{_datadir}/icons/hicolor/
 %{_sysusersdir}/deepin-daemon.conf
 %{_unitdir}/deepin-api-device.service
@@ -98,6 +104,10 @@ sed -i 's|set(DDE_API_INCLUDE_DIRS "/usr/include")|set(DDE_API_INCLUDE_DIRS "")|
 %systemd_postun_with_restart deepin-login-sound.service deepin-shutdown-sound.service deepin-api-device.service deepin-sound-theme-player.service deepin-locale-helper.service
 
 %changelog
+* Fri Nov 27 2026 Fedora DDE Remix contributors - 6.2.1-9
+- Omit the unused Debian sudo-group polkit rule and its empty directories.
+- Preserve the packaged action and its administrator authentication policy.
+
 * Mon Nov 23 2026 mozixun <mozixun@fedoraproject.org> - 6.2.1-8
 - Generate locales with localedef --no-archive so a stale or incompatible
   /usr/lib/locale/locale-archive cannot make language switching fail.

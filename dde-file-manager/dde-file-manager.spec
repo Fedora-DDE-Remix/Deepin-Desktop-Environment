@@ -1,12 +1,14 @@
 Name:           dde-file-manager
 Version:        6.6.7
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        File manager for the Deepin desktop environment
 License:        GPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dde-file-manager
 Source0:        %{url}/archive/%{version}/dde-file-manager-%{version}.tar.gz
 Patch0:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-file-manager/01-fedora-disable-appimage-qt611.patch
 Patch1:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/refs/heads/main/dde-file-manager/02-pc-remove-libappimage.patch
+# Keep the event converter callback in one shared framework definition.
+Patch2:         https://raw.githubusercontent.com/Fedora-DDE-Remix/Deepin-Desktop-Environment/02e1bdb0b632479ff9d20479982c5abbba7abf84/dde-file-manager/0001-dpf-centralize-event-converter.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -219,6 +221,10 @@ fi
 %{_datadir}/dsg/configs/overrides/org.deepin.dde.treeland/org.deepin.dde.treeland.app/dde-trash/
 
 %changelog
+* Fri Nov 27 2026 Fedora DDE Remix contributors - 6.6.7-10
+- Centralize the DPF event converter callback in the shared framework.
+- Rebuild the desktop and file-manager plugins together with the framework.
+
 * Tue Nov 24 2026 mozixun <mozixun@fedoraproject.org> - 6.6.7-9
 - Require cryfs and fuse so the vault plugin is usable out of the box.
 

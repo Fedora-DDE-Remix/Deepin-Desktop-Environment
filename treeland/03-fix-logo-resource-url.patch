@@ -1,0 +1,11 @@
+--- a/src/plugins/lockscreen/logoprovider.cpp
++++ b/src/plugins/lockscreen/logoprovider.cpp
+@@ -14,7 +14,7 @@
+ {
+     auto url = QUrl::fromUserInput(DSysInfo::distributionOrgLogo(DSysInfo::Distribution,
+                                                                  DSysInfo::Transparent,
+-                                                                 ":/dsg/logo.svg"));
++                                                                 "qrc:/dsg/icons/logo.svg"));
+     return url.toString();
+ }
+ 
