@@ -54,6 +54,15 @@ COPR 构建。当前子包已有 exact EVR 约束；不因本次修复修改 SON
 本机没有 Go 编译器；上述 override 合并由独立脚本按固定上游生成器语义重现。
 新增 RPM `%check` 会验证 Fedora 构建中真正由 Go 生成并安装到 buildroot 的内容。
 
+后续 [ISO compose 45981240945](https://github.com/Fedora-DDE-Remix/ISO-Build/actions/runs/45981240945/job/140445377978)
+已完成真实 `go1.27.4-X:nodwarf5 linux/amd64` / GLib `2.90.1` 构建，
+原生 override 工具、RPM buildroot 的严格 `%check`、最终镜像中编译后的
+`away=['XF86Away']` 与背景默认值均通过。实际 binary RPM SHA-256 为
+`4a292037c9cf2d0a742da489d1f40d06d855f176c399c67d1a1185fe67f27f20`。
+本次原生验证使用临时 `6.0.13-1.1.remix1.fc45`，与维护者 `6.0.13-2` 使用同一
+XML 补丁和严格检查；没有声称维护者版本已在 COPR 构建，也没有用 compose 成功
+代替桌面登录或安装验收。
+
 ### 登录、依赖与 Logo
 
 DDM 补丁已实际应用到固定 0.5.0 源文件，并检查初始 VT 为 1 和 7 的配置结果。
