@@ -1,0 +1,13 @@
+--- a/services/ddm.service.in
++++ b/services/ddm.service.in
+@@ -1,8 +1,8 @@
+ [Unit]
+ Description=Deepin Display Manager
+ Documentation=man:ddm(1)
+-Conflicts=getty@tty${DDM_INITIAL_VT}.service
+-After=systemd-user-sessions.service getty@tty${DDM_INITIAL_VT}.service plymouth-quit.service systemd-logind.service dde-seatd.service dde-dconfig-daemon.service
++Conflicts=getty@tty${DDM_INITIAL_VT}.service kmsconvt@tty${DDM_INITIAL_VT}.service
++After=systemd-user-sessions.service getty@tty${DDM_INITIAL_VT}.service kmsconvt@tty${DDM_INITIAL_VT}.service plymouth-quit.service systemd-logind.service dde-seatd.service dde-dconfig-daemon.service
+ PartOf=graphical.target
+ StartLimitIntervalSec=30
+ StartLimitBurst=2
