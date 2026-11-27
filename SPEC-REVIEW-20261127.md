@@ -15,6 +15,7 @@ Fedora 编译参数的包。修复仅进入独立分支供审阅与自测，没�
 | deepin-desktop-base | 硬性依赖主 Fedora 标识包，阻止 Remix 选择通用系统图形资源 | Release 2，改为虚拟依赖 system-logos，保留源码及安装文件不变 |
 | ddm | 服务需要 dde-seatd，但 RPM 未声明；仅处理传统 getty 与初始 VT 的竞争 | Release 9，增加运行依赖，按 DDM_INITIAL_VT 对应的 kmscon 单元增加 After/Conflicts；PAM 和 SELinux 配置保持原样 |
 | treeland | 缺少服务所需 dde-seatd 及外部执行 Xwayland 的运行依赖；默认 Logo URL scheme 和 qrc 资源路径错误 | Release 11，增加实际运行依赖，保留原 Patch0/1 并增加 Patch2，将回退值改为 qrc:/dsg/icons/logo.svg |
+| dde-api | 将 Debian sudo 组的附加授权规则打包到 Fedora Polkit 默认不读取的 /var/lib 目录 | Release 9，剔除这一无效规则及其空目录，保留现有管理员认证策略与调用流程 |
 | dde-shell | 手写 CMAKE_CXX_FLAGS 覆盖 Fedora 参数并对全部 C++ 目标强制 -fPIE | Release 5，保留 build_cxxflags 与原 deprecation suppression，由 CMake/Fedora 处理 PIC/PIE |
 | 10 个 SeetaFace 源码包 | 强制包含标准库头文件时覆盖了 Fedora C++ 参数 | 保留所有原 include/选项，追加到 build_cxxflags；各包递增既有 Release 序号 |
 
@@ -64,6 +65,28 @@ Treeland 固定上游 `859a8c314f00947bc98168f46631ba10f9c7e6fa` 的资源构建
 QUrl 转换一致；DTK 对缺失的 LogoTransparent 返回第三参数，新的 qrc URL 同时
 修正 scheme 和资源路径。配置中已有的发行版 Logo 不受影响。
 补丁适用性和配置路径已核对，尚未把这些源检查表述成重新编译或图形登录通过。
+
+### dde-api 的无效附加规则
+
+固定上游提交 `217260df489497007a52f5ca08fd1975256e468f` 的
+[Makefile](https://github.com/linuxdeepin/dde-api/blob/217260df489497007a52f5ca08fd1975256e468f/Makefile)
+把唯一的 `org.deepin.dde.device.rules` 安装到 `/var/lib/polkit-1/rules.d`。
+该规则为活动会话的 Debian `sudo` 组自动授权蓝牙解锁，原 SPEC 直接收录整个目录。
+实际 `.2` payload 为 `polkit-127-5.fc45`；对应固定版本的
+[authority 源码](https://github.com/polkit-org/polkit/blob/9e4894c969eecf26a3ba762f4f7a268aa0fb3e51/src/polkitbackend/polkitbackendduktapeauthority.c)
+默认读取 `/etc`、`/run`、`/usr/local/share`、`/usr/share` 下的 `polkit-1/rules.d`，
+没有这个 `/var/lib` 位置。
+
+同一上游的
+[action policy](https://github.com/linuxdeepin/dde-api/blob/217260df489497007a52f5ca08fd1975256e468f/misc/polkit-action/org.deepin.dde.device.unblock-bluetooth-devices.policy.in)
+对活动会话要求 `auth_admin_keep`，对其他会话为 `no`；
+[device 调用](https://github.com/linuxdeepin/dde-api/blob/217260df489497007a52f5ca08fd1975256e468f/device/device.go)
+允许交互认证，并在授权成功后才执行 `rfkill unblock bluetooth`。
+RPM 已声明 `rfkill` 运行依赖。
+
+本次只在 buildroot 清理该无效规则和空目录，去掉对应 `%files` 条目；保留 action
+policy、程序和服务。没有将规则移入有效目录或扩大无密码授权。本项是打包清理，
+不是已确认的黑屏原因，也没有进行真实蓝牙硬件或交互认证测试。
 
 ### 编译参数
 
